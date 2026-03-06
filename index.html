@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>AniAtlas - Catálogo de Animes</title>
+
+  <meta
+    name="description"
+    content="Descubra animes populares, animes da temporada, pesquise títulos e salve seus favoritos no AniAtlas."
+  />
+  <meta
+    name="keywords"
+    content="anime, animes, catálogo de anime, animes populares, temporada anime, AniAtlas"
+  />
+  <meta name="author" content="AniAtlas" />
+  <meta name="robots" content="index, follow" />
+
+  <meta property="og:title" content="AniAtlas - Catálogo de Animes" />
+  <meta
+    property="og:description"
+    content="Explore animes populares, descubra novos títulos e salve favoritos."
+  />
+  <meta property="og:image" content="logo.png" />
+  <meta property="og:type" content="website" />
+
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b1020;
+      color: #f1f5f9;
+    }
+
+    header {
+      background: linear-gradient(180deg, #111827, #0b1020);
+      padding: 20px 16px 18px;
+      border-bottom: 1px solid #1f2937;
+    }
+
+    .header-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+    }
+
+    .subtitle {
+      margin: 0 0 18px;
+      color: #94a3b8;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .top-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .lang-box {
+      margin-bottom: 14px;
+    }
+
+    .search-box {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .genre-filter {
+      margin: 0 0 24px;
+      padding: 14px;
+      border: 1px solid #334155;
+      border-radius: 14px;
+      background: #111827;
+    }
+
+    .genre-filter-title {
+      margin: 0 0 12px;
+      font-size: 16px;
+      color: #cbd5e1;
+      font-weight: bold;
+    }
+
+    .genre-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .genre-btn {
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #f8fafc;
+    }
+
+    .genre-btn.active {
+      background: #2563eb;
+      border-color: #2563eb;
+    }
+
+    input {
+      flex: 1;
+      min-width: 220px;
+      padding: 16px 14px;
+      border-radius: 12px;
+      border: 1px solid #334155;
+      background: #0f172a;
+      color: #f8fafc;
+      outline: none;
+    }
+
+    button,
+    .nav-btn {
+      padding: 12px 16px;
+      border: none;
+      border-radius: 12px;
+      background: #2563eb;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    button:hover,
+    .nav-btn:hover {
+      opacity: 0.92;
+    }
+
+    .secondary-btn {
+      background: #334155;
+    }
+
+    .favorite-btn {
+      background: #e11d48;
+    }
+
+    .remove-btn {
+      background: #b91c1c;
+    }
+
+    .lang-btn {
+      background: #0f172a;
+      border: 1px solid #334155;
+    }
+
+    .favorites-page-btn {
+      background: #7c3aed;
+    }
+
+    .back-to-top {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 999;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 999px;
+      padding: 12px 14px;
+      font-weight: bold;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+      display: none;
+    }
+
+    .back-to-top.show {
+      display: inline-block;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 22px 16px 40px;
+    }
+
+    .status {
+      margin-bottom: 18px;
+      color: #93c5fd;
+      font-size: 14px;
+    }
+
+    .search-results {
+      margin-bottom: 28px;
+    }
+
+    .section {
+      margin-bottom: 34px;
+    }
+
+    .section-title {
+      font-size: 22px;
+      margin: 0 0 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+      transition: transform 0.15s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+    }
+
+    .card img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      display: block;
+      background: #0f172a;
+    }
+
+    .card-content {
+      padding: 12px;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: bold;
+      margin-bottom: 8px;
+      min-height: 38px;
+      line-height: 1.25;
+    }
+
+    .card-meta {
+      font-size: 13px;
+      color: #cbd5e1;
+      margin-bottom: 10px;
+      line-height: 1.45;
+    }
+
+    .genres {
+      font-size: 12px;
+      color: #93c5fd;
+      min-height: 32px;
+      margin-bottom: 10px;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .card-actions a {
+      text-decoration: none;
+    }
+
+    .card-actions button {
+      padding: 9px 12px;
+      font-size: 12px;
+      border-radius: 10px;
+    }
+
+    .empty {
+      color: #94a3b8;
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    footer {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 10px 16px 30px;
+      color: #64748b;
+      font-size: 13px;
+    }
+
+    @media (max-width: 600px) {
+      .card img {
+        height: 220px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .section-title {
+        font-size: 19px;
+      }
+
+      .back-to-top {
+        right: 14px;
+        bottom: 14px;
+        padding: 11px 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-wrap">
+      <h1>
+        <img
+          src="logo.png"
+          alt="AniAtlas catálogo de animes"
+          style="height:200px;"
+        />
+      </h1>
+
+      <p class="subtitle" id="subtitleText">
+        Explore o mundo dos animes — descubra, pesquise e salve seus favoritos
+      </p>
+
+      <div class="top-buttons">
+        <button class="lang-btn" onclick="trocarIdioma()" id="langBtn">
+          🌎 PT/EN
+        </button>
+        <a
+          href="favoritos.html"
+          class="nav-btn favorites-page-btn"
+          id="favoritesPageBtn"
+        >
+          ⭐ Página de Favoritos
+        </a>
+      </div>
+
+      <div class="search-box">
+        <input
+          id="searchInput"
+          type="text"
+          placeholder="Pesquise um anime, ex: Naruto"
+          onkeydown="if(event.key === 'Enter') buscarAnime()"
+        />
+        <button onclick="buscarAnime()" id="searchBtn">Buscar</button>
+        <button class="secondary-btn" onclick="limparBusca()" id="clearBtn">
+          Limpar
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div id="status" class="status">Carregando animes do site...</div>
+
+    <div
+      style="margin-bottom:18px; padding:14px; border:1px solid #334155; border-radius:14px; background:#111827; color:#cbd5e1; line-height:1.6;"
+    >
+      <strong>⚠️ Aviso:</strong> Se a busca ou alguma seção falhar, espere alguns
+      segundos e tente novamente. O AniAtlas usa uma API pública, então acessos
+      muito rápidos entre páginas podem causar lentidão temporária. Caso não
+      resolva, saia do site e entre novamente.
+
+      <div style="margin-top:12px;">
+        <button
+          onclick="location.reload()"
+          style="background:#2563eb; padding:10px 14px; border-radius:10px; border:none; color:white; font-weight:bold;"
+        >
+          🔄 Recarregar página
+        </button>
+      </div>
+    </div>
+
+    <div class="genre-filter">
+      <div class="genre-filter-title" id="genreFilterTitle">
+        🎭 Filtrar por gênero
+      </div>
+      <div class="genre-buttons">
+        <button class="genre-btn" onclick="limparFiltroGenero()" id="clearGenreBtn">
+          ❌ Limpar filtro
+        </button>
+        <button class="genre-btn" onclick="filtrarGenero('Action', this)">
+          Ação
+        </button>
+        <button class="genre-btn" onclick="filtrarGenero('Romance', this)">
+          Romance
+        </button>
+        <button class="genre-btn" onclick="filtrarGenero('Comedy', this)">
+          Comédia
+        </button>
+        <button class="genre-btn" onclick="filtrarGenero('Fantasy', this)">
+          Fantasia
+        </button>
+        <button class="genre-btn" onclick="filtrarGenero('Horror', this)">
+          Terror
+        </button>
+        <button class="genre-btn" onclick="filtrarGenero('Sports', this)">
+          Esporte
+        </button>
+      </div>
+    </div>
+
+    <section id="genreSection" class="section" style="display:none;">
+      <h2 class="section-title" id="genreTitle">🎭 Gênero selecionado</h2>
+      <div id="genreResults" class="cards"></div>
+    </section>
+
+    <section id="searchSection" class="search-results" style="display:none;">
+      <h2 class="section-title" id="searchResultsTitle">🔎 Resultado da busca</h2>
+      <div id="searchResults" class="cards"></div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title" id="topTitle">🏆 Top 10 desta semana</h2>
+      <div id="topAnime" class="cards"></div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title" id="popularTitle">🔥 Mais procurados</h2>
+      <div id="popular" class="cards"></div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title" id="seasonTitle">🌸 Animes da temporada</h2>
+      <div id="seasonAnime" class="cards"></div>
+    </section>
+  </main>
+
+  <footer id="footerText">
+    Feito com dados públicos do AniList. Seus favoritos ficam salvos localmente
+    no navegador.
+  </footer>
+
+  <button id="backToTopBtn" class="back-to-top" onclick="voltarAoTopo()">
+    ⬆ Topo
+  </button>
+
+  <script>
+    const API_URL = "https://graphql.anilist.co";
+    const FAVORITES_KEY = "animehub_favorites";
+    const LANG_KEY = "aniatlas_lang";
+
+    const CACHE_TOP = "aniatlas_cache_top";
+    const CACHE_POPULAR = "aniatlas_cache_popular";
+    const CACHE_SEASON = "aniatlas_cache_season";
+    const CACHE_TIME = 1000 * 60 * 10;
+
+    let idioma = localStorage.getItem(LANG_KEY) || "pt";
+    let generoAtual = "";
+
+    function t(pt, en) {
+      return idioma === "pt" ? pt : en;
+    }
+
+    function atualizarTitulo() {
+      document.title =
+        idioma === "pt"
+          ? "AniAtlas - Catálogo de Animes"
+          : "AniAtlas - Anime Catalog";
+    }
+
+    function trocarIdioma() {
+      idioma = idioma === "pt" ? "en" : "pt";
+      localStorage.setItem(LANG_KEY, idioma);
+      aplicarIdioma();
+      rerenderDynamicSections();
+    }
+
+    function aplicarIdioma() {
+      atualizarTitulo();
+
+      document.documentElement.lang = idioma === "pt" ? "pt-BR" : "en";
+      document.getElementById("subtitleText").textContent = t(
+        "Explore o mundo dos animes — descubra, pesquise e salve seus favoritos",
+        "Explore the world of anime — discover, search and save your favorites"
+      );
+      document.getElementById("searchInput").placeholder = t(
+        "Pesquise um anime, ex: Naruto",
+        "Search an anime, e.g. Naruto"
+      );
+      document.getElementById("searchBtn").textContent = t("Buscar", "Search");
+      document.getElementById("clearBtn").textContent = t("Limpar", "Clear");
+      document.getElementById("genreFilterTitle").textContent = t(
+        "🎭 Filtrar por gênero",
+        "🎭 Filter by Genre"
+      );
+      document.getElementById("clearGenreBtn").textContent = t(
+        "❌ Limpar filtro",
+        "❌ Clear filter"
+      );
+      document.getElementById("favoritesPageBtn").textContent = t(
+        "⭐ Página de Favoritos",
+        "⭐ Favorites Page"
+      );
+      document.getElementById("searchResultsTitle").textContent = t(
+        "🔎 Resultado da busca",
+        "🔎 Search Results"
+      );
+      document.getElementById("topTitle").textContent = t(
+        "🏆 Top 10 desta semana",
+        "🏆 Top 10 This Week"
+      );
+      document.getElementById("popularTitle").textContent = t(
+        "🔥 Mais procurados",
+        "🔥 Most Searched"
+      );
+      document.getElementById("seasonTitle").textContent = t(
+        "🌸 Animes da temporada",
+        "🌸 Seasonal Anime"
+      );
+      document.getElementById("footerText").textContent = t(
+        "Feito com dados públicos do AniList. Seus favoritos ficam salvos localmente no navegador.",
+        "Built with public AniList data. Your favorites are saved locally in the browser."
+      );
+      document.getElementById("backToTopBtn").textContent = t(
+        "⬆ Topo",
+        "⬆ Top"
+      );
+
+      if (generoAtual) {
+        document.getElementById("genreTitle").textContent =
+          `${t("🎭 Gênero", "🎭 Genre")}: ${traduzirGenero(generoAtual)}`;
+      }
+    }
+
+    async function fetchAniList(query, variables = {}) {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 15000);
+
+      try {
+        const response = await fetch(API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: JSON.stringify({ query, variables }),
+          signal: controller.signal
+        });
+
+        return await response.json();
+      } finally {
+        clearTimeout(timeout);
+      }
+    }
+
+    function salvarCache(key, data) {
+      const payload = {
+        time: Date.now(),
+        data
+      };
+      localStorage.setItem(key, JSON.stringify(payload));
+    }
+
+    function lerCache(key) {
+      try {
+        const payload = JSON.parse(localStorage.getItem(key));
+        if (!payload) return null;
+
+        const expirado = Date.now() - payload.time > CACHE_TIME;
+        if (expirado) return null;
+
+        return payload.data;
+      } catch {
+        return null;
+      }
+    }
+
+    function getFavorites() {
+      try {
+        return JSON.parse(localStorage.getItem(FAVORITES_KEY)) || [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveFavorites(favorites) {
+      localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
+    }
+
+    function isFavorite(id) {
+      const favorites = getFavorites();
+      return favorites.some(item => item.id === id);
+    }
+
+    function toggleFavorite(anime) {
+      const favorites = getFavorites();
+      const exists = favorites.some(item => item.id === anime.id);
+
+      let updatedFavorites;
+
+      if (exists) {
+        updatedFavorites = favorites.filter(item => item.id !== anime.id);
+      } else {
+        updatedFavorites = [anime, ...favorites];
+      }
+
+      saveFavorites(updatedFavorites);
+      rerenderDynamicSections();
+    }
+
+    function removeFavorite(id) {
+      const favorites = getFavorites().filter(item => item.id !== id);
+      saveFavorites(favorites);
+      rerenderDynamicSections();
+    }
+
+    function traduzirGenero(genero) {
+      const mapa = {
+        "Action": "Ação",
+        "Adventure": "Aventura",
+        "Comedy": "Comédia",
+        "Drama": "Drama",
+        "Fantasy": "Fantasia",
+        "Horror": "Terror",
+        "Romance": "Romance",
+        "Sci-Fi": "Ficção científica",
+        "Sports": "Esporte",
+        "Mystery": "Mistério",
+        "Slice of Life": "Slice of Life"
+      };
+
+      if (idioma === "en") return genero;
+      return mapa[genero] || genero;
+    }
+
+    function createAnimeData(anime) {
+      return {
+        id: anime.id,
+        title:
+          anime.title?.english ||
+          anime.title?.romaji ||
+          anime.title?.native ||
+          t("Sem título", "Untitled"),
+        episodes: anime.episodes ?? "?",
+        averageScore: anime.averageScore ?? "?",
+        genres: anime.genres || [],
+        image: anime.coverImage?.large || "",
+        siteUrl: anime.siteUrl || "#"
+      };
+    }
+    
+    function criarCard(anime, isFromFavorites = false) {
+      const animeData = createAnimeData(anime);
+      const favoritos = isFavorite(animeData.id);
+      const buscaLegal = encodeURIComponent(
+        `${animeData.title} ${t("assistir legalmente", "watch legally")}`
+      );
+
+      return `
+        <div class="card">
+          <img src="${animeData.image}" alt="${animeData.title}" loading="lazy">
+          <div class="card-content">
+            <div class="card-title">${animeData.title}</div>
+            <div class="card-meta">
+              ${t("Episódios", "Episodes")}: ${animeData.episodes}<br>
+              ${t("Nota", "Score")}: ${animeData.averageScore}
+            </div>
+            <div class="genres">${animeData.genres
+              .slice(0, 3)
+              .map(traduzirGenero)
+              .join(" • ")}</div>
+            <div class="card-actions">
+              <a href="detalhes.html?id=${animeData.id}"
+                 onmouseenter="prefetchDetalhes(${animeData.id})"
+                 ontouchstart="prefetchDetalhes(${animeData.id})">
+                <button class="secondary-btn">${t("Detalhes", "Details")}</button>
+              </a>
+
+              <a href="https://www.google.com/search?q=${buscaLegal}" target="_blank" rel="noopener">
+                <button>${t("Onde assistir", "Where to watch")}</button>
+              </a>
+
+              ${
+                isFromFavorites
+                  ? `<button class="remove-btn" onclick="removeFavorite(${animeData.id})">${t(
+                      "Remover",
+                      "Remove"
+                    )}</button>`
+                  : `<button class="favorite-btn" onclick='toggleFavorite(${JSON.stringify(
+                      animeData
+                    ).replace(/'/g, "&apos;")})'>
+                      ${favoritos ? t("Favoritado", "Favorited") : t("Favoritar", "Favorite")}
+                    </button>`
+              }
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderizarLista(elementId, lista, isError = false) {
+      const el = document.getElementById(elementId);
+
+      if (isError) {
+        el.innerHTML = `<div class="empty">${t(
+          "Não foi possível carregar esta seção agora.",
+          "Could not load this section right now."
+        )}</div>`;
+        return;
+      }
+
+      if (!lista || !lista.length) {
+        el.innerHTML = `<div class="empty">${t(
+          "Nenhum anime encontrado nesta seção.",
+          "No anime found in this section."
+        )}</div>`;
+        return;
+      }
+
+      el.innerHTML = lista.map(anime => criarCard(anime)).join("");
+    }
+
+    async function carregarTop10() {
+      const cache = lerCache(CACHE_TOP);
+      if (cache) return cache;
+
+      const query = `
+        query {
+          Page(page: 1, perPage: 10) {
+            media(
+              type: ANIME,
+              sort: TRENDING_DESC
+            ) {
+              id
+              title {
+                romaji
+                english
+                native
+              }
+              episodes
+              averageScore
+              genres
+              siteUrl
+              coverImage {
+                large
+              }
+            }
+          }
+        }
+      `;
+
+      const data = await fetchAniList(query);
+      const lista = data?.data?.Page?.media || [];
+
+      salvarCache(CACHE_TOP, lista);
+      return lista;
+    }
+
+    async function carregarPopulares(quantidade = 8) {
+      const cache = lerCache(CACHE_POPULAR);
+      if (cache) return cache;
+
+      const query = `
+        query ($perPage: Int) {
+          Page(page: 1, perPage: $perPage) {
+            media(
+              type: ANIME,
+              sort: POPULARITY_DESC
+            ) {
+              id
+              title {
+                romaji
+                english
+                native
+              }
+              episodes
+              averageScore
+              genres
+              siteUrl
+              coverImage {
+                large
+              }
+            }
+          }
+        }
+      `;
+
+      const data = await fetchAniList(query, { perPage: quantidade });
+      const lista = data?.data?.Page?.media || [];
+
+      salvarCache(CACHE_POPULAR, lista);
+      return lista;
+    }
+
+    function obterTemporadaAtual() {
+      const agora = new Date();
+      const mes = agora.getMonth() + 1;
+      const ano = agora.getFullYear();
+
+      let season = "WINTER";
+
+      if (mes >= 1 && mes <= 3) {
+        season = "WINTER";
+      } else if (mes >= 4 && mes <= 6) {
+        season = "SPRING";
+      } else if (mes >= 7 && mes <= 9) {
+        season = "SUMMER";
+      } else {
+        season = "FALL";
+      }
+
+      return { season, year: ano };
+    }
+
+    async function carregarAnimesDaTemporada(quantidade = 8) {
+      const cache = lerCache(CACHE_SEASON);
+      if (cache) return cache;
+
+      const { season, year } = obterTemporadaAtual();
+
+      const query = `
+        query ($season: MediaSeason, $seasonYear: Int, $perPage: Int) {
+          Page(page: 1, perPage: $perPage) {
+            media(
+              type: ANIME,
+              season: $season,
+              seasonYear: $seasonYear,
+              sort: POPULARITY_DESC
+            ) {
+              id
+              title {
+                romaji
+                english
+                native
+              }
+              episodes
+              averageScore
+              genres
+              siteUrl
+              coverImage {
+                large
+              }
+            }
+          }
+        }
+      `;
+
+      const data = await fetchAniList(query, {
+        season,
+        seasonYear: year,
+        perPage: quantidade
+      });
+
+      const lista = data?.data?.Page?.media || [];
+
+      salvarCache(CACHE_SEASON, lista);
+      return lista;
+    }
+
+    async function carregarPorGenero(genero, quantidade = 12) {
+      const cacheKey = `aniatlas_cache_genre_${genero}`;
+      const cache = lerCache(cacheKey);
+      if (cache) return cache;
+
+      const query = `
+        query ($genre: String, $perPage: Int) {
+          Page(page: 1, perPage: $perPage) {
+            media(
+              type: ANIME,
+              genre: $genre,
+              sort: POPULARITY_DESC
+            ) {
+              id
+              title {
+                romaji
+                english
+                native
+              }
+              episodes
+              averageScore
+              genres
+              siteUrl
+              coverImage {
+                large
+              }
+            }
+          }
+        }
+      `;
+
+      const data = await fetchAniList(query, {
+        genre: genero,
+        perPage: quantidade
+      });
+
+      const lista = data?.data?.Page?.media || [];
+      salvarCache(cacheKey, lista);
+      return lista;
+    }
+
+    async function filtrarGenero(genero, botao) {
+      generoAtual = genero;
+
+      document.querySelectorAll(".genre-btn").forEach(btn => {
+        btn.classList.remove("active");
+      });
+
+      if (botao) {
+        botao.classList.add("active");
+      }
+
+      const section = document.getElementById("genreSection");
+      const results = document.getElementById("genreResults");
+      const title = document.getElementById("genreTitle");
+      const status = document.getElementById("status");
+
+      section.style.display = "block";
+      title.textContent = `${t("🎭 Gênero", "🎭 Genre")}: ${traduzirGenero(genero)}`;
+      results.innerHTML = `<div class="empty">${t(
+        "Carregando resultados...",
+        "Loading results..."
+      )}</div>`;
+      status.textContent =
+        idioma === "pt"
+          ? `Carregando animes de ${traduzirGenero(genero)}...`
+          : `Loading ${genero} anime...`;
+
+      try {
+        const lista = await carregarPorGenero(genero, 12);
+        renderizarLista("genreResults", lista);
+        status.textContent =
+          idioma === "pt"
+            ? `Mostrando animes de ${traduzirGenero(genero)}.`
+            : `Showing ${genero} anime.`;
+      } catch (error) {
+        console.error(error);
+        renderizarLista("genreResults", [], true);
+        status.textContent = t(
+          "Não foi possível carregar esse gênero agora.",
+          "Could not load this genre right now."
+        );
+      }
+    }
+
+    function limparFiltroGenero() {
+      generoAtual = "";
+
+      document.getElementById("genreSection").style.display = "none";
+      document.getElementById("genreResults").innerHTML = "";
+
+      document.querySelectorAll(".genre-btn").forEach(btn => {
+        btn.classList.remove("active");
+      });
+
+      document.getElementById("status").textContent = t(
+        "Filtro de gênero removido.",
+        "Genre filter cleared."
+      );
+    }
+    
+    async function buscarAnime() {
+      const termo = document.getElementById("searchInput").value.trim();
+      const searchSection = document.getElementById("searchSection");
+      const searchResults = document.getElementById("searchResults");
+      const status = document.getElementById("status");
+
+      if (!termo) {
+        status.textContent = t(
+          "Digite o nome de um anime para buscar.",
+          "Type an anime name to search."
+        );
+        searchSection.style.display = "none";
+        return;
+      }
+
+      status.textContent =
+        idioma === "pt"
+          ? `Buscando por "${termo}"...`
+          : `Searching for "${termo}"...`;
+
+      searchSection.style.display = "block";
+      searchResults.innerHTML = `<div class="empty">${t(
+        "Carregando resultados...",
+        "Loading results..."
+      )}</div>`;
+
+      const query = `
+        query ($search: String) {
+          Page(page: 1, perPage: 12) {
+            media(
+              search: $search,
+              type: ANIME,
+              sort: POPULARITY_DESC
+            ) {
+              id
+              title {
+                romaji
+                english
+                native
+              }
+              episodes
+              averageScore
+              genres
+              siteUrl
+              coverImage {
+                large
+              }
+            }
+          }
+        }
+      `;
+
+      try {
+        const data = await fetchAniList(query, { search: termo });
+        const lista = data?.data?.Page?.media || [];
+
+        if (!lista.length) {
+          searchResults.innerHTML = `<div class="empty">${
+            idioma === "pt"
+              ? `Nenhum anime encontrado para "${termo}".`
+              : `No anime found for "${termo}".`
+          }</div>`;
+          status.textContent = t("Busca concluída.", "Search completed.");
+          return;
+        }
+
+        searchResults.innerHTML = lista.map(anime => criarCard(anime)).join("");
+        status.textContent =
+          idioma === "pt"
+            ? `Mostrando resultados para "${termo}".`
+            : `Showing results for "${termo}".`;
+      } catch (error) {
+        console.error(error);
+
+        const msg =
+          error.name === "AbortError"
+            ? t(
+                "A busca demorou demais. Tente novamente.",
+                "The search took too long. Please try again."
+              )
+            : t(
+                "A busca falhou no momento. Tente novamente.",
+                "Search failed right now. Please try again."
+              );
+
+        searchResults.innerHTML = `<div class="empty">${msg}</div>`;
+        status.textContent = msg;
+      }
+    }
+
+    function limparBusca() {
+      document.getElementById("searchInput").value = "";
+      document.getElementById("searchSection").style.display = "none";
+      document.getElementById("searchResults").innerHTML = "";
+      document.getElementById("status").textContent = t(
+        "Busca limpa.",
+        "Search cleared."
+      );
+    }
+
+    async function rerenderDynamicSections() {
+      const searchSection = document.getElementById("searchSection");
+
+      if (searchSection.style.display !== "none") {
+        const termo = document.getElementById("searchInput").value.trim();
+        if (termo) {
+          await buscarAnime();
+        }
+      }
+
+      if (generoAtual) {
+        const activeBtn = document.querySelector(".genre-btn.active");
+        await filtrarGenero(generoAtual, activeBtn);
+      }
+
+      await iniciarCatalogos(false);
+    }
+
+    async function iniciarCatalogos(updateStatus = true) {
+      const status = document.getElementById("status");
+
+      const results = await Promise.allSettled([
+        carregarTop10(),
+        carregarPopulares(8),
+        carregarAnimesDaTemporada(8)
+      ]);
+
+      const topOk = results[0].status === "fulfilled";
+      const popularesOk = results[1].status === "fulfilled";
+      const temporadaOk = results[2].status === "fulfilled";
+
+      const top = topOk ? results[0].value : [];
+      const populares = popularesOk ? results[1].value : [];
+      const temporada = temporadaOk ? results[2].value : [];
+
+      renderizarLista("topAnime", top, !topOk);
+      renderizarLista("popular", populares, !popularesOk);
+      renderizarLista("seasonAnime", temporada, !temporadaOk);
+
+      if (updateStatus) {
+        if (topOk || popularesOk || temporadaOk) {
+          status.textContent = t(
+            "Animes carregados com sucesso.",
+            "Anime loaded successfully."
+          );
+        } else {
+          const erros = [results[0].reason, results[1].reason, results[2].reason];
+          const timeout = erros.some(erro => erro && erro.name === "AbortError");
+
+          status.textContent = timeout
+            ? t(
+                "O servidor demorou demais para responder.",
+                "The server took too long to respond."
+              )
+            : t(
+                "Não foi possível carregar os animes agora.",
+                "Could not load anime right now."
+              );
+        }
+      }
+    }
+
+    function controlarBotaoTopo() {
+      const btn = document.getElementById("backToTopBtn");
+      if (window.scrollY > 300) {
+        btn.classList.add("show");
+      } else {
+        btn.classList.remove("show");
+      }
+    }
+
+    function voltarAoTopo() {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }
+
+    async function iniciarSite() {
+      aplicarIdioma();
+      await iniciarCatalogos(true);
+      controlarBotaoTopo();
+    }
+
+    function prefetchDetalhes(id) {
+      const url = `detalhes.html?id=${id}`;
+
+      if (document.querySelector(`link[href="${url}"]`)) return;
+
+      const link = document.createElement("link");
+      link.rel = "prefetch";
+      link.href = url;
+
+      document.head.appendChild(link);
+    }
+
+    window.addEventListener("scroll", controlarBotaoTopo);
+
+    iniciarSite();
+  </script>
+</body>
+</html>

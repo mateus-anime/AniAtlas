@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>AniAtlas - Detalhes do Anime</title>
+
+  <meta
+    name="description"
+    content="Veja detalhes completos do anime no AniAtlas, incluindo sinopse, nota, episódios, personagens, trailer e recomendações."
+  />
+  <meta
+    name="keywords"
+    content="anime, detalhes do anime, sinopse anime, personagens anime, trailer anime, AniAtlas"
+  />
+  <meta name="author" content="AniAtlas" />
+  <meta name="robots" content="index, follow" />
+
+  <meta property="og:title" content="AniAtlas - Detalhes do Anime" />
+  <meta
+    property="og:description"
+    content="Veja informações completas do anime, personagens, trailer e recomendações no AniAtlas."
+  />
+  <meta property="og:image" content="logo.png" />
+  <meta property="og:type" content="website" />
+
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b1020;
+      color: #f1f5f9;
+    }
+
+    .banner {
+      width: 100%;
+      height: 260px;
+      background: #111827 center/cover no-repeat;
+      position: relative;
+    }
+
+    .banner-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        #0b1020 0%,
+        rgba(11, 16, 32, 0.4) 60%,
+        rgba(11, 16, 32, 0.2) 100%
+      );
+    }
+
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 16px 40px;
+    }
+
+    .top-actions {
+      padding-top: 16px;
+      margin-bottom: 18px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .back-btn,
+    .lang-btn,
+    .retry-btn {
+      display: inline-block;
+      background: #334155;
+      color: white;
+      text-decoration: none;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
+
+    .retry-btn {
+      background: #2563eb;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 20px;
+      margin-top: -80px;
+      position: relative;
+      z-index: 2;
+      align-items: start;
+    }
+
+    .cover {
+      width: 100%;
+      border-radius: 16px;
+      border: 1px solid #1f2937;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      background: #111827;
+    }
+
+    .info-box {
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: 16px;
+      padding: 18px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: 34px;
+      line-height: 1.15;
+    }
+
+    .meta {
+      color: #cbd5e1;
+      line-height: 1.8;
+      margin-bottom: 10px;
+    }
+
+    .genres {
+      color: #93c5fd;
+      margin-bottom: 14px;
+      line-height: 1.7;
+    }
+
+    .desc {
+      color: #e5e7eb;
+      line-height: 1.8;
+      white-space: pre-line;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    button,
+    .watch-link {
+      border: none;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+      color: white;
+      display: inline-block;
+    }
+
+    .favorite-btn {
+      background: #e11d48;
+    }
+
+    .watch-link {
+      background: #2563eb;
+    }
+
+    .section {
+      margin-top: 28px;
+    }
+
+    .section h2 {
+      margin: 0 0 14px;
+      font-size: 24px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .card img {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      display: block;
+      background: #0f172a;
+    }
+
+    .card-body {
+      padding: 12px;
+    }
+
+    .card-title {
+      font-weight: bold;
+      line-height: 1.4;
+      margin-bottom: 6px;
+    }
+
+    .card-sub {
+      color: #cbd5e1;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .trailer-box {
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .trailer-box iframe {
+      width: 100%;
+      height: 420px;
+      border: 0;
+      display: block;
+    }
+
+    .loading,
+    .error,
+    .empty {
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: 16px;
+      padding: 16px;
+      color: #94a3b8;
+    }
+
+    .error-actions {
+      margin-top: 14px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 760px) {
+      .hero {
+        grid-template-columns: 1fr;
+        margin-top: -50px;
+      }
+
+      .cover {
+        max-width: 260px;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+
+      .trailer-box iframe {
+        height: 240px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="banner" class="banner">
+    <div class="banner-overlay"></div>
+  </div>
+
+  <div class="page">
+    <div class="top-actions">
+      <a class="back-btn" href="index.html" id="backBtn">← Voltar</a>
+      <button class="lang-btn" onclick="trocarIdioma()">🌎 PT/EN</button>
+    </div>
+
+    <div id="content" class="loading">Carregando detalhes do anime...</div>
+  </div>
+
+  <script>
+    const API_URL = "https://graphql.anilist.co";
+    const FAVORITES_KEY = "animehub_favorites";
+    const LANG_KEY = "aniatlas_lang";
+
+    let idioma = localStorage.getItem(LANG_KEY) || "pt";
+
+    function t(pt, en) {
+      return idioma === "pt" ? pt : en;
+    }
+
+    function atualizarMetaDescricao(texto) {
+      const meta = document.querySelector('meta[name="description"]');
+      if (meta) {
+        meta.setAttribute("content", texto);
+      }
+    }
+
+    function atualizarOgTitulo(texto) {
+      const meta = document.querySelector('meta[property="og:title"]');
+      if (meta) {
+        meta.setAttribute("content", texto);
+      }
+    }
+
+    function atualizarOgDescricao(texto) {
+      const meta = document.querySelector('meta[property="og:description"]');
+      if (meta) {
+        meta.setAttribute("content", texto);
+      }
+    }
+
+    function atualizarOgImagem(url) {
+      const meta = document.querySelector('meta[property="og:image"]');
+      if (meta && url) {
+        meta.setAttribute("content", url);
+      }
+    }
+
+    function trocarIdioma() {
+      idioma = idioma === "pt" ? "en" : "pt";
+      localStorage.setItem(LANG_KEY, idioma);
+      carregarDetalhes();
+    }
+
+    function traduzirGenero(genero) {
+      const mapa = {
+        "Action": "Ação",
+        "Adventure": "Aventura",
+        "Comedy": "Comédia",
+        "Drama": "Drama",
+        "Fantasy": "Fantasia",
+        "Horror": "Terror",
+        "Romance": "Romance",
+        "Sci-Fi": "Ficção científica",
+        "Sports": "Esporte",
+        "Mystery": "Mistério",
+        "Slice of Life": "Slice of Life"
+      };
+
+      if (idioma === "en") return genero;
+      return mapa[genero] || genero;
+    }
+
+    function traduzirStatus(status) {
+      if (idioma === "en") return status || "?";
+
+      const mapa = {
+        "FINISHED": "Finalizado",
+        "RELEASING": "Em lançamento",
+        "NOT_YET_RELEASED": "Ainda não lançado",
+        "CANCELLED": "Cancelado",
+        "HIATUS": "Em pausa"
+      };
+
+      return mapa[status] || status || "?";
+    }
+
+    function traduzirFormato(formato) {
+      if (idioma === "en") return formato || "?";
+
+      const mapa = {
+        "TV": "TV",
+        "TV_SHORT": "TV Curta",
+        "MOVIE": "Filme",
+        "SPECIAL": "Especial",
+        "OVA": "OVA",
+        "ONA": "ONA",
+        "MUSIC": "Música"
+      };
+
+      return mapa[formato] || formato || "?";
+    }
+
+    function traduzirTemporada(season) {
+      if (idioma === "en") return season || "?";
+
+      const mapa = {
+        "WINTER": "Inverno",
+        "SPRING": "Primavera",
+        "SUMMER": "Verão",
+        "FALL": "Outono"
+      };
+
+      return mapa[season] || season || "?";
+    }
+
+    function traduzirSource(source) {
+      if (idioma === "en") return source || "?";
+
+      const mapa = {
+        "ORIGINAL": "Original",
+        "MANGA": "Mangá",
+        "LIGHT_NOVEL": "Light Novel",
+        "VISUAL_NOVEL": "Visual Novel",
+        "VIDEO_GAME": "Jogo",
+        "OTHER": "Outro",
+        "NOVEL": "Novel",
+        "WEB_NOVEL": "Web Novel",
+        "BOOK": "Livro"
+      };
+
+      return mapa[source] || source || "?";
+    }
+
+    function getAnimeIdFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("id");
+    }
+
+    async function fetchAniList(query, variables = {}) {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 15000);
+
+      try {
+        const response = await fetch(API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: JSON.stringify({ query, variables }),
+          signal: controller.signal
+        });
+
+        return await response.json();
+      } finally {
+        clearTimeout(timeout);
+      }
+    }
+
+    function getFavorites() {
+      try {
+        return JSON.parse(localStorage.getItem(FAVORITES_KEY)) || [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveFavorites(favorites) {
+      localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
+    }
+
+    function isFavorite(id) {
+      return getFavorites().some(item => item.id === id);
+    }
+
+    function toggleFavorite(anime) {
+      const favorites = getFavorites();
+      const exists = favorites.some(item => item.id === anime.id);
+
+      let updatedFavorites;
+
+      if (exists) {
+        updatedFavorites = favorites.filter(item => item.id !== anime.id);
+      } else {
+        updatedFavorites = [anime, ...favorites];
+      }
+
+      saveFavorites(updatedFavorites);
+      atualizarBotaoFavorito(anime.id);
+    }
+
+    function atualizarBotaoFavorito(id) {
+      const btn = document.getElementById("favoriteBtn");
+      if (!btn) return;
+      btn.textContent = isFavorite(id)
+        ? t("Remover dos favoritos", "Remove from favorites")
+        : t("Favoritar", "Favorite");
+    }
+    
+    
+    function limparTexto(texto) {
+      if (!texto) return t("Descrição não disponível.", "Description not available.");
+      return texto.replace(/<[^>]*>/g, "").trim();
+    }
+
+    function animeFavoritoData(media) {
+      return {
+        id: media.id,
+        title:
+          media.title?.english ||
+          media.title?.romaji ||
+          media.title?.native ||
+          t("Sem título", "Untitled"),
+        episodes: media.episodes ?? "?",
+        averageScore: media.averageScore ?? "?",
+        genres: media.genres || [],
+        image: media.coverImage?.large || "",
+        siteUrl: media.siteUrl || "#"
+      };
+    }
+
+    function criarPersonagens(lista) {
+      if (!lista?.length) {
+        return `<div class="empty">${t("Nenhum personagem encontrado.", "No characters found.")}</div>`;
+      }
+
+      return `
+        <div class="grid">
+          ${lista.map(item => `
+            <div class="card">
+              <img
+                src="${item.node?.image?.large || ""}"
+                alt="${item.node?.name?.full || t("Personagem", "Character")}"
+                loading="lazy"
+              >
+              <div class="card-body">
+                <div class="card-title">${item.node?.name?.full || t("Sem nome", "No name")}</div>
+                <div class="card-sub">${item.role || "?"}</div>
+              </div>
+            </div>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function criarRecomendacoes(lista) {
+      const filtrada = (lista || [])
+        .map(item => item.mediaRecommendation)
+        .filter(Boolean)
+        .slice(0, 8);
+
+      if (!filtrada.length) {
+        return `<div class="empty">${t("Nenhuma recomendação encontrada.", "No recommendations found.")}</div>`;
+      }
+
+      return `
+        <div class="grid">
+          ${filtrada.map(anime => `
+            <a href="detalhes.html?id=${anime.id}" style="text-decoration:none; color:inherit;">
+              <div class="card">
+                <img
+                  src="${anime.coverImage?.large || ""}"
+                  alt="${anime.title?.english || anime.title?.romaji || anime.title?.native || "Anime"}"
+                  loading="lazy"
+                >
+                <div class="card-body">
+                  <div class="card-title">${anime.title?.english || anime.title?.romaji || anime.title?.native || t("Sem título", "Untitled")}</div>
+                  <div class="card-sub">${t("Nota", "Score")}: ${anime.averageScore ?? "?"}</div>
+                </div>
+              </div>
+            </a>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function criarTrailer(trailer) {
+      if (!trailer?.id || trailer.site !== "youtube") {
+        return `<div class="empty">${t("Trailer não disponível.", "Trailer not available.")}</div>`;
+      }
+
+      return `
+        <div class="trailer-box">
+          <iframe
+            src="https://www.youtube.com/embed/${trailer.id}"
+            allowfullscreen
+            loading="lazy">
+          </iframe>
+        </div>
+      `;
+    }
+
+    function mostrarErroDetalhes(mensagem) {
+      const content = document.getElementById("content");
+      content.className = "error";
+      content.innerHTML = `
+        <div>${mensagem}</div>
+        <div class="error-actions">
+          <button class="retry-btn" onclick="carregarDetalhes()">${t("Tentar novamente", "Try again")}</button>
+          <a class="back-btn" href="index.html">${t("← Voltar", "← Back")}</a>
+        </div>
+      `;
+    }
+
+    async function carregarDetalhes() {
+      const id = getAnimeIdFromUrl();
+      const content = document.getElementById("content");
+      document.documentElement.lang = idioma === "pt" ? "pt-BR" : "en";
+      document.getElementById("backBtn").textContent = t("← Voltar", "← Back");
+
+      if (!id) {
+        mostrarErroDetalhes(t("ID do anime não encontrado.", "Anime ID not found."));
+        return;
+      }
+
+      content.className = "loading";
+      content.textContent = t("Carregando detalhes do anime...", "Loading anime details...");
+
+      const query = `
+        query ($id: Int) {
+          Media(id: $id, type: ANIME) {
+            id
+            title {
+              romaji
+              english
+              native
+            }
+            description(asHtml: false)
+            episodes
+            averageScore
+            genres
+            status
+            format
+            season
+            seasonYear
+            duration
+            source
+            bannerImage
+            siteUrl
+            trailer {
+              id
+              site
+            }
+            coverImage {
+              large
+              extraLarge
+            }
+            characters(sort: ROLE, page: 1, perPage: 12) {
+              edges {
+                role
+                node {
+                  id
+                  name {
+                    full
+                  }
+                  image {
+                    large
+                  }
+                }
+              }
+            }
+            recommendations(page: 1, perPage: 8, sort: RATING_DESC) {
+              nodes {
+                mediaRecommendation {
+                  id
+                  title {
+                    romaji
+                    english
+                    native
+                  }
+                  averageScore
+                  coverImage {
+                    large
+                  }
+                }
+              }
+            }
+          }
+        }
+      `;
+
+      try {
+        const data = await fetchAniList(query, { id: Number(id) });
+        const media = data?.data?.Media;
+
+        if (!media) {
+          mostrarErroDetalhes(t("Anime não encontrado.", "Anime not found."));
+          return;
+        }
+
+        const tituloPagina =
+          media.title?.english ||
+          media.title?.romaji ||
+          media.title?.native ||
+          "Anime";
+
+        const descricaoLimpa = limparTexto(media.description);
+        const descricaoCurta = descricaoLimpa.slice(0, 160);
+
+        document.title = `${tituloPagina} - AniAtlas`;
+        atualizarMetaDescricao(descricaoCurta || t(
+          "Veja detalhes completos do anime no AniAtlas.",
+          "See full anime details on AniAtlas."
+        ));
+        atualizarOgTitulo(`${tituloPagina} - AniAtlas`);
+        atualizarOgDescricao(descricaoCurta || t(
+          "Veja informações completas do anime no AniAtlas.",
+          "See full anime information on AniAtlas."
+        ));
+        atualizarOgImagem(media.coverImage?.extraLarge || media.coverImage?.large || "logo.png");
+
+        if (media.bannerImage) {
+          const banner = new Image();
+          banner.src = media.bannerImage;
+          banner.onload = () => {
+            document.getElementById("banner").style.backgroundImage = `url('${media.bannerImage}')`;
+          };
+        }
+
+        const favoritoData = animeFavoritoData(media);
+        const buscaLegal = encodeURIComponent(
+          `${favoritoData.title} ${t("assistir legalmente", "watch legally")}`
+        );
+
+        content.className = "";
+        content.innerHTML = `
+          <div class="hero">
+            <img
+              class="cover"
+              src="${media.coverImage?.extraLarge || media.coverImage?.large || ""}"
+              alt="${favoritoData.title}"
+              loading="lazy"
+            >
+
+            <div class="info-box">
+              <h1>${favoritoData.title}</h1>
+
+              <div class="meta">
+                <strong>${t("Nota", "Score")}:</strong> ${media.averageScore ?? "?"}<br>
+                <strong>${t("Episódios", "Episodes")}:</strong> ${media.episodes ?? "?"}<br>
+                <strong>${t("Status", "Status")}:</strong> ${traduzirStatus(media.status)}<br>
+                <strong>${t("Formato", "Format")}:</strong> ${traduzirFormato(media.format)}<br>
+                <strong>${t("Temporada", "Season")}:</strong> ${traduzirTemporada(media.season)} ${media.seasonYear ?? ""}<br>
+                <strong>${t("Duração", "Duration")}:</strong> ${media.duration ? media.duration + " min" : "?"}<br>
+                <strong>${t("Origem", "Source")}:</strong> ${traduzirSource(media.source)}
+              </div>
+
+              <div class="genres">
+                ${(media.genres || []).map(traduzirGenero).join(" • ")}
+              </div>
+
+              <div class="desc">
+                ${descricaoLimpa}
+              </div>
+
+              <div class="actions">
+                <button id="favoriteBtn" class="favorite-btn">${t("Favoritar", "Favorite")}</button>
+                <a class="watch-link" href="https://www.google.com/search?q=${buscaLegal}" target="_blank" rel="noopener">
+                  ${t("Onde assistir", "Where to watch")}
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <section class="section">
+            <h2>${t("Trailer", "Trailer")}</h2>
+            ${criarTrailer(media.trailer)}
+          </section>
+
+          <section class="section">
+            <h2>${t("Personagens", "Characters")}</h2>
+            ${criarPersonagens(media.characters?.edges)}
+          </section>
+
+          <section class="section">
+            <h2>${t("Recomendações", "Recommendations")}</h2>
+            ${criarRecomendacoes(media.recommendations?.nodes)}
+          </section>
+        `;
+
+        document.getElementById("favoriteBtn").addEventListener("click", () => {
+          toggleFavorite(favoritoData);
+        });
+
+        atualizarBotaoFavorito(media.id);
+      } catch (error) {
+        console.error(error);
+
+        const mensagem =
+          error.name === "AbortError"
+            ? t(
+                "Os detalhes demoraram demais para carregar. Tente novamente.",
+                "Details took too long to load. Please try again."
+              )
+            : t(
+                "Não foi possível carregar os detalhes agora.",
+                "Could not load details right now."
+              );
+
+        mostrarErroDetalhes(mensagem);
+      }
+    }
+
+    carregarDetalhes();
+  </script>
+</body>
+</html>
