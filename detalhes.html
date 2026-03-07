@@ -4,23 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>AniAtlas - Detalhes do Anime</title>
+  <title>AniAtlas - Onde assistir anime</title>
 
   <meta
     name="description"
-    content="Veja detalhes completos do anime no AniAtlas, incluindo sinopse, nota, episódios, personagens, trailer e recomendações."
+    content="Veja sinopse, episódios, nota, trailer, personagens e onde assistir anime legalmente no AniAtlas."
   />
   <meta
     name="keywords"
-    content="anime, detalhes do anime, sinopse anime, personagens anime, trailer anime, AniAtlas"
+    content="onde assistir anime, assistir anime legalmente, sinopse anime, personagens anime, trailer anime, AniAtlas"
   />
   <meta name="author" content="AniAtlas" />
   <meta name="robots" content="index, follow" />
 
-  <meta property="og:title" content="AniAtlas - Detalhes do Anime" />
+  <meta property="og:title" content="AniAtlas - Onde assistir anime" />
   <meta
     property="og:description"
-    content="Veja informações completas do anime, personagens, trailer e recomendações no AniAtlas."
+    content="Descubra sinopse, nota, trailer e onde assistir anime legalmente no AniAtlas."
   />
   <meta property="og:image" content="logo.png" />
   <meta property="og:type" content="website" />
@@ -120,6 +120,13 @@
       line-height: 1.15;
     }
 
+    .seo-subtitle {
+      color: #93c5fd;
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 0 0 14px;
+    }
+
     .meta {
       color: #cbd5e1;
       line-height: 1.8;
@@ -163,6 +170,35 @@
 
     .watch-link {
       background: #2563eb;
+    }
+
+    .watch-box {
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: 16px;
+      padding: 16px;
+      line-height: 1.7;
+      color: #cbd5e1;
+    }
+
+    .watch-box p {
+      margin: 0 0 14px;
+    }
+
+    .watch-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .watch-actions a {
+      text-decoration: none;
+    }
+
+    .watch-tip {
+      margin-top: 12px;
+      font-size: 13px;
+      color: #94a3b8;
     }
 
     .section {
@@ -289,6 +325,13 @@
 
     function atualizarMetaDescricao(texto) {
       const meta = document.querySelector('meta[name="description"]');
+      if (meta) {
+        meta.setAttribute("content", texto);
+      }
+    }
+
+    function atualizarMetaKeywords(texto) {
+      const meta = document.querySelector('meta[name="keywords"]');
       if (meta) {
         meta.setAttribute("content", texto);
       }
@@ -466,8 +509,7 @@
         ? t("Remover dos favoritos", "Remove from favorites")
         : t("Favoritar", "Favorite");
     }
-    
-    
+
     function limparTexto(texto) {
       if (!texto) return t("Descrição não disponível.", "Description not available.");
       return texto.replace(/<[^>]*>/g, "").trim();
@@ -522,7 +564,8 @@
       if (!filtrada.length) {
         return `<div class="empty">${t("Nenhuma recomendação encontrada.", "No recommendations found.")}</div>`;
       }
-
+      
+      
       return `
         <div class="grid">
           ${filtrada.map(anime => `
@@ -556,6 +599,52 @@
             allowfullscreen
             loading="lazy">
           </iframe>
+        </div>
+      `;
+    }
+
+    function criarOndeAssistir(animeTitle) {
+      const buscaLegal = encodeURIComponent(
+        `${animeTitle} ${t("onde assistir legalmente", "where to watch legally")}`
+      );
+
+      const buscaCrunchyroll = encodeURIComponent(`${animeTitle} Crunchyroll`);
+      const buscaNetflix = encodeURIComponent(`${animeTitle} Netflix`);
+      const buscaPrime = encodeURIComponent(`${animeTitle} Prime Video`);
+
+      return `
+        <div class="watch-box">
+          <p>
+            ${t(
+              `Quer saber onde assistir ${animeTitle} legalmente? Use os botões abaixo para procurar em serviços oficiais e descobrir onde o anime pode estar disponível.`,
+              `Want to know where to watch ${animeTitle} legally? Use the buttons below to search official services and find where the anime may be available.`
+            )}
+          </p>
+
+          <div class="watch-actions">
+            <a class="watch-link" href="https://www.google.com/search?q=${buscaLegal}" target="_blank" rel="noopener">
+              ${t("🔎 Procurar onde assistir", "🔎 Search where to watch")}
+            </a>
+
+            <a class="back-btn" href="https://www.google.com/search?q=${buscaCrunchyroll}" target="_blank" rel="noopener">
+              Crunchyroll
+            </a>
+
+            <a class="back-btn" href="https://www.google.com/search?q=${buscaNetflix}" target="_blank" rel="noopener">
+              Netflix
+            </a>
+
+            <a class="back-btn" href="https://www.google.com/search?q=${buscaPrime}" target="_blank" rel="noopener">
+              Prime Video
+            </a>
+          </div>
+
+          <div class="watch-tip">
+            ${t(
+              "Dica: a disponibilidade pode mudar conforme o país e o catálogo do streaming.",
+              "Tip: availability may change depending on your country and the streaming catalog."
+            )}
+          </div>
         </div>
       `;
     }
@@ -665,18 +754,25 @@
           "Anime";
 
         const descricaoLimpa = limparTexto(media.description);
-        const descricaoCurta = descricaoLimpa.slice(0, 160);
+        const descricaoCurta = descricaoLimpa.slice(0, 155);
 
-        document.title = `${tituloPagina} - AniAtlas`;
-        atualizarMetaDescricao(descricaoCurta || t(
-          "Veja detalhes completos do anime no AniAtlas.",
-          "See full anime details on AniAtlas."
-        ));
-        atualizarOgTitulo(`${tituloPagina} - AniAtlas`);
-        atualizarOgDescricao(descricaoCurta || t(
-          "Veja informações completas do anime no AniAtlas.",
-          "See full anime information on AniAtlas."
-        ));
+        const tituloSeo = t(
+          `Onde assistir ${tituloPagina}, sinopse e detalhes | AniAtlas`,
+          `Where to watch ${tituloPagina}, synopsis and details | AniAtlas`
+        );
+
+        const descricaoSeo = t(
+          `Veja sinopse, episódios, nota, trailer, personagens e onde assistir ${tituloPagina} legalmente no AniAtlas.`,
+          `See synopsis, episodes, score, trailer, characters and where to watch ${tituloPagina} legally on AniAtlas.`
+        );
+
+        document.title = tituloSeo;
+        atualizarMetaDescricao(descricaoCurta || descricaoSeo);
+        atualizarMetaKeywords(
+          `${tituloPagina}, ${t("onde assistir", "where to watch")}, anime, AniAtlas`
+        );
+        atualizarOgTitulo(tituloSeo);
+        atualizarOgDescricao(descricaoCurta || descricaoSeo);
         atualizarOgImagem(media.coverImage?.extraLarge || media.coverImage?.large || "logo.png");
 
         if (media.bannerImage) {
@@ -689,7 +785,7 @@
 
         const favoritoData = animeFavoritoData(media);
         const buscaLegal = encodeURIComponent(
-          `${favoritoData.title} ${t("assistir legalmente", "watch legally")}`
+          `${favoritoData.title} ${t("onde assistir legalmente", "where to watch legally")}`
         );
 
         content.className = "";
@@ -704,6 +800,13 @@
 
             <div class="info-box">
               <h1>${favoritoData.title}</h1>
+
+              <p class="seo-subtitle">
+                ${t(
+                  `Veja sinopse, trailer, personagens e onde assistir ${favoritoData.title} legalmente.`,
+                  `See synopsis, trailer, characters and where to watch ${favoritoData.title} legally.`
+                )}
+              </p>
 
               <div class="meta">
                 <strong>${t("Nota", "Score")}:</strong> ${media.averageScore ?? "?"}<br>
@@ -726,11 +829,16 @@
               <div class="actions">
                 <button id="favoriteBtn" class="favorite-btn">${t("Favoritar", "Favorite")}</button>
                 <a class="watch-link" href="https://www.google.com/search?q=${buscaLegal}" target="_blank" rel="noopener">
-                  ${t("Onde assistir", "Where to watch")}
+                  ${t("Onde assistir este anime", "Where to watch this anime")}
                 </a>
               </div>
             </div>
           </div>
+
+          <section class="section">
+            <h2>${t("Onde assistir", "Where to watch")}</h2>
+            ${criarOndeAssistir(favoritoData.title)}
+          </section>
 
           <section class="section">
             <h2>${t("Trailer", "Trailer")}</h2>
