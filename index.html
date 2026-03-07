@@ -4,23 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>AniAtlas - Catálogo de Animes</title>
+  <title>AniAtlas - Onde assistir animes, catálogo e recomendações</title>
 
   <meta
     name="description"
-    content="Descubra animes populares, animes da temporada, pesquise títulos e salve seus favoritos no AniAtlas."
+    content="Descubra onde assistir animes legalmente, veja animes populares, animes da temporada, pesquise títulos e encontre recomendações no AniAtlas."
   />
   <meta
     name="keywords"
-    content="anime, animes, catálogo de anime, animes populares, temporada anime, AniAtlas"
+    content="onde assistir anime, catálogo de animes, animes populares, animes da temporada, assistir anime legalmente, AniAtlas"
   />
   <meta name="author" content="AniAtlas" />
   <meta name="robots" content="index, follow" />
 
-  <meta property="og:title" content="AniAtlas - Catálogo de Animes" />
+  <meta property="og:title" content="AniAtlas - Onde assistir animes, catálogo e recomendações" />
   <meta
     property="og:description"
-    content="Explore animes populares, descubra novos títulos e salve favoritos."
+    content="Descubra onde assistir animes legalmente, veja recomendações e explore animes populares no AniAtlas."
   />
   <meta property="og:image" content="logo.png" />
   <meta property="og:type" content="website" />
@@ -63,17 +63,13 @@
       margin: 0 0 18px;
       color: #94a3b8;
       font-size: 14px;
-      line-height: 1.5;
+      line-height: 1.6;
     }
 
     .top-buttons {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
-      margin-bottom: 14px;
-    }
-
-    .lang-box {
       margin-bottom: 14px;
     }
 
@@ -330,7 +326,7 @@
       </h1>
 
       <p class="subtitle" id="subtitleText">
-        Explore o mundo dos animes — descubra, pesquise e salve seus favoritos
+        Descubra animes populares, encontre recomendações e veja onde assistir anime legalmente no AniAtlas.
       </p>
 
       <div class="top-buttons">
@@ -367,10 +363,7 @@
     <div
       style="margin-bottom:18px; padding:14px; border:1px solid #334155; border-radius:14px; background:#111827; color:#cbd5e1; line-height:1.6;"
     >
-      <strong>⚠️ Aviso:</strong> Se a busca ou alguma seção falhar, espere alguns
-      segundos e tente novamente. O AniAtlas usa uma API pública, então acessos
-      muito rápidos entre páginas podem causar lentidão temporária. Caso não
-      resolva, saia do site e entre novamente.
+      <strong>⚠️ Aviso:</strong> Se a busca ou alguma seção falhar, espere alguns segundos e tente novamente. O AniAtlas usa dados públicos do AniList, então acessos muito rápidos entre páginas podem causar lentidão temporária.
 
       <div style="margin-top:12px;">
         <button
@@ -422,12 +415,12 @@
     </section>
 
     <section class="section">
-      <h2 class="section-title" id="topTitle">🏆 Top 10 desta semana</h2>
+      <h2 class="section-title" id="topTitle">🏆 Animes em alta para descobrir</h2>
       <div id="topAnime" class="cards"></div>
     </section>
 
     <section class="section">
-      <h2 class="section-title" id="popularTitle">🔥 Mais procurados</h2>
+      <h2 class="section-title" id="popularTitle">🔥 Animes populares</h2>
       <div id="popular" class="cards"></div>
     </section>
 
@@ -438,8 +431,7 @@
   </main>
 
   <footer id="footerText">
-    Feito com dados públicos do AniList. Seus favoritos ficam salvos localmente
-    no navegador.
+    Feito com dados públicos do AniList. Descubra animes e veja onde assistir legalmente no AniAtlas.
   </footer>
 
   <button id="backToTopBtn" class="back-to-top" onclick="voltarAoTopo()">
@@ -466,8 +458,29 @@
     function atualizarTitulo() {
       document.title =
         idioma === "pt"
-          ? "AniAtlas - Catálogo de Animes"
-          : "AniAtlas - Anime Catalog";
+          ? "AniAtlas - Onde assistir animes, catálogo e recomendações"
+          : "AniAtlas - Where to watch anime, catalog and recommendations";
+    }
+
+    function atualizarMetaDescricao(texto) {
+      const meta = document.querySelector('meta[name="description"]');
+      if (meta) {
+        meta.setAttribute("content", texto);
+      }
+    }
+
+    function atualizarOgTitulo(texto) {
+      const meta = document.querySelector('meta[property="og:title"]');
+      if (meta) {
+        meta.setAttribute("content", texto);
+      }
+    }
+
+    function atualizarOgDescricao(texto) {
+      const meta = document.querySelector('meta[property="og:description"]');
+      if (meta) {
+        meta.setAttribute("content", texto);
+      }
     }
 
     function trocarIdioma() {
@@ -482,8 +495,8 @@
 
       document.documentElement.lang = idioma === "pt" ? "pt-BR" : "en";
       document.getElementById("subtitleText").textContent = t(
-        "Explore o mundo dos animes — descubra, pesquise e salve seus favoritos",
-        "Explore the world of anime — discover, search and save your favorites"
+        "Descubra animes populares, encontre recomendações e veja onde assistir anime legalmente no AniAtlas.",
+        "Discover popular anime, find recommendations and see where to watch anime legally on AniAtlas."
       );
       document.getElementById("searchInput").placeholder = t(
         "Pesquise um anime, ex: Naruto",
@@ -508,25 +521,38 @@
         "🔎 Search Results"
       );
       document.getElementById("topTitle").textContent = t(
-        "🏆 Top 10 desta semana",
-        "🏆 Top 10 This Week"
+        "🏆 Animes em alta para descobrir",
+        "🏆 Trending anime to discover"
       );
       document.getElementById("popularTitle").textContent = t(
-        "🔥 Mais procurados",
-        "🔥 Most Searched"
+        "🔥 Animes populares",
+        "🔥 Popular anime"
       );
       document.getElementById("seasonTitle").textContent = t(
         "🌸 Animes da temporada",
         "🌸 Seasonal Anime"
       );
       document.getElementById("footerText").textContent = t(
-        "Feito com dados públicos do AniList. Seus favoritos ficam salvos localmente no navegador.",
-        "Built with public AniList data. Your favorites are saved locally in the browser."
+        "Feito com dados públicos do AniList. Descubra animes e veja onde assistir legalmente no AniAtlas.",
+        "Built with public AniList data. Discover anime and see where to watch legally on AniAtlas."
       );
       document.getElementById("backToTopBtn").textContent = t(
         "⬆ Topo",
         "⬆ Top"
       );
+
+      atualizarMetaDescricao(t(
+        "Descubra onde assistir animes legalmente, veja animes populares, animes da temporada e pesquise títulos no AniAtlas.",
+        "Discover where to watch anime legally, see popular anime, seasonal anime and search titles on AniAtlas."
+      ));
+      atualizarOgTitulo(t(
+        "AniAtlas - Onde assistir animes, catálogo e recomendações",
+        "AniAtlas - Where to watch anime, catalog and recommendations"
+      ));
+      atualizarOgDescricao(t(
+        "Descubra onde assistir animes legalmente, veja recomendações e explore animes populares no AniAtlas.",
+        "Discover where to watch anime legally, find recommendations and explore popular anime on AniAtlas."
+      ));
 
       if (generoAtual) {
         document.getElementById("genreTitle").textContent =
@@ -650,12 +676,12 @@
         siteUrl: anime.siteUrl || "#"
       };
     }
-    
+
     function criarCard(anime, isFromFavorites = false) {
       const animeData = createAnimeData(anime);
       const favoritos = isFavorite(animeData.id);
       const buscaLegal = encodeURIComponent(
-        `${animeData.title} ${t("assistir legalmente", "watch legally")}`
+        `${animeData.title} ${t("onde assistir legalmente", "where to watch legally")}`
       );
 
       return `
@@ -675,7 +701,7 @@
               <a href="detalhes.html?id=${animeData.id}"
                  onmouseenter="prefetchDetalhes(${animeData.id})"
                  ontouchstart="prefetchDetalhes(${animeData.id})">
-                <button class="secondary-btn">${t("Detalhes", "Details")}</button>
+                <button class="secondary-btn">${t("Ver onde assistir", "See where to watch")}</button>
               </a>
 
               <a href="https://www.google.com/search?q=${buscaLegal}" target="_blank" rel="noopener">
@@ -699,7 +725,7 @@
         </div>
       `;
     }
-
+    
     function renderizarLista(elementId, lista, isError = false) {
       const el = document.getElementById(elementId);
 
@@ -960,6 +986,9 @@
       );
     }
     
+    
+    
+    
     async function buscarAnime() {
       const termo = document.getElementById("searchInput").value.trim();
       const searchSection = document.getElementById("searchSection");
@@ -1162,3 +1191,6 @@
   </script>
 </body>
 </html>
+    
+    
+    
