@@ -22,9 +22,11 @@
     property="og:description"
     content="Explore animes por gênero, descubra títulos e veja onde assistir legalmente no AniAtlas."
   />
-  <meta property="og:image" content="logo.png" />
+  <meta property="og:image" content="https://aniatlas.netlify.app/logo.png" />
   <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://aniatlas.netlify.app/genero.html?nome=Action" />
 
+  <link rel="canonical" href="https://aniatlas.netlify.app/genero.html?nome=Action" />
   <link rel="icon" type="image/png" href="favicon.png" />
 
   <style>
@@ -117,6 +119,17 @@
       line-height: 1.8;
     }
 
+    .ad-box {
+      margin-bottom: 24px;
+      padding: 16px;
+      border: 1px dashed #334155;
+      border-radius: 16px;
+      background: #0f172a;
+      color: #94a3b8;
+      text-align: center;
+      font-size: 14px;
+    }
+
     .section {
       margin-bottom: 34px;
     }
@@ -201,10 +214,6 @@
       background: #e11d48;
     }
 
-    .remove-btn {
-      background: #b91c1c;
-    }
-
     .watch-btn {
       background: #2563eb;
     }
@@ -265,6 +274,10 @@
       Explore animes deste gênero e descubra títulos populares para assistir legalmente.
     </div>
 
+    <div class="ad-box" id="adBox">
+      Espaço reservado para anúncio futuro
+    </div>
+
     <section class="section">
       <h2 class="section-title" id="sectionTitle">🎬 Resultados</h2>
       <div id="genreResults" class="cards"></div>
@@ -279,6 +292,7 @@
     const API_URL = "https://graphql.anilist.co";
     const FAVORITES_KEY = "animehub_favorites";
     const LANG_KEY = "aniatlas_lang";
+    const SITE_URL = "https://aniatlas.netlify.app";
 
     let idioma = localStorage.getItem(LANG_KEY) || "pt";
 
@@ -304,6 +318,16 @@
     function atualizarOgDescricao(texto) {
       const meta = document.querySelector('meta[property="og:description"]');
       if (meta) meta.setAttribute("content", texto);
+    }
+
+    function atualizarOgUrl(url) {
+      const meta = document.querySelector('meta[property="og:url"]');
+      if (meta) meta.setAttribute("content", url);
+    }
+
+    function atualizarCanonical(url) {
+      const link = document.querySelector('link[rel="canonical"]');
+      if (link) link.setAttribute("href", url);
     }
 
     function getGenreFromUrl() {
@@ -450,6 +474,7 @@
 
     function aplicarSeoGenero(genero) {
       const generoTraduzido = traduzirGenero(genero);
+      const urlAtual = `${SITE_URL}/genero.html?nome=${encodeURIComponent(genero)}`;
 
       const titulo = t(
         `AniAtlas - Animes de ${generoTraduzido} para assistir`,
@@ -457,8 +482,8 @@
       );
 
       const descricao = t(
-        `Descubra animes de ${generoTraduzido}, veja notas, episódios e onde assistir legalmente no AniAtlas.`,
-        `Discover ${generoTraduzido} anime, see scores, episodes and where to watch legally on AniAtlas.`
+        `Descubra animes de ${generoTraduzido}, veja notas, episódios, recomendações e onde assistir legalmente no AniAtlas.`,
+        `Discover ${generoTraduzido} anime, see scores, episodes, recommendations and where to watch legally on AniAtlas.`
       );
 
       const keywords = t(
@@ -471,6 +496,8 @@
       atualizarMetaKeywords(keywords);
       atualizarOgTitulo(titulo);
       atualizarOgDescricao(descricao);
+      atualizarOgUrl(urlAtual);
+      atualizarCanonical(urlAtual);
 
       document.getElementById("pageTitle").textContent = t(
         `🎭 Animes de ${generoTraduzido}`,
@@ -488,8 +515,8 @@
       );
 
       document.getElementById("seoTextBox").textContent = t(
-        `Nesta página você encontra animes de ${generoTraduzido} para descobrir, comparar e procurar onde assistir legalmente.`,
-        `On this page you can find ${generoTraduzido} anime to discover, compare and search where to watch legally.`
+        `Nesta página você encontra animes de ${generoTraduzido} para descobrir, comparar notas, ver episódios e procurar onde assistir legalmente. O AniAtlas reúne títulos populares e recomendações para quem quer explorar esse gênero.`,
+        `On this page you can find ${generoTraduzido} anime to discover, compare scores, check episodes and search where to watch legally. AniAtlas gathers popular titles and recommendations for fans of this genre.`
       );
     }
 
@@ -503,6 +530,10 @@
       document.getElementById("footerText").textContent = t(
         "Feito com dados públicos do AniList. Descubra animes e veja onde assistir legalmente no AniAtlas.",
         "Built with public AniList data. Discover anime and see where to watch legally on AniAtlas."
+      );
+      document.getElementById("adBox").textContent = t(
+        "Espaço reservado para anúncio futuro",
+        "Reserved space for future ad"
       );
     }
 
