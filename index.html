@@ -602,7 +602,7 @@
         return null;
       }
     }
-
+    
     function getFavorites() {
       try {
         return JSON.parse(localStorage.getItem(FAVORITES_KEY)) || [];
@@ -661,6 +661,18 @@
       return mapa[genero] || genero;
     }
 
+    function criarSlug(texto) {
+      return (texto || "")
+        .toString()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, "")
+        .trim()
+        .replace(/\s+/g, "-")
+        .replace(/-+/g, "-");
+    }
+
     function createAnimeData(anime) {
       return {
         id: anime.id,
@@ -683,6 +695,8 @@
       const buscaLegal = encodeURIComponent(
         `${animeData.title} ${t("onde assistir legalmente", "where to watch legally")}`
       );
+      const slug = criarSlug(animeData.title);
+      const detalhesUrl = `detalhes.html?slug=${slug}&id=${animeData.id}`;
 
       return `
         <div class="card">
@@ -698,9 +712,9 @@
               .map(traduzirGenero)
               .join(" • ")}</div>
             <div class="card-actions">
-              <a href="detalhes.html?id=${animeData.id}"
-                 onmouseenter="prefetchDetalhes(${animeData.id})"
-                 ontouchstart="prefetchDetalhes(${animeData.id})">
+              <a href="${detalhesUrl}"
+                 onmouseenter="prefetchDetalhes('${slug}', ${animeData.id})"
+                 ontouchstart="prefetchDetalhes('${slug}', ${animeData.id})">
                 <button class="secondary-btn">${t("Ver onde assistir", "See where to watch")}</button>
               </a>
 
@@ -725,7 +739,7 @@
         </div>
       `;
     }
-    
+
     function renderizarLista(elementId, lista, isError = false) {
       const el = document.getElementById(elementId);
 
@@ -839,7 +853,8 @@
 
       return { season, year: ano };
     }
-
+    
+    
     async function carregarAnimesDaTemporada(quantidade = 8) {
       const cache = lerCache(CACHE_SEASON);
       if (cache) return cache;
@@ -985,10 +1000,7 @@
         "Genre filter cleared."
       );
     }
-    
-    
-    
-    
+
     async function buscarAnime() {
       const termo = document.getElementById("searchInput").value.trim();
       const searchSection = document.getElementById("searchSection");
@@ -1078,7 +1090,7 @@
         status.textContent = msg;
       }
     }
-
+    
     function limparBusca() {
       document.getElementById("searchInput").value = "";
       document.getElementById("searchSection").style.display = "none";
@@ -1173,8 +1185,8 @@
       controlarBotaoTopo();
     }
 
-    function prefetchDetalhes(id) {
-      const url = `detalhes.html?id=${id}`;
+    function prefetchDetalhes(slug, id) {
+      const url = `detalhes.html?slug=${slug}&id=${id}`;
 
       if (document.querySelector(`link[href="${url}"]`)) return;
 
@@ -1191,6 +1203,4 @@
   </script>
 </body>
 </html>
-    
-    
     
