@@ -8,12 +8,37 @@
 </url>
 
 <url>
-<loc>https://aniatlas.netlify.app/index.html</loc>
-<priority>0.9</priority>
+<loc>https://aniatlas.netlify.app/favoritos.html</loc>
+<priority>0.8</priority>
 </url>
 
 <url>
-<loc>https://aniatlas.netlify.app/favoritos.html</loc>
+<loc>https://aniatlas.netlify.app/genero.html?nome=Action</loc>
+<priority>0.8</priority>
+</url>
+
+<url>
+<loc>https://aniatlas.netlify.app/genero.html?nome=Romance</loc>
+<priority>0.8</priority>
+</url>
+
+<url>
+<loc>https://aniatlas.netlify.app/genero.html?nome=Comedy</loc>
+<priority>0.8</priority>
+</url>
+
+<url>
+<loc>https://aniatlas.netlify.app/genero.html?nome=Fantasy</loc>
+<priority>0.8</priority>
+</url>
+
+<url>
+<loc>https://aniatlas.netlify.app/genero.html?nome=Horror</loc>
+<priority>0.8</priority>
+</url>
+
+<url>
+<loc>https://aniatlas.netlify.app/genero.html?nome=Sports</loc>
 <priority>0.8</priority>
 </url>
 
