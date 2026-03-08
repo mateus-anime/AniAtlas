@@ -444,9 +444,26 @@
       return mapa[source] || source || "?";
     }
 
+    function criarSlug(texto) {
+      return (texto || "")
+        .toString()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, "")
+        .trim()
+        .replace(/\s+/g, "-")
+        .replace(/-+/g, "-");
+    }
+
     function getAnimeIdFromUrl() {
       const params = new URLSearchParams(window.location.search);
       return params.get("id");
+    }
+
+    function getAnimeSlugFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("slug") || "";
     }
 
     async function fetchAniList(query, variables = {}) {
@@ -530,7 +547,8 @@
         siteUrl: media.siteUrl || "#"
       };
     }
-
+    
+    
     function criarPersonagens(lista) {
       if (!lista?.length) {
         return `<div class="empty">${t("Nenhum personagem encontrado.", "No characters found.")}</div>`;
@@ -564,25 +582,34 @@
       if (!filtrada.length) {
         return `<div class="empty">${t("Nenhuma recomendação encontrada.", "No recommendations found.")}</div>`;
       }
-      
-      
+
       return `
         <div class="grid">
-          ${filtrada.map(anime => `
-            <a href="detalhes.html?id=${anime.id}" style="text-decoration:none; color:inherit;">
-              <div class="card">
-                <img
-                  src="${anime.coverImage?.large || ""}"
-                  alt="${anime.title?.english || anime.title?.romaji || anime.title?.native || "Anime"}"
-                  loading="lazy"
-                >
-                <div class="card-body">
-                  <div class="card-title">${anime.title?.english || anime.title?.romaji || anime.title?.native || t("Sem título", "Untitled")}</div>
-                  <div class="card-sub">${t("Nota", "Score")}: ${anime.averageScore ?? "?"}</div>
+          ${filtrada.map(anime => {
+            const animeTitle =
+              anime.title?.english ||
+              anime.title?.romaji ||
+              anime.title?.native ||
+              t("Sem título", "Untitled");
+            const animeSlug = criarSlug(animeTitle);
+            const animeUrl = `detalhes.html?slug=${animeSlug}&id=${anime.id}`;
+
+            return `
+              <a href="${animeUrl}" style="text-decoration:none; color:inherit;">
+                <div class="card">
+                  <img
+                    src="${anime.coverImage?.large || ""}"
+                    alt="${animeTitle}"
+                    loading="lazy"
+                  >
+                  <div class="card-body">
+                    <div class="card-title">${animeTitle}</div>
+                    <div class="card-sub">${t("Nota", "Score")}: ${anime.averageScore ?? "?"}</div>
+                  </div>
                 </div>
-              </div>
-            </a>
-          `).join("")}
+              </a>
+            `;
+          }).join("")}
         </div>
       `;
     }
@@ -663,6 +690,7 @@
 
     async function carregarDetalhes() {
       const id = getAnimeIdFromUrl();
+      const slugAtual = getAnimeSlugFromUrl();
       const content = document.getElementById("content");
       document.documentElement.lang = idioma === "pt" ? "pt-BR" : "en";
       document.getElementById("backBtn").textContent = t("← Voltar", "← Back");
@@ -737,8 +765,8 @@
           }
         }
       `;
-
-      try {
+    
+    try {
         const data = await fetchAniList(query, { id: Number(id) });
         const media = data?.data?.Media;
 
@@ -753,6 +781,7 @@
           media.title?.native ||
           "Anime";
 
+        const slugCorreto = criarSlug(tituloPagina);
         const descricaoLimpa = limparTexto(media.description);
         const descricaoCurta = descricaoLimpa.slice(0, 155);
 
@@ -774,6 +803,11 @@
         atualizarOgTitulo(tituloSeo);
         atualizarOgDescricao(descricaoCurta || descricaoSeo);
         atualizarOgImagem(media.coverImage?.extraLarge || media.coverImage?.large || "logo.png");
+
+        if (slugCorreto && slugAtual !== slugCorreto) {
+          const novaUrl = `detalhes.html?slug=${slugCorreto}&id=${media.id}`;
+          window.history.replaceState({}, "", novaUrl);
+        }
 
         if (media.bannerImage) {
           const banner = new Image();
