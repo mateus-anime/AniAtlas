@@ -166,6 +166,10 @@
       background: #7c3aed;
     }
 
+    .catalog-page-btn {
+      background: #2563eb;
+    }
+
     .back-to-top {
       position: fixed;
       right: 18px;
@@ -345,6 +349,13 @@
         >
           ⭐ Página de Favoritos
         </a>
+        <a
+          href="animes.html"
+          class="nav-btn catalog-page-btn"
+          id="catalogPageBtn"
+        >
+          📚 Catálogo de Animes
+        </a>
       </div>
 
       <div class="search-box">
@@ -430,8 +441,9 @@
   <button id="backToTopBtn" class="back-to-top" onclick="voltarAoTopo()">
     ⬆ Topo
   </button>
-
-  <script>
+   
+   
+   <script>
     const API_URL = "https://graphql.anilist.co";
     const FAVORITES_KEY = "animehub_favorites";
     const LANG_KEY = "aniatlas_lang";
@@ -508,6 +520,10 @@
       document.getElementById("favoritesPageBtn").textContent = t(
         "⭐ Página de Favoritos",
         "⭐ Favorites Page"
+      );
+      document.getElementById("catalogPageBtn").textContent = t(
+        "📚 Catálogo de Animes",
+        "📚 Anime Catalog"
       );
       document.getElementById("searchResultsTitle").textContent = t(
         "🔎 Resultado da busca",
@@ -606,8 +622,7 @@
         return [];
       }
     }
-    
-    
+
     function saveFavorites(favorites) {
       localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
     }
@@ -758,7 +773,8 @@
 
       el.innerHTML = lista.map(anime => criarCard(anime)).join("");
     }
-
+    
+    
     async function carregarTop10() {
       const cache = lerCache(CACHE_TOP);
       if (cache) return cache;
@@ -856,8 +872,7 @@
 
       return { season, year: ano };
     }
-    
-    
+
     async function carregarAnimesDaTemporada(quantidade = 8) {
       const cache = lerCache(CACHE_SEASON);
       if (cache) return cache;
