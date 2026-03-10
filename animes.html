@@ -22,11 +22,11 @@
     property="og:description"
     content="Explore o catálogo de animes do AniAtlas, descubra títulos populares e veja onde assistir legalmente."
   />
-  <meta property="og:image" content="https://aniatlas.netlify.app/logo.png" />
+  <meta property="og:image" content="https://aniatlas.tewshenr.workers.dev/logo.png" />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://aniatlas.netlify.app/animes.html" />
+  <meta property="og:url" content="https://aniatlas.tewshenr.workers.dev/animes.html" />
 
-  <link rel="canonical" href="https://aniatlas.netlify.app/animes.html" />
+  <link rel="canonical" href="https://aniatlas.tewshenr.workers.dev/animes.html" />
   <link rel="icon" type="image/png" href="favicon.png" />
 
   <style>
@@ -317,8 +317,7 @@
     </div>
   </header>
    
-   
-   <main>
+  <main>
     <div id="status" class="status">Carregando catálogo de animes...</div>
 
     <div class="seo-box" id="seoTextBox">
@@ -334,6 +333,7 @@
         id="searchInput"
         type="text"
         placeholder="Pesquise no catálogo, ex: Naruto"
+        aria-label="Pesquisar anime no catálogo"
         onkeydown="if(event.key === 'Enter') buscarNoCatalogo()"
       />
       <button onclick="buscarNoCatalogo()" id="searchBtn">Buscar</button>
@@ -359,7 +359,7 @@
     const API_URL = "https://graphql.anilist.co";
     const FAVORITES_KEY = "animehub_favorites";
     const LANG_KEY = "aniatlas_lang";
-    const SITE_URL = "https://aniatlas.netlify.app";
+    const SITE_URL = "https://aniatlas.tewshenr.workers.dev";
 
     let idioma = localStorage.getItem(LANG_KEY) || "pt";
     let paginaAtual = 1;
@@ -400,6 +400,33 @@
       if (link) link.setAttribute("href", url);
     }
 
+    function removerSchemaCatalogo() {
+      const antigo = document.getElementById("catalog-schema-jsonld");
+      if (antigo) {
+        antigo.remove();
+      }
+    }
+
+    function adicionarSchemaCatalogo(titulo, descricao, url) {
+      removerSchemaCatalogo();
+
+      const schema = {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": titulo,
+        "description": descricao,
+        "url": url,
+        "inLanguage": idioma === "pt" ? "pt-BR" : "en"
+      };
+
+      const script = document.createElement("script");
+      script.type = "application/ld+json";
+      script.id = "catalog-schema-jsonld";
+      script.textContent = JSON.stringify(schema);
+
+      document.head.appendChild(script);
+    }
+    
     function traduzirGenero(genero) {
       const mapa = {
         "Action": "Ação",
@@ -589,6 +616,7 @@
       atualizarOgDescricao(descricao);
       atualizarOgUrl(urlAtual);
       atualizarCanonical(urlAtual);
+      adicionarSchemaCatalogo(titulo, descricao, urlAtual);
 
       document.getElementById("pageTitle").textContent = t(
         "📚 Catálogo de Animes",
@@ -860,3 +888,4 @@
   </script>
 </body>
 </html>
+    
