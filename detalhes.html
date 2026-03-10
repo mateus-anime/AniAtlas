@@ -387,17 +387,6 @@
     let idioma = localStorage.getItem(LANG_KEY) || "pt";
 
     const MANGA_RIGHTS_DB = {
-      // Exemplo de obra autorizada
-      // "obra-exemplo": {
-      //   canReadOnSite: true,
-      //   readerUrl: "manga-leitor.html?obra=obra-exemplo",
-      //   licenseType: "Domínio público",
-      //   licenseLabel: "Ver autorização desta obra",
-      //   licenseUrl: "licencas.html?obra=obra-exemplo",
-      //   officialReadUrl: ""
-      // },
-
-      // Exemplo de obra sem leitura no site
       "naruto": {
         canReadOnSite: false,
         readerUrl: "",
@@ -460,7 +449,53 @@
         link.setAttribute("href", url);
       }
     }
-    
+
+    function limparSchemaAnime() {
+      const antigo = document.getElementById("anime-schema-jsonld");
+      if (antigo) {
+        antigo.remove();
+      }
+    }
+
+    function adicionarSchemaAnime(media, tituloPagina, descricaoLimpa, urlCanonica) {
+      limparSchemaAnime();
+
+      const imageUrl =
+        media.coverImage?.extraLarge ||
+        media.coverImage?.large ||
+        `${SITE_URL}/logo.png`;
+
+      const schema = {
+        "@context": "https://schema.org",
+        "@type": "TVSeries",
+        "name": tituloPagina,
+        "url": urlCanonica,
+        "image": imageUrl,
+        "description": descricaoLimpa || t("Descrição não disponível.", "Description not available."),
+        "genre": media.genres || [],
+        "inLanguage": idioma === "pt" ? "pt-BR" : "en",
+        "aggregateRating": media.averageScore
+          ? {
+              "@type": "AggregateRating",
+              "ratingValue": Number((media.averageScore / 10).toFixed(1)),
+              "bestRating": 10,
+              "worstRating": 0,
+              "ratingCount": 1
+            }
+          : undefined
+      };
+
+      if (media.episodes) {
+        schema.numberOfEpisodes = media.episodes;
+      }
+
+      const script = document.createElement("script");
+      script.type = "application/ld+json";
+      script.id = "anime-schema-jsonld";
+      script.textContent = JSON.stringify(schema);
+
+      document.head.appendChild(script);
+    }
     
     
     function trocarIdioma() {
@@ -744,6 +779,8 @@
       };
     }
     
+    
+    
     function criarPersonagens(lista) {
       if (!lista?.length) {
         return `<div class="empty">${t("Nenhum personagem encontrado.", "No characters found.")}</div>`;
@@ -1002,6 +1039,7 @@
         atualizarOgImagem(media.coverImage?.extraLarge || media.coverImage?.large || `${SITE_URL}/logo.png`);
         atualizarOgUrl(urlCanonica);
         atualizarCanonical(urlCanonica);
+        adicionarSchemaAnime(media, tituloPagina, descricaoLimpa, urlCanonica);
 
         if (slugCorreto && slugAtual !== slugCorreto) {
           window.history.replaceState({}, "", `detalhes.html?slug=${slugCorreto}&id=${media.id}`);
@@ -1020,6 +1058,7 @@
           `${favoritoData.title} ${t("onde assistir legalmente", "where to watch legally")}`
         );
         const rightsData = getRightsData(favoritoData.title, media.source);
+    
     
     
     content.className = "";
@@ -1137,4 +1176,6 @@
   </script>
 </body>
 </html>
+    
+    
     
