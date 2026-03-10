@@ -22,9 +22,11 @@
     property="og:description"
     content="Acesse sua página de favoritos e veja seus animes salvos no AniAtlas."
   />
-  <meta property="og:image" content="logo.png" />
+  <meta property="og:image" content="https://aniatlas.tewshenr.workers.dev/logo.png" />
   <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://aniatlas.tewshenr.workers.dev/favoritos.html" />
 
+  <link rel="canonical" href="https://aniatlas.tewshenr.workers.dev/favoritos.html" />
   <link rel="icon" type="image/png" href="favicon.png" />
 
   <style>
@@ -202,6 +204,7 @@
   <script>
     const FAVORITES_KEY = "animehub_favorites";
     const LANG_KEY = "aniatlas_lang";
+    const SITE_URL = "https://aniatlas.tewshenr.workers.dev";
 
     let idioma = localStorage.getItem(LANG_KEY) || "pt";
 
@@ -230,6 +233,47 @@
       }
     }
 
+    function atualizarOgUrl(url) {
+      const meta = document.querySelector('meta[property="og:url"]');
+      if (meta) {
+        meta.setAttribute("content", url);
+      }
+    }
+
+    function atualizarCanonical(url) {
+      const link = document.querySelector('link[rel="canonical"]');
+      if (link) {
+        link.setAttribute("href", url);
+      }
+    }
+
+    function removerSchemaFavoritos() {
+      const antigo = document.getElementById("favorites-schema-jsonld");
+      if (antigo) {
+        antigo.remove();
+      }
+    }
+
+    function adicionarSchemaFavoritos(titulo, descricao, url) {
+      removerSchemaFavoritos();
+
+      const schema = {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": titulo,
+        "description": descricao,
+        "url": url,
+        "inLanguage": idioma === "pt" ? "pt-BR" : "en"
+      };
+
+      const script = document.createElement("script");
+      script.type = "application/ld+json";
+      script.id = "favorites-schema-jsonld";
+      script.textContent = JSON.stringify(schema);
+
+      document.head.appendChild(script);
+    }
+
     function trocarIdioma() {
       idioma = idioma === "pt" ? "en" : "pt";
       localStorage.setItem(LANG_KEY, idioma);
@@ -239,21 +283,21 @@
 
     function aplicarIdioma() {
       document.documentElement.lang = idioma === "pt" ? "pt-BR" : "en";
-      document.title = t("AniAtlas - Favoritos", "AniAtlas - Favorites");
 
-      atualizarOgTitulo(t("AniAtlas - Favoritos", "AniAtlas - Favorites"));
-      atualizarOgDescricao(
-        t(
-          "Veja sua lista de animes favoritos salvos localmente no navegador no AniAtlas.",
-          "See your favorite anime list saved locally in the browser on AniAtlas."
-        )
+      const titulo = t("AniAtlas - Favoritos", "AniAtlas - Favorites");
+      const descricao = t(
+        "Veja sua lista de animes favoritos salvos localmente no navegador no AniAtlas.",
+        "See your favorite anime list saved locally in the browser on AniAtlas."
       );
-      atualizarMetaDescricao(
-        t(
-          "Veja sua lista de animes favoritos salvos localmente no navegador no AniAtlas.",
-          "See your favorite anime list saved locally in the browser on AniAtlas."
-        )
-      );
+      const urlAtual = `${SITE_URL}/favoritos.html`;
+
+      document.title = titulo;
+      atualizarOgTitulo(titulo);
+      atualizarOgDescricao(descricao);
+      atualizarMetaDescricao(descricao);
+      atualizarOgUrl(urlAtual);
+      atualizarCanonical(urlAtual);
+      adicionarSchemaFavoritos(titulo, descricao, urlAtual);
 
       document.getElementById("backBtn").textContent = t(
         "← Voltar para home",
@@ -268,7 +312,8 @@
         "⭐ Favorites Page"
       );
     }
-
+    
+    
     function traduzirGenero(genero) {
       const mapa = {
         "Action": "Ação",
@@ -360,3 +405,4 @@
   </script>
 </body>
 </html>
+    
