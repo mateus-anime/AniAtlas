@@ -22,11 +22,11 @@
     property="og:description"
     content="Descubra sinopse, nota, trailer e onde assistir anime legalmente no AniAtlas."
   />
-  <meta property="og:image" content="https://aniatlas.netlify.app/logo.png" />
+  <meta property="og:image" content="https://aniatlas.tewshenr.workers.dev/logo.png" />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://aniatlas.netlify.app/detalhes.html?id=1" />
+  <meta property="og:url" content="https://aniatlas.tewshenr.workers.dev/detalhes.html?id=1" />
 
-  <link rel="canonical" href="https://aniatlas.netlify.app/detalhes.html?id=1" />
+  <link rel="canonical" href="https://aniatlas.tewshenr.workers.dev/detalhes.html?id=1" />
   <link rel="icon" type="image/png" href="favicon.png" />
 
   <style>
@@ -161,6 +161,44 @@
       margin: 0;
     }
 
+    .rights-box {
+      margin-top: 16px;
+      padding: 14px;
+      border: 1px solid #334155;
+      border-radius: 14px;
+      background: #0f172a;
+      color: #cbd5e1;
+      line-height: 1.8;
+    }
+
+    .rights-box p {
+      margin: 0 0 12px;
+    }
+
+    .rights-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .license-btn {
+      background: #0ea5e9;
+    }
+
+    .read-btn {
+      background: #16a34a;
+    }
+
+    .legal-btn {
+      background: #f59e0b;
+    }
+
+    .warning-text {
+      color: #fbbf24;
+      font-size: 14px;
+    }
+
     .actions {
       display: flex;
       flex-wrap: wrap;
@@ -169,7 +207,8 @@
     }
 
     button,
-    .watch-link {
+    .watch-link,
+    .action-link {
       border: none;
       border-radius: 12px;
       padding: 12px 16px;
@@ -343,9 +382,31 @@
     const API_URL = "https://graphql.anilist.co";
     const FAVORITES_KEY = "animehub_favorites";
     const LANG_KEY = "aniatlas_lang";
-    const SITE_URL = "https://aniatlas.netlify.app";
+    const SITE_URL = "https://aniatlas.tewshenr.workers.dev";
 
     let idioma = localStorage.getItem(LANG_KEY) || "pt";
+
+    const MANGA_RIGHTS_DB = {
+      // Exemplo de obra autorizada
+      // "obra-exemplo": {
+      //   canReadOnSite: true,
+      //   readerUrl: "manga-leitor.html?obra=obra-exemplo",
+      //   licenseType: "Domínio público",
+      //   licenseLabel: "Ver autorização desta obra",
+      //   licenseUrl: "licencas.html?obra=obra-exemplo",
+      //   officialReadUrl: ""
+      // },
+
+      // Exemplo de obra sem leitura no site
+      "naruto": {
+        canReadOnSite: false,
+        readerUrl: "",
+        licenseType: "Leitura não autorizada no AniAtlas",
+        licenseLabel: "",
+        licenseUrl: "",
+        officialReadUrl: "https://www.google.com/search?q=Naruto+manga+ler+legalmente"
+      }
+    };
 
     function t(pt, en) {
       return idioma === "pt" ? pt : en;
@@ -399,7 +460,9 @@
         link.setAttribute("href", url);
       }
     }
-
+    
+    
+    
     function trocarIdioma() {
       idioma = idioma === "pt" ? "en" : "pt";
       localStorage.setItem(LANG_KEY, idioma);
@@ -508,6 +571,97 @@
       return params.get("slug") || "";
     }
 
+    function getRightsData(title, source) {
+      const slug = criarSlug(title);
+      const isMangaBased = source === "MANGA" || source === "LIGHT_NOVEL" || source === "WEB_NOVEL" || source === "NOVEL" || source === "BOOK";
+
+      const fallbackOfficialReadUrl = `https://www.google.com/search?q=${encodeURIComponent(title + " manga ler legalmente")}`;
+      const found = MANGA_RIGHTS_DB[slug];
+
+      if (found) {
+        return {
+          ...found,
+          title,
+          slug
+        };
+      }
+
+      return {
+        canReadOnSite: false,
+        readerUrl: "",
+        licenseType: isMangaBased
+          ? t("Leitura não autorizada no AniAtlas", "Reading not authorized on AniAtlas")
+          : t("Obra sem leitor interno no AniAtlas", "Work without internal reader on AniAtlas"),
+        licenseLabel: "",
+        licenseUrl: "",
+        officialReadUrl: fallbackOfficialReadUrl,
+        title,
+        slug
+      };
+    }
+
+    function renderRightsBox(rightsData) {
+      if (rightsData.canReadOnSite) {
+        return `
+          <div class="rights-box">
+            <p>
+              ${t(
+                `Esta obra possui leitura autorizada no AniAtlas.`,
+                `This work has authorized reading on AniAtlas.`
+              )}
+            </p>
+
+            <div class="rights-actions">
+              <a class="action-link read-btn" href="${rightsData.readerUrl}">
+                ${t("📖 Ler mangá", "📖 Read manga")}
+              </a>
+
+              ${
+                rightsData.licenseUrl
+                  ? `<a class="action-link license-btn" href="${rightsData.licenseUrl}" target="_blank" rel="noopener">
+                      ${rightsData.licenseLabel || t("📄 Ver autorização", "📄 View authorization")}
+                    </a>`
+                  : ""
+              }
+            </div>
+
+            <div class="watch-tip">
+              ${rightsData.licenseType || t("Autorização registrada.", "Authorization registered.")}
+            </div>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="rights-box">
+          <p class="warning-text">
+            ${t(
+              `O AniAtlas não hospeda a leitura desta obra no site porque não possui autorização para exibi-la aqui.`,
+              `AniAtlas does not host the reading of this work on the site because it does not have authorization to display it here.`
+            )}
+          </p>
+
+          <div class="rights-actions">
+            <a class="action-link legal-btn" href="${rightsData.officialReadUrl}" target="_blank" rel="noopener">
+              ${t("📖 Ler legalmente", "📖 Read legally")}
+            </a>
+
+            ${
+              rightsData.licenseUrl
+                ? `<a class="action-link license-btn" href="${rightsData.licenseUrl}" target="_blank" rel="noopener">
+                    ${rightsData.licenseLabel || t("📄 Ver informações de licença", "📄 View license information")}
+                  </a>`
+                : ""
+            }
+          </div>
+
+          <div class="watch-tip">
+            ${rightsData.licenseType || t("Sem autorização de leitura local.", "No local reading authorization.")}
+          </div>
+        </div>
+      `;
+    }
+
     async function fetchAniList(query, variables = {}) {
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 15000);
@@ -589,7 +743,7 @@
         siteUrl: media.siteUrl || "#"
       };
     }
-
+    
     function criarPersonagens(lista) {
       if (!lista?.length) {
         return `<div class="empty">${t("Nenhum personagem encontrado.", "No characters found.")}</div>`;
@@ -865,8 +1019,10 @@
         const buscaLegal = encodeURIComponent(
           `${favoritoData.title} ${t("onde assistir legalmente", "where to watch legally")}`
         );
-
-        content.className = "";
+        const rightsData = getRightsData(favoritoData.title, media.source);
+    
+    
+    content.className = "";
         content.innerHTML = `
           <div class="hero">
             <img
@@ -913,6 +1069,8 @@
                 </p>
               </div>
 
+              ${renderRightsBox(rightsData)}
+
               <div class="actions">
                 <button id="favoriteBtn" class="favorite-btn">${t("Favoritar", "Favorite")}</button>
                 <a class="watch-link" href="https://www.google.com/search?q=${buscaLegal}" target="_blank" rel="noopener">
@@ -929,6 +1087,11 @@
           <section class="section">
             <h2>${t("Onde assistir", "Where to watch")}</h2>
             ${criarOndeAssistir(favoritoData.title)}
+          </section>
+
+          <section class="section">
+            <h2>${t("Mangá e licença", "Manga and license")}</h2>
+            ${renderRightsBox(rightsData)}
           </section>
 
           <section class="section">
@@ -974,4 +1137,4 @@
   </script>
 </body>
 </html>
-
+    
