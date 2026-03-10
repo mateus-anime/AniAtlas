@@ -22,10 +22,28 @@
     property="og:description"
     content="Descubra onde assistir animes legalmente, veja recomendações e explore animes populares no AniAtlas."
   />
-  <meta property="og:image" content="logo.png" />
+  <meta property="og:image" content="https://aniatlas.tewshenr.workers.dev/logo.png" />
   <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://aniatlas.tewshenr.workers.dev/" />
 
+  <link rel="canonical" href="https://aniatlas.tewshenr.workers.dev/" />
   <link rel="icon" type="image/png" href="favicon.png" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "AniAtlas",
+    "url": "https://aniatlas.tewshenr.workers.dev/",
+    "description": "Descubra onde assistir animes legalmente, veja animes populares, animes da temporada, pesquise títulos e encontre recomendações no AniAtlas.",
+    "inLanguage": "pt-BR",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://aniatlas.tewshenr.workers.dev/animes.html?busca={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
 
   <style>
     * {
@@ -447,6 +465,7 @@
     const API_URL = "https://graphql.anilist.co";
     const FAVORITES_KEY = "animehub_favorites";
     const LANG_KEY = "aniatlas_lang";
+    const SITE_URL = "https://aniatlas.tewshenr.workers.dev";
 
     const CACHE_TOP = "aniatlas_cache_top";
     const CACHE_POPULAR = "aniatlas_cache_popular";
@@ -488,6 +507,20 @@
       }
     }
 
+    function atualizarOgUrl(url) {
+      const meta = document.querySelector('meta[property="og:url"]');
+      if (meta) {
+        meta.setAttribute("content", url);
+      }
+    }
+
+    function atualizarCanonical(url) {
+      const link = document.querySelector('link[rel="canonical"]');
+      if (link) {
+        link.setAttribute("href", url);
+      }
+    }
+
     function trocarIdioma() {
       idioma = idioma === "pt" ? "en" : "pt";
       localStorage.setItem(LANG_KEY, idioma);
@@ -497,6 +530,8 @@
 
     function aplicarIdioma() {
       atualizarTitulo();
+      atualizarCanonical(`${SITE_URL}/`);
+      atualizarOgUrl(`${SITE_URL}/`);
 
       document.documentElement.lang = idioma === "pt" ? "pt-BR" : "en";
       document.getElementById("subtitleText").textContent = t(
@@ -773,8 +808,7 @@
 
       el.innerHTML = lista.map(anime => criarCard(anime)).join("");
     }
-    
-    
+
     async function carregarTop10() {
       const cache = lerCache(CACHE_TOP);
       if (cache) return cache;
@@ -813,7 +847,9 @@
 
       return lista;
     }
-
+    
+    
+    
     async function carregarPopulares(quantidade = 8) {
       const cache = lerCache(CACHE_POPULAR);
       if (cache) return cache;
@@ -1117,6 +1153,7 @@
     }
     
     
+    
     function limparBusca() {
       document.getElementById("searchInput").value = "";
       document.getElementById("searchSection").style.display = "none";
@@ -1230,5 +1267,4 @@
 </body>
 </html>
     
-    
-    
+   
