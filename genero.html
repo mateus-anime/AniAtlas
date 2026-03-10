@@ -22,11 +22,11 @@
     property="og:description"
     content="Explore animes por gênero, descubra títulos e veja onde assistir legalmente no AniAtlas."
   />
-  <meta property="og:image" content="https://aniatlas.netlify.app/logo.png" />
+  <meta property="og:image" content="https://aniatlas.tewshenr.workers.dev/logo.png" />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://aniatlas.netlify.app/genero.html?nome=Action" />
+  <meta property="og:url" content="https://aniatlas.tewshenr.workers.dev/genero.html?nome=Action" />
 
-  <link rel="canonical" href="https://aniatlas.netlify.app/genero.html?nome=Action" />
+  <link rel="canonical" href="https://aniatlas.tewshenr.workers.dev/genero.html?nome=Action" />
   <link rel="icon" type="image/png" href="favicon.png" />
 
   <style>
@@ -292,7 +292,7 @@
     const API_URL = "https://graphql.anilist.co";
     const FAVORITES_KEY = "animehub_favorites";
     const LANG_KEY = "aniatlas_lang";
-    const SITE_URL = "https://aniatlas.netlify.app";
+    const SITE_URL = "https://aniatlas.tewshenr.workers.dev";
 
     let idioma = localStorage.getItem(LANG_KEY) || "pt";
 
@@ -328,6 +328,40 @@
     function atualizarCanonical(url) {
       const link = document.querySelector('link[rel="canonical"]');
       if (link) link.setAttribute("href", url);
+    }
+
+    function limparSchemaGenero() {
+      const antigo = document.getElementById("genre-schema-jsonld");
+      if (antigo) {
+        antigo.remove();
+      }
+    }
+
+    function adicionarSchemaGenero(genero, generoTraduzido, urlAtual, descricao) {
+      limparSchemaGenero();
+
+      const schema = {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": t(
+          `AniAtlas - Animes de ${generoTraduzido}`,
+          `AniAtlas - ${generoTraduzido} Anime`
+        ),
+        "url": urlAtual,
+        "description": descricao,
+        "inLanguage": idioma === "pt" ? "pt-BR" : "en",
+        "about": {
+          "@type": "Thing",
+          "name": genero
+        }
+      };
+
+      const script = document.createElement("script");
+      script.type = "application/ld+json";
+      script.id = "genre-schema-jsonld";
+      script.textContent = JSON.stringify(schema);
+
+      document.head.appendChild(script);
     }
 
     function getGenreFromUrl() {
@@ -471,7 +505,8 @@
         </div>
       `;
     }
-
+    
+    
     function aplicarSeoGenero(genero) {
       const generoTraduzido = traduzirGenero(genero);
       const urlAtual = `${SITE_URL}/genero.html?nome=${encodeURIComponent(genero)}`;
@@ -498,6 +533,7 @@
       atualizarOgDescricao(descricao);
       atualizarOgUrl(urlAtual);
       atualizarCanonical(urlAtual);
+      adicionarSchemaGenero(genero, generoTraduzido, urlAtual, descricao);
 
       document.getElementById("pageTitle").textContent = t(
         `🎭 Animes de ${generoTraduzido}`,
@@ -637,3 +673,5 @@
   </script>
 </body>
 </html>
+    
+    
