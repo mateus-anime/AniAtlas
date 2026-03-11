@@ -187,6 +187,11 @@
     .catalog-page-btn {
       background: #2563eb;
     }
+    
+    .manga-page-btn {
+     background: #16a34a;
+   }
+    
 
     .back-to-top {
       position: fixed;
@@ -356,25 +361,37 @@
         Descubra animes populares, encontre recomendações e veja onde assistir anime legalmente no AniAtlas.
       </p>
 
-      <div class="top-buttons">
-        <button class="lang-btn" onclick="trocarIdioma()" id="langBtn">
-          🌎 PT/EN
-        </button>
-        <a
-          href="favoritos.html"
-          class="nav-btn favorites-page-btn"
-          id="favoritesPageBtn"
-        >
-          ⭐ Página de Favoritos
-        </a>
-        <a
-          href="animes.html"
+      
+      
+      
+      
+     <div class="top-buttons">
+       <button class="lang-btn" onclick="trocarIdioma()" id="langBtn">
+       🌎 PT/EN
+       </button>
+       <a
+         href="favoritos.html"
+         class="nav-btn favorites-page-btn"
+         id="favoritesPageBtn"
+       >
+         ⭐ Página de Favoritos
+       </a>
+       <a
+         href="animes.html"
           class="nav-btn catalog-page-btn"
-          id="catalogPageBtn"
+         id="catalogPageBtn"
         >
-          📚 Catálogo de Animes
-        </a>
+         📚 Catálogo de Animes
+       </a>
+       <a
+         href="mangas.html"
+         class="nav-btn manga-page-btn"
+         id="mangaPageBtn"
+       >
+          📖 Catálogo de Mangás
+       </a>
       </div>
+      
 
       <div class="search-box">
         <input
@@ -560,6 +577,13 @@
         "📚 Catálogo de Animes",
         "📚 Anime Catalog"
       );
+      
+      document.getElementById("mangaPageBtn").textContent = t(
+        "📖 Catálogo de Mangás",
+        "📖 Manga Catalog"
+      );
+      
+      
       document.getElementById("searchResultsTitle").textContent = t(
         "🔎 Resultado da busca",
         "🔎 Search Results"
@@ -775,9 +799,13 @@
                       "Remover",
                       "Remove"
                     )}</button>`
-                  : `<button class="favorite-btn" onclick='toggleFavorite(${JSON.stringify(
+                  
+                    : `<button class="favorite-btn" onclick='toggleFavorite(${JSON.stringify(
                       animeData
                     ).replace(/'/g, "&apos;")})'>
+                    
+                    
+                    
                       ${favoritos ? t("Favoritado", "Favorited") : t("Favoritar", "Favorite")}
                     </button>`
               }
