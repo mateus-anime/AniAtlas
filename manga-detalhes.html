@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>AniAtlas - Detalhes do mangá</title>
+
+  <meta
+    name="description"
+    content="Veja detalhes do mangá no AniAtlas, incluindo descrição, status, tags e link oficial externo."
+  />
+  <meta
+    name="keywords"
+    content="mangá, detalhes do mangá, AniAtlas, MangaDex"
+  />
+  <meta name="author" content="AniAtlas" />
+  <meta name="robots" content="index, follow" />
+
+  <meta property="og:title" content="AniAtlas - Detalhes do mangá" />
+  <meta
+    property="og:description"
+    content="Veja informações do mangá e abra a página oficial externa no AniAtlas."
+  />
+  <meta property="og:image" content="https://aniatlas.tewshenr.workers.dev/logo.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://aniatlas.tewshenr.workers.dev/manga-detalhes.html" />
+
+  <link rel="canonical" href="https://aniatlas.tewshenr.workers.dev/manga-detalhes.html" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b1020;
+      color: #f1f5f9;
+    }
+
+    header {
+      background: linear-gradient(180deg, #111827, #0b1020);
+      padding: 20px 16px 18px;
+      border-bottom: 1px solid #1f2937;
+    }
+
+    .header-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .nav-btn,
+    button {
+      padding: 12px 16px;
+      border: none;
+      border-radius: 12px;
+      background: #2563eb;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .secondary-btn {
+      background: #334155;
+    }
+
+    .lang-btn {
+      background: #0f172a;
+      border: 1px solid #334155;
+    }
+
+    .search-box {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    input {
+      flex: 1;
+      min-width: 220px;
+      padding: 16px 14px;
+      border-radius: 12px;
+      border: 1px solid #334155;
+      background: #0f172a;
+      color: #f8fafc;
+      outline: none;
+    }
+
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 22px 16px 40px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 20px;
+      align-items: start;
+      margin-bottom: 28px;
+    }
+
+    .cover {
+      width: 100%;
+      border-radius: 16px;
+      border: 1px solid #1f2937;
+      background: #111827;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+    }
+
+    .info-box {
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: 16px;
+      padding: 18px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: 32px;
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      margin: 0 0 14px;
+      color: #94a3b8;
+      line-height: 1.7;
+    }
+
+    .meta {
+      color: #cbd5e1;
+      line-height: 1.8;
+      margin-bottom: 12px;
+    }
+
+    .tags {
+      color: #93c5fd;
+      line-height: 1.7;
+      margin-bottom: 14px;
+    }
+
+    .desc {
+      color: #e5e7eb;
+      line-height: 1.8;
+      white-space: pre-line;
+    }
+
+    .seo-box,
+    .notice-box,
+    .section-box,
+    .loading,
+    .error,
+    .empty {
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+
+    .seo-box,
+    .section-box,
+    .loading,
+    .error,
+    .empty {
+      background: #111827;
+      border: 1px solid #1f2937;
+    }
+
+    .notice-box {
+      background: #0f172a;
+      border: 1px solid #334155;
+      color: #cbd5e1;
+      line-height: 1.8;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .open-btn {
+      background: #16a34a;
+    }
+
+    .section-title {
+      font-size: 24px;
+      margin: 0 0 14px;
+    }
+
+    .back-to-top {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 999;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 999px;
+      padding: 12px 14px;
+      font-weight: bold;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+      display: none;
+    }
+
+    .back-to-top.show {
+      display: inline-block;
+    }
+
+    footer {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 10px 16px 30px;
+      color: #64748b;
+      font-size: 13px;
+    }
+
+    @media (max-width: 760px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .cover {
+        max-width: 280px;
+      }
+
+      h1 {
+        font-size: 27px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-wrap">
+      <div class="top-actions">
+        <a href="mangas.html" class="nav-btn secondary-btn" id="backBtn">← Voltar</a>
+        <button class="lang-btn" onclick="trocarIdioma()" id="langBtn">🌎 PT/EN</button>
+      </div>
+
+      <div class="search-box">
+        <input
+          id="searchInput"
+          type="text"
+          placeholder="Pesquisar mangá, ex: Naruto"
+          aria-label="Pesquisar mangá"
+          onkeydown="if(event.key === 'Enter') pesquisarOutroManga()"
+        />
+        <button onclick="pesquisarOutroManga()" id="searchBtn">Buscar</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="page">
+    <div id="content" class="loading">Carregando detalhes do mangá...</div>
+  </div>
+
+  <footer id="footerText">
+    Dados de catálogo exibidos com base em fontes públicas. Use links externos para leitura quando disponíveis.
+  </footer>
+
+  <button id="backToTopBtn" class="back-to-top" onclick="voltarAoTopo()">
+    ⬆ Topo
+  </button>
+
+  <script>
+    const API_URL = "https://api.mangadex.org";
+    const LANG_KEY = "aniatlas_lang";
+    const SITE_URL = "https://aniatlas.tewshenr.workers.dev";
+
+    let idioma = localStorage.getItem(LANG_KEY) || "pt";
+
+    function t(pt, en) {
+      return idioma === "pt" ? pt : en;
+    }
+
+    function atualizarMetaDescricao(texto) {
+      const meta = document.querySelector('meta[name="description"]');
+      if (meta) meta.setAttribute("content", texto);
+    }
+
+    function atualizarMetaKeywords(texto) {
+      const meta = document.querySelector('meta[name="keywords"]');
+      if (meta) meta.setAttribute("content", texto);
+    }
+
+    function atualizarOgTitulo(texto) {
+      const meta = document.querySelector('meta[property="og:title"]');
+      if (meta) meta.setAttribute("content", texto);
+    }
+
+    function atualizarOgDescricao(texto) {
+      const meta = document.querySelector('meta[property="og:description"]');
+      if (meta) meta.setAttribute("content", texto);
+    }
+
+    function atualizarOgImagem(url) {
+      const meta = document.querySelector('meta[property="og:image"]');
+      if (meta) meta.setAttribute("content", url);
+    }
+
+    function atualizarOgUrl(url) {
+      const meta = document.querySelector('meta[property="og:url"]');
+      if (meta) meta.setAttribute("content", url);
+    }
+
+    function atualizarCanonical(url) {
+      const link = document.querySelector('link[rel="canonical"]');
+      if (link) link.setAttribute("href", url);
+    }
+
+    function removerSchemaManga() {
+      const antigo = document.getElementById("manga-details-schema-jsonld");
+      if (antigo) antigo.remove();
+    }
+
+    function adicionarSchemaManga(titulo, descricao, url, imagem, tags) {
+      removerSchemaManga();
+
+      const schema = {
+        "@context": "https://schema.org",
+        "@type": "Book",
+        "name": titulo,
+        "description": descricao,
+        "url": url,
+        "image": imagem,
+        "genre": tags || [],
+        "inLanguage": idioma === "pt" ? "pt-BR" : "en"
+      };
+
+      const script = document.createElement("script");
+      script.type = "application/ld+json";
+      script.id = "manga-details-schema-jsonld";
+      script.textContent = JSON.stringify(schema);
+
+      document.head.appendChild(script);
+    }
+    
+    
+    function limparTexto(texto) {
+      if (!texto) {
+        return t("Descrição não disponível.", "Description not available.");
+      }
+      return texto.replace(/<[^>]*>/g, "").trim();
+    }
+
+    function criarSlug(texto) {
+      return (texto || "")
+        .toString()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, "")
+        .trim()
+        .replace(/\s+/g, "-")
+        .replace(/-+/g, "-");
+    }
+
+    function getMangaIdFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("id");
+    }
+
+    function getMangaSlugFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("slug") || "";
+    }
+
+    function obterTituloManga(manga) {
+      return (
+        manga.attributes?.title?.en ||
+        Object.values(manga.attributes?.title || {})[0] ||
+        t("Sem título", "Untitled")
+      );
+    }
+
+    function obterDescricaoManga(manga) {
+      const desc =
+        manga.attributes?.description?.["pt-br"] ||
+        manga.attributes?.description?.en ||
+        Object.values(manga.attributes?.description || {})[0] ||
+        "";
+      return limparTexto(desc);
+    }
+
+    function obterStatusManga(status) {
+      const mapa = {
+        ongoing: t("Em andamento", "Ongoing"),
+        completed: t("Completo", "Completed"),
+        hiatus: t("Em hiato", "Hiatus"),
+        cancelled: t("Cancelado", "Cancelled")
+      };
+      return mapa[status] || status || "?";
+    }
+
+    function obterTags(manga) {
+      return (manga.attributes?.tags || [])
+        .map(tag => tag.attributes?.name?.en)
+        .filter(Boolean);
+    }
+
+    function obterCoverFileName(manga) {
+      const rel = (manga.relationships || []).find(item => item.type === "cover_art");
+      return rel?.attributes?.fileName || "";
+    }
+
+    function obterCoverUrl(manga) {
+      const fileName = obterCoverFileName(manga);
+      if (!fileName) return `${SITE_URL}/logo.png`;
+      return `https://uploads.mangadex.org/covers/${manga.id}/${fileName}.512.jpg`;
+    }
+
+    async function fetchMangaById(id) {
+      const params = new URLSearchParams();
+      params.append("includes[]", "cover_art");
+      params.append("includes[]", "author");
+      params.append("includes[]", "artist");
+
+      const response = await fetch(`${API_URL}/manga/${id}?${params.toString()}`, {
+        headers: {
+          Accept: "application/json"
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`Erro HTTP ${response.status}`);
+      }
+
+      return response.json();
+    }
+
+    function obterAutores(manga) {
+      const autores = (manga.relationships || [])
+        .filter(item => item.type === "author" || item.type === "artist")
+        .map(item => item.attributes?.name)
+        .filter(Boolean);
+
+      return [...new Set(autores)];
+    }
+
+    function pesquisarOutroManga() {
+      const termo = document.getElementById("searchInput").value.trim();
+      if (!termo) return;
+      window.location.href = `mangas.html?busca=${encodeURIComponent(termo)}`;
+    }
+
+    function trocarIdioma() {
+      idioma = idioma === "pt" ? "en" : "pt";
+      localStorage.setItem(LANG_KEY, idioma);
+      carregarDetalhesManga();
+    }
+
+    function controlarBotaoTopo() {
+      const btn = document.getElementById("backToTopBtn");
+      if (window.scrollY > 300) {
+        btn.classList.add("show");
+      } else {
+        btn.classList.remove("show");
+      }
+    }
+
+    function voltarAoTopo() {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }
+
+    function mostrarErro(mensagem) {
+      const content = document.getElementById("content");
+      content.className = "error";
+      content.innerHTML = `
+        <div>${mensagem}</div>
+        <div class="actions" style="margin-top:14px;">
+          <a href="mangas.html" class="nav-btn secondary-btn">${t("← Voltar", "← Back")}</a>
+        </div>
+      `;
+    }
+    
+    
+    async function carregarDetalhesManga() {
+      const id = getMangaIdFromUrl();
+      const slugAtual = getMangaSlugFromUrl();
+      const content = document.getElementById("content");
+
+      document.documentElement.lang = idioma === "pt" ? "pt-BR" : "en";
+      document.getElementById("backBtn").textContent = t("← Voltar", "← Back");
+      document.getElementById("searchBtn").textContent = t("Buscar", "Search");
+      document.getElementById("searchInput").placeholder = t(
+        "Pesquisar mangá, ex: Naruto",
+        "Search manga, e.g. Naruto"
+      );
+      document.getElementById("footerText").textContent = t(
+        "Dados de catálogo exibidos com base em fontes públicas. Use links externos para leitura quando disponíveis.",
+        "Catalog data displayed based on public sources. Use external links for reading when available."
+      );
+      document.getElementById("backToTopBtn").textContent = t("⬆ Topo", "⬆ Top");
+
+      if (!id) {
+        mostrarErro(t("ID do mangá não encontrado.", "Manga ID not found."));
+        return;
+      }
+
+      content.className = "loading";
+      content.textContent = t("Carregando detalhes do mangá...", "Loading manga details...");
+
+      try {
+        const data = await fetchMangaById(id);
+        const manga = data?.data;
+
+        if (!manga) {
+          mostrarErro(t("Mangá não encontrado.", "Manga not found."));
+          return;
+        }
+
+        const titulo = obterTituloManga(manga);
+        const descricao = obterDescricaoManga(manga);
+        const tags = obterTags(manga);
+        const autores = obterAutores(manga);
+        const slugCorreto = criarSlug(titulo);
+        const imagem = obterCoverUrl(manga);
+        const urlCanonica = `${SITE_URL}/manga-detalhes.html?slug=${slugCorreto}&id=${manga.id}`;
+        const externalUrl = `https://mangadex.org/title/${manga.id}`;
+
+        const tituloSeo = t(
+          `AniAtlas - ${titulo} | Detalhes do mangá`,
+          `AniAtlas - ${titulo} | Manga details`
+        );
+
+        const descricaoSeo = t(
+          `Veja detalhes de ${titulo}, incluindo descrição, status, tags e link externo oficial no AniAtlas.`,
+          `See details for ${titulo}, including description, status, tags and official external link on AniAtlas.`
+        );
+
+        document.title = tituloSeo;
+        atualizarMetaDescricao(descricao || descricaoSeo);
+        atualizarMetaKeywords(`${titulo}, mangá, manga, AniAtlas, MangaDex`);
+        atualizarOgTitulo(tituloSeo);
+        atualizarOgDescricao(descricao || descricaoSeo);
+        atualizarOgImagem(imagem);
+        atualizarOgUrl(urlCanonica);
+        atualizarCanonical(urlCanonica);
+        adicionarSchemaManga(titulo, descricao || descricaoSeo, urlCanonica, imagem, tags);
+
+        if (slugCorreto && slugAtual !== slugCorreto) {
+          window.history.replaceState({}, "", `manga-detalhes.html?slug=${slugCorreto}&id=${manga.id}`);
+        }
+
+        content.className = "";
+        content.innerHTML = `
+          <div class="hero">
+            <img class="cover" src="${imagem}" alt="${titulo}" loading="lazy">
+
+            <div class="info-box">
+              <h1>${titulo}</h1>
+              <p class="subtitle">
+                ${t(
+                  "Veja informações do mangá, status, tags e abra a página oficial externa.",
+                  "See manga information, status, tags and open the official external page."
+                )}
+              </p>
+
+              <div class="meta">
+                <strong>${t("Status", "Status")}:</strong> ${obterStatusManga(manga.attributes?.status)}<br>
+                <strong>${t("Ano", "Year")}:</strong> ${manga.attributes?.year || "?"}<br>
+                <strong>${t("Conteúdo", "Content")}:</strong> ${manga.attributes?.contentRating || "safe"}<br>
+                <strong>${t("Autores", "Authors")}:</strong> ${autores.length ? autores.join(", ") : "?"}
+              </div>
+
+              <div class="tags">
+                ${tags.length ? tags.join(" • ") : t("Sem tags", "No tags")}
+              </div>
+
+              <div class="desc">
+                ${descricao}
+              </div>
+
+              <div class="actions">
+                <a href="${externalUrl}" target="_blank" rel="noopener">
+                  <button class="open-btn">${t("Abrir no MangaDex", "Open on MangaDex")}</button>
+                </a>
+
+                <a href="mangas.html" class="nav-btn secondary-btn">
+                  ${t("Voltar para mangás", "Back to manga")}
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="seo-box">
+            ${t(
+              `Nesta página você encontra informações sobre ${titulo}, incluindo descrição, autores, status e tags. Para leitura, use o botão de acesso externo oficial.`,
+              `On this page you can find information about ${titulo}, including description, authors, status and tags. For reading, use the official external access button.`
+            )}
+          </div>
+
+          <div class="notice-box">
+            ${t(
+              "O AniAtlas não hospeda capítulos protegidos nesta página. Use o botão externo para acessar a fonte disponível.",
+              "AniAtlas does not host protected chapters on this page. Use the external button to access the available source."
+            )}
+          </div>
+        `;
+      } catch (error) {
+        console.error(error);
+
+        mostrarErro(
+          t(
+            `Não foi possível carregar os detalhes do mangá agora. Erro: ${error.message}`,
+            `Could not load manga details right now. Error: ${error.message}`
+          )
+        );
+      }
+    }
+
+    window.addEventListener("scroll", controlarBotaoTopo);
+
+    carregarDetalhesManga();
+  </script>
+</body>
+</html>
+    
+    
+    
