@@ -402,7 +402,6 @@
       if (antigo) antigo.remove();
     }
     
-    
     function adicionarSchemaMangas(titulo, descricao, url) {
       removerSchemaMangas();
 
@@ -488,11 +487,7 @@
         return "logo.png";
       }
 
-      if (fileName.toLowerCase().includes("placeholder")) {
-        return "logo.png";
-      }
-
-      return `https://uploads.mangadex.org/covers/${manga.id}/${fileName}.256.jpg`;
+      return "logo.png";
     }
 
     function criarCardManga(manga) {
@@ -509,7 +504,6 @@
             alt="${titulo}"
             loading="lazy"
             onerror="this.onerror=null;this.src='logo.png';"
-            onload="if(this.naturalWidth && this.naturalHeight){const r=this.naturalWidth/this.naturalHeight;if(r>0.95){this.src='logo.png';}}"
           >
           <div class="card-content">
             <div class="card-title">${titulo}</div>
