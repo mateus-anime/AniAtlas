@@ -402,6 +402,7 @@
       if (antigo) antigo.remove();
     }
     
+    
     function adicionarSchemaMangas(titulo, descricao, url) {
       removerSchemaMangas();
 
@@ -508,6 +509,7 @@
             alt="${titulo}"
             loading="lazy"
             onerror="this.onerror=null;this.src='logo.png';"
+            onload="if(this.naturalWidth && this.naturalHeight){const r=this.naturalWidth/this.naturalHeight;if(r>0.95){this.src='logo.png';}}"
           >
           <div class="card-content">
             <div class="card-title">${titulo}</div>
