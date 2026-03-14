@@ -22,11 +22,11 @@
     property="og:description"
     content="Explore o catálogo de mangás do AniAtlas e descubra títulos para abrir legalmente em fontes externas."
   />
-  <meta property="og:image" content="https://aniatlas.tewshenr.workers.dev/logo.png" />
+  <meta property="og:image" content="/logo.png" />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://aniatlas.tewshenr.workers.dev/mangas.html" />
+  <meta property="og:url" content="/mangas.html" />
 
-  <link rel="canonical" href="https://aniatlas.tewshenr.workers.dev/mangas.html" />
+  <link rel="canonical" href="/mangas.html" />
   <link rel="icon" type="image/png" href="favicon.png" />
 
   <style>
@@ -242,6 +242,7 @@
       padding: 9px 12px;
       font-size: 12px;
       border-radius: 10px;
+      cursor: pointer;
     }
 
     .open-btn {
@@ -355,7 +356,7 @@
   <script>
     const API_URL = "/api/mangadex";
     const LANG_KEY = "aniatlas_lang";
-    const SITE_URL = "https://aniatlas.tewshenr.workers.dev";
+    const SITE_URL = window.location.origin;
 
     let idioma = localStorage.getItem(LANG_KEY) || "pt";
     let paginaAtual = 1;
@@ -420,7 +421,7 @@
 
       document.head.appendChild(script);
     }
-    
+
     function limparTexto(texto) {
       if (!texto) {
         return t("Descrição não disponível.", "Description not available.");
@@ -447,7 +448,8 @@
         t("Sem título", "Untitled")
       );
     }
-
+    
+    
     function obterDescricaoManga(manga) {
       const desc =
         manga.attributes?.description?.["pt-br"] ||
@@ -481,7 +483,7 @@
 
     function obterCoverUrl(manga) {
       const fileName = obterCoverFileName(manga);
-      if (!fileName) return "https://aniatlas.tewshenr.workers.dev/logo.png";
+      if (!fileName) return `${SITE_URL}/logo.png`;
       return `https://uploads.mangadex.org/covers/${manga.id}/${fileName}.256.jpg`;
     }
 
@@ -640,27 +642,24 @@
 
       document.getElementById("searchInput").value = termoBusca;
     }
-    
+
     async function buscarNaApiManga() {
       const offset = (paginaAtual - 1) * porPagina;
 
       const params = new URLSearchParams();
       params.append("limit", String(porPagina));
       params.append("offset", String(offset));
-
       params.append("includes[]", "cover_art");
-
       params.append("contentRating[]", "safe");
       params.append("contentRating[]", "suggestive");
       params.append("contentRating[]", "erotica");
-
       params.append("order[followedCount]", "desc");
 
       if (termoBusca) {
         params.append("title", termoBusca);
       }
 
-      const response = await fetch(`${API_URL}/manga?${params.toString()}`, {
+      const response = await fetch(`${API_URL}?${params.toString()}`, {
         headers: {
           Accept: "application/json"
         }
