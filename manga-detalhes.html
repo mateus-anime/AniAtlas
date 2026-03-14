@@ -22,11 +22,11 @@
     property="og:description"
     content="Veja informações do mangá e abra a página oficial externa no AniAtlas."
   />
-  <meta property="og:image" content="https://aniatlas.tewshenr.workers.dev/logo.png" />
+  <meta property="og:image" content="/logo.png" />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://aniatlas.tewshenr.workers.dev/manga-detalhes.html" />
+  <meta property="og:url" content="/manga-detalhes.html" />
 
-  <link rel="canonical" href="https://aniatlas.tewshenr.workers.dev/manga-detalhes.html" />
+  <link rel="canonical" href="/manga-detalhes.html" />
   <link rel="icon" type="image/png" href="favicon.png" />
 
   <style>
@@ -281,9 +281,9 @@
   </button>
 
   <script>
-    const API_URL = "https://api.mangadex.org";
+    const API_URL = "/api/mangadex";
     const LANG_KEY = "aniatlas_lang";
-    const SITE_URL = "https://aniatlas.tewshenr.workers.dev";
+    const SITE_URL = window.location.origin;
 
     let idioma = localStorage.getItem(LANG_KEY) || "pt";
 
@@ -352,8 +352,7 @@
 
       document.head.appendChild(script);
     }
-    
-    
+
     function limparTexto(texto) {
       if (!texto) {
         return t("Descrição não disponível.", "Description not available.");
@@ -423,17 +422,23 @@
 
     function obterCoverUrl(manga) {
       const fileName = obterCoverFileName(manga);
-      if (!fileName) return `${SITE_URL}/logo.png`;
+
+      if (!fileName) {
+        return "logo.png";
+      }
+
       return `https://uploads.mangadex.org/covers/${manga.id}/${fileName}.512.jpg`;
     }
 
     async function fetchMangaById(id) {
       const params = new URLSearchParams();
+      params.append("ids[]", id);
+      params.append("limit", "1");
       params.append("includes[]", "cover_art");
       params.append("includes[]", "author");
       params.append("includes[]", "artist");
 
-      const response = await fetch(`${API_URL}/manga/${id}?${params.toString()}`, {
+      const response = await fetch(`${API_URL}?${params.toString()}`, {
         headers: {
           Accept: "application/json"
         }
@@ -493,8 +498,7 @@
         </div>
       `;
     }
-    
-    
+
     async function carregarDetalhesManga() {
       const id = getMangaIdFromUrl();
       const slugAtual = getMangaSlugFromUrl();
@@ -523,7 +527,7 @@
 
       try {
         const data = await fetchMangaById(id);
-        const manga = data?.data;
+        const manga = data?.data?.[0];
 
         if (!manga) {
           mostrarErro(t("Mangá não encontrado.", "Manga not found."));
@@ -566,7 +570,7 @@
         content.className = "";
         content.innerHTML = `
           <div class="hero">
-            <img class="cover" src="${imagem}" alt="${titulo}" loading="lazy">
+            <img class="cover" src="${imagem}" alt="${titulo}" loading="lazy" onerror="this.onerror=null;this.src='logo.png';">
 
             <div class="info-box">
               <h1>${titulo}</h1>
@@ -576,7 +580,6 @@
                   "See manga information, status, tags and open the official external page."
                 )}
               </p>
-
               <div class="meta">
                 <strong>${t("Status", "Status")}:</strong> ${obterStatusManga(manga.attributes?.status)}<br>
                 <strong>${t("Ano", "Year")}:</strong> ${manga.attributes?.year || "?"}<br>
@@ -636,6 +639,6 @@
   </script>
 </body>
 </html>
-    
-    
-    
+              
+              
+              
