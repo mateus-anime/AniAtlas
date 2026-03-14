@@ -20,4 +20,4 @@ export async function onRequest(context) {
     status: response.status,
     headers
   });
-      }
+}
