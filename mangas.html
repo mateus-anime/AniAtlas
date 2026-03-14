@@ -487,7 +487,43 @@
         return "logo.png";
       }
 
-      return "logo.png";
+      const nome = fileName.toLowerCase();
+
+      if (
+        nome.includes("placeholder") ||
+        nome.includes("default") ||
+        nome.includes("cover_not_found") ||
+        nome.includes("notfound")
+      ) {
+        return "logo.png";
+      }
+
+      return `https://uploads.mangadex.org/covers/${manga.id}/${fileName}.256.jpg`;
+    }
+
+    function verificarCapa(img) {
+      if (!img || !img.naturalWidth || !img.naturalHeight) return;
+
+      const largura = img.naturalWidth;
+      const altura = img.naturalHeight;
+      const proporcao = largura / altura;
+
+      const src = (img.currentSrc || img.src || "").toLowerCase();
+
+      const suspeitaPorNome =
+        src.includes("placeholder") ||
+        src.includes("cover_not_found") ||
+        src.includes("notfound");
+
+      const suspeitaPorFormato =
+        largura >= 200 &&
+        altura >= 200 &&
+        proporcao > 0.7;
+
+      if (suspeitaPorNome || suspeitaPorFormato) {
+        img.onerror = null;
+        img.src = "logo.png";
+      }
     }
 
     function criarCardManga(manga) {
@@ -503,7 +539,9 @@
             src="${obterCoverUrl(manga)}"
             alt="${titulo}"
             loading="lazy"
+            referrerpolicy="no-referrer"
             onerror="this.onerror=null;this.src='logo.png';"
+            onload="verificarCapa(this)"
           >
           <div class="card-content">
             <div class="card-title">${titulo}</div>
