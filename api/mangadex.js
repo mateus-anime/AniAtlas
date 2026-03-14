@@ -1,24 +1,18 @@
-export default async function handler(req, res) {
-  const query = req.url.includes("?") ? req.url.slice(req.url.indexOf("?")) : "";
-  const target = `https://api.mangadex.org/manga${query}`;
+export default async function handler(request, response) {
+  const query = request.url.split("?")[1] || "";
+  const url = `https://api.mangadex.org/manga?${query}`;
 
   try {
-    const response = await fetch(target, {
-      headers: {
-        Accept: "application/json"
-      }
-    });
+    const api = await fetch(url);
+    const data = await api.json();
 
-    const data = await response.text();
+    response.setHeader("Access-Control-Allow-Origin", "*");
+    response.status(200).json(data);
 
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Content-Type", "application/json");
-    res.status(response.status).send(data);
-
-  } catch (error) {
-    res.status(500).json({
+  } catch (err) {
+    response.status(500).json({
       error: "proxy_error",
-      message: error.message
+      message: err.message
     });
   }
-                  }
+}
