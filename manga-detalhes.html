@@ -354,26 +354,32 @@
     }
 
     function limparTexto(texto) {
-  if (!texto) {
-    return t("Descrição não disponível.", "Description not available.");
-  }
+      if (!texto) {
+        return t("Descrição não disponível.", "Description not available.");
+      }
 
-  let limpo = texto;
+      let limpo = texto;
 
-  // remove HTML
-  limpo = limpo.replace(/<[^>]*>/g, "");
+      // remove HTML
+      limpo = limpo.replace(/<[^>]*>/g, "");
 
-  // remove markdown links [texto](link)
-  limpo = limpo.replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1");
+      // remove links markdown [texto](link) -> texto
+      limpo = limpo.replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1");
 
-  // remove linhas só com links
-  limpo = limpo.replace(/https?:\/\/\S+/g, "");
+      // remove URLs soltas
+      limpo = limpo.replace(/https?:\/\/\S+/g, "");
 
-  // remove múltiplas quebras
-  limpo = limpo.replace(/\n{3,}/g, "\n\n");
+      // remove linhas compostas só por símbolos
+      limpo = limpo.replace(/^[\s>*|()[\]_\-]+$/gm, "");
 
-  return limpo.trim();
-}
+      // remove caracteres soltos comuns que sobram do markdown
+      limpo = limpo.replace(/^[>\-]\s*/gm, "");
+
+      // remove várias linhas em branco
+      limpo = limpo.replace(/\n{3,}/g, "\n\n");
+
+      return limpo.trim();
+    }
 
     function criarSlug(texto) {
       return (texto || "")
@@ -404,7 +410,7 @@
         t("Sem título", "Untitled")
       );
     }
-
+    
     function obterDescricaoManga(manga) {
       const desc =
         manga.attributes?.description?.["pt-br"] ||
@@ -654,6 +660,4 @@
   </script>
 </body>
 </html>
-              
-              
-              
+    
