@@ -487,6 +487,10 @@
         return "logo.png";
       }
 
+      if (fileName.toLowerCase().includes("placeholder")) {
+        return "logo.png";
+      }
+
       return `https://uploads.mangadex.org/covers/${manga.id}/${fileName}.256.jpg`;
     }
 
@@ -775,4 +779,3 @@
   </script>
 </body>
 </html>
-    
