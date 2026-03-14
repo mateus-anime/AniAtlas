@@ -354,11 +354,26 @@
     }
 
     function limparTexto(texto) {
-      if (!texto) {
-        return t("Descrição não disponível.", "Description not available.");
-      }
-      return texto.replace(/<[^>]*>/g, "").trim();
-    }
+  if (!texto) {
+    return t("Descrição não disponível.", "Description not available.");
+  }
+
+  let limpo = texto;
+
+  // remove HTML
+  limpo = limpo.replace(/<[^>]*>/g, "");
+
+  // remove markdown links [texto](link)
+  limpo = limpo.replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1");
+
+  // remove linhas só com links
+  limpo = limpo.replace(/https?:\/\/\S+/g, "");
+
+  // remove múltiplas quebras
+  limpo = limpo.replace(/\n{3,}/g, "\n\n");
+
+  return limpo.trim();
+}
 
     function criarSlug(texto) {
       return (texto || "")
