@@ -15,33 +15,37 @@
     content="onde assistir anime, catálogo de animes, animes populares, animes da temporada, assistir anime legalmente, AniAtlas"
   />
   <meta name="author" content="AniAtlas" />
-  <meta name="robots" content="index, follow" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
 
   <meta property="og:title" content="AniAtlas - Onde assistir animes, catálogo e recomendações" />
   <meta
     property="og:description"
     content="Descubra onde assistir animes legalmente, veja recomendações e explore animes populares no AniAtlas."
   />
-  <meta property="og:image" content="https://aniatlas.tewshenr.workers.dev/logo.png" />
+  <meta property="og:image" content="/logo.png" />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://aniatlas.tewshenr.workers.dev/" />
+  <meta property="og:url" content="/" />
+  <meta property="og:site_name" content="AniAtlas" />
 
-  <link rel="canonical" href="https://aniatlas.tewshenr.workers.dev/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AniAtlas - Onde assistir animes, catálogo e recomendações" />
+  <meta
+    name="twitter:description"
+    content="Descubra onde assistir animes legalmente, veja recomendações e explore animes populares no AniAtlas."
+  />
+  <meta name="twitter:image" content="/logo.png" />
+
+  <link rel="canonical" href="/" />
   <link rel="icon" type="image/png" href="favicon.png" />
 
-  <script type="application/ld+json">
+  <script type="application/ld+json" id="website-schema-jsonld">
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "AniAtlas",
-    "url": "https://aniatlas.tewshenr.workers.dev/",
+    "url": "/",
     "description": "Descubra onde assistir animes legalmente, veja animes populares, animes da temporada, pesquise títulos e encontre recomendações no AniAtlas.",
-    "inLanguage": "pt-BR",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "https://aniatlas.tewshenr.workers.dev/animes.html?busca={search_term_string}",
-      "query-input": "required name=search_term_string"
-    }
+    "inLanguage": "pt-BR"
   }
   </script>
 
@@ -95,6 +99,22 @@
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
+    }
+
+    .breadcrumb {
+      margin-bottom: 16px;
+      color: #94a3b8;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .breadcrumb a {
+      color: #93c5fd;
+      text-decoration: none;
+    }
+
+    .breadcrumb a:hover {
+      text-decoration: underline;
     }
 
     .genre-filter {
@@ -187,11 +207,10 @@
     .catalog-page-btn {
       background: #2563eb;
     }
-    
+
     .manga-page-btn {
-     background: #16a34a;
-   }
-    
+      background: #16a34a;
+    }
 
     .back-to-top {
       position: fixed;
@@ -232,6 +251,59 @@
       margin-bottom: 34px;
     }
 
+    .section-box {
+      margin-bottom: 24px;
+      padding: 16px;
+      border-radius: 16px;
+      border: 1px solid #334155;
+      background: #111827;
+      color: #cbd5e1;
+      line-height: 1.8;
+    }
+
+    .section-box h2 {
+      margin-top: 0;
+      margin-bottom: 12px;
+      font-size: 22px;
+      color: #f1f5f9;
+    }
+
+    .section-box p,
+    .section-box li {
+      color: #dbe4ee;
+      line-height: 1.8;
+    }
+
+    .section-box ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .section-box a {
+      color: #93c5fd;
+      text-decoration: none;
+    }
+
+    .section-box a:hover {
+      text-decoration: underline;
+    }
+
+    .internal-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 8px 14px;
+    }
+
+    .internal-links a {
+      color: #93c5fd;
+      text-decoration: none;
+      line-height: 1.6;
+    }
+
+    .internal-links a:hover {
+      text-decoration: underline;
+    }
+
     .section-title {
       font-size: 22px;
       margin: 0 0 14px;
@@ -259,6 +331,11 @@
       transform: translateY(-3px);
     }
 
+    .card-cover-link {
+      display: block;
+      text-decoration: none;
+    }
+
     .card img {
       width: 100%;
       height: 250px;
@@ -279,11 +356,28 @@
       line-height: 1.25;
     }
 
+    .card-title a {
+      color: #f1f5f9;
+      text-decoration: none;
+    }
+
+    .card-title a:hover {
+      text-decoration: underline;
+    }
+
     .card-meta {
       font-size: 13px;
       color: #cbd5e1;
       margin-bottom: 10px;
       line-height: 1.45;
+    }
+
+    .card-desc {
+      font-size: 12px;
+      color: #a8b6c7;
+      line-height: 1.6;
+      margin-bottom: 10px;
+      min-height: 58px;
     }
 
     .genres {
@@ -343,6 +437,10 @@
         bottom: 14px;
         padding: 11px 13px;
       }
+
+      .card-desc {
+        min-height: auto;
+      }
     }
   </style>
 </head>
@@ -361,37 +459,32 @@
         Descubra animes populares, encontre recomendações e veja onde assistir anime legalmente no AniAtlas.
       </p>
 
-      
-      
-      
-      
-     <div class="top-buttons">
-       <button class="lang-btn" onclick="trocarIdioma()" id="langBtn">
-       🌎 PT/EN
-       </button>
-       <a
-         href="favoritos.html"
-         class="nav-btn favorites-page-btn"
-         id="favoritesPageBtn"
-       >
-         ⭐ Página de Favoritos
-       </a>
-       <a
-         href="animes.html"
-          class="nav-btn catalog-page-btn"
-         id="catalogPageBtn"
+      <div class="top-buttons">
+        <button class="lang-btn" onclick="trocarIdioma()" id="langBtn">
+          🌎 PT/EN
+        </button>
+        <a
+          href="favoritos.html"
+          class="nav-btn favorites-page-btn"
+          id="favoritesPageBtn"
         >
-         📚 Catálogo de Animes
-       </a>
-       <a
-         href="mangas.html"
-         class="nav-btn manga-page-btn"
-         id="mangaPageBtn"
-       >
+          ⭐ Página de Favoritos
+        </a>
+        <a
+          href="animes.html"
+          class="nav-btn catalog-page-btn"
+          id="catalogPageBtn"
+        >
+          📚 Catálogo de Animes
+        </a>
+        <a
+          href="mangas.html"
+          class="nav-btn manga-page-btn"
+          id="mangaPageBtn"
+        >
           📖 Catálogo de Mangás
-       </a>
+        </a>
       </div>
-      
 
       <div class="search-box">
         <input
@@ -409,6 +502,10 @@
   </header>
 
   <main>
+    <nav class="breadcrumb">
+      <a href="index.html">Início</a> › <span id="breadcrumbCurrent">Anime</span>
+    </nav>
+
     <div id="status" class="status">Carregando animes do site...</div>
 
     <div
@@ -447,7 +544,8 @@
       <h2 class="section-title" id="genreTitle">🎭 Gênero selecionado</h2>
       <div id="genreResults" class="cards"></div>
     </section>
-
+    
+    
     <section id="searchSection" class="search-results" style="display:none;">
       <h2 class="section-title" id="searchResultsTitle">🔎 Resultado da busca</h2>
       <div id="searchResults" class="cards"></div>
@@ -467,6 +565,18 @@
       <h2 class="section-title" id="seasonTitle">🌸 Animes da temporada</h2>
       <div id="seasonAnime" class="cards"></div>
     </section>
+
+    <section class="section-box">
+      <h2 id="internalLinksTitle">🔗 Explorar animes desta página</h2>
+      <div id="internalLinksBox" class="internal-links"></div>
+    </section>
+
+    <section class="section-box">
+      <h2 id="homeInfoTitle">🏠 Sobre o AniAtlas</h2>
+      <p id="homeInfoText">
+        Use a página inicial do AniAtlas para descobrir animes populares, ver tendências, explorar a temporada atual e abrir páginas individuais de detalhes.
+      </p>
+    </section>
   </main>
 
   <footer id="footerText">
@@ -476,13 +586,12 @@
   <button id="backToTopBtn" class="back-to-top" onclick="voltarAoTopo()">
     ⬆ Topo
   </button>
-   
-   
-   <script>
+
+  <script>
     const API_URL = "https://graphql.anilist.co";
     const FAVORITES_KEY = "animehub_favorites";
     const LANG_KEY = "aniatlas_lang";
-    const SITE_URL = "https://aniatlas.tewshenr.workers.dev";
+    const SITE_URL = window.location.origin;
 
     const CACHE_TOP = "aniatlas_cache_top";
     const CACHE_POPULAR = "aniatlas_cache_popular";
@@ -515,12 +624,20 @@
       if (meta) {
         meta.setAttribute("content", texto);
       }
+      const twitter = document.querySelector('meta[name="twitter:title"]');
+      if (twitter) {
+        twitter.setAttribute("content", texto);
+      }
     }
 
     function atualizarOgDescricao(texto) {
       const meta = document.querySelector('meta[property="og:description"]');
       if (meta) {
         meta.setAttribute("content", texto);
+      }
+      const twitter = document.querySelector('meta[name="twitter:description"]');
+      if (twitter) {
+        twitter.setAttribute("content", texto);
       }
     }
 
@@ -538,6 +655,28 @@
       }
     }
 
+    function atualizarSchemaWebSite() {
+      const schema = document.getElementById("website-schema-jsonld");
+      if (!schema) return;
+
+      schema.textContent = JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "AniAtlas",
+        "url": `${SITE_URL}/`,
+        "description": t(
+          "Descubra onde assistir animes legalmente, veja animes populares, animes da temporada, pesquise títulos e encontre recomendações no AniAtlas.",
+          "Discover where to watch anime legally, see popular anime, seasonal anime, search titles and find recommendations on AniAtlas."
+        ),
+        "inLanguage": idioma === "pt" ? "pt-BR" : "en",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": `${SITE_URL}/animes.html?busca={search_term_string}`,
+          "query-input": "required name=search_term_string"
+        }
+      });
+    }
+
     function trocarIdioma() {
       idioma = idioma === "pt" ? "en" : "pt";
       localStorage.setItem(LANG_KEY, idioma);
@@ -549,6 +688,7 @@
       atualizarTitulo();
       atualizarCanonical(`${SITE_URL}/`);
       atualizarOgUrl(`${SITE_URL}/`);
+      atualizarSchemaWebSite();
 
       document.documentElement.lang = idioma === "pt" ? "pt-BR" : "en";
       document.getElementById("subtitleText").textContent = t(
@@ -577,13 +717,10 @@
         "📚 Catálogo de Animes",
         "📚 Anime Catalog"
       );
-      
       document.getElementById("mangaPageBtn").textContent = t(
         "📖 Catálogo de Mangás",
         "📖 Manga Catalog"
       );
-      
-      
       document.getElementById("searchResultsTitle").textContent = t(
         "🔎 Resultado da busca",
         "🔎 Search Results"
@@ -607,6 +744,22 @@
       document.getElementById("backToTopBtn").textContent = t(
         "⬆ Topo",
         "⬆ Top"
+      );
+      document.getElementById("breadcrumbCurrent").textContent = t(
+        "Anime",
+        "Anime"
+      );
+      document.getElementById("internalLinksTitle").textContent = t(
+        "🔗 Explorar animes desta página",
+        "🔗 Explore anime from this page"
+      );
+      document.getElementById("homeInfoTitle").textContent = t(
+        "🏠 Sobre o AniAtlas",
+        "🏠 About AniAtlas"
+      );
+      document.getElementById("homeInfoText").textContent = t(
+        "Use a página inicial do AniAtlas para descobrir animes populares, ver tendências, explorar a temporada atual e abrir páginas individuais de detalhes.",
+        "Use the AniAtlas homepage to discover popular anime, see trends, explore the current season and open individual detail pages."
       );
 
       atualizarMetaDescricao(t(
@@ -744,6 +897,13 @@
         .replace(/-+/g, "-");
     }
 
+    function resumirTexto(texto, limite = 120) {
+      if (!texto) return t("Descrição não disponível.", "Description not available.");
+      const limpo = texto.replace(/\s+/g, " ").trim();
+      if (limpo.length <= limite) return limpo;
+      return `${limpo.slice(0, limite).trim()}...`;
+    }
+
     function createAnimeData(anime) {
       return {
         id: anime.id,
@@ -756,7 +916,8 @@
         averageScore: anime.averageScore ?? "?",
         genres: anime.genres || [],
         image: anime.coverImage?.large || "",
-        siteUrl: anime.siteUrl || "#"
+        siteUrl: anime.siteUrl || "#",
+        description: anime.description || ""
       };
     }
 
@@ -768,16 +929,28 @@
       );
       const slug = criarSlug(animeData.title);
       const detalhesUrl = `detalhes.html?slug=${slug}&id=${animeData.id}`;
-
-      return `
+      const descricaoCurta = resumirTexto(animeData.description, 110);
+return `
         <div class="card">
-          <img src="${animeData.image}" alt="${animeData.title}" loading="lazy">
+          <a href="${detalhesUrl}" class="card-cover-link"
+             onmouseenter="prefetchDetalhes('${slug}', ${animeData.id})"
+             ontouchstart="prefetchDetalhes('${slug}', ${animeData.id})"
+             aria-label="${t("Abrir detalhes de", "Open details for")} ${animeData.title}">
+            <img src="${animeData.image}" alt="${animeData.title}" loading="lazy">
+          </a>
           <div class="card-content">
-            <div class="card-title">${animeData.title}</div>
+            <div class="card-title">
+              <a href="${detalhesUrl}"
+                 onmouseenter="prefetchDetalhes('${slug}', ${animeData.id})"
+                 ontouchstart="prefetchDetalhes('${slug}', ${animeData.id})">
+                ${animeData.title}
+              </a>
+            </div>
             <div class="card-meta">
               ${t("Episódios", "Episodes")}: ${animeData.episodes}<br>
               ${t("Nota", "Score")}: ${animeData.averageScore}
             </div>
+            <div class="card-desc">${descricaoCurta}</div>
             <div class="genres">${animeData.genres
               .slice(0, 3)
               .map(traduzirGenero)
@@ -799,13 +972,9 @@
                       "Remover",
                       "Remove"
                     )}</button>`
-                  
-                    : `<button class="favorite-btn" onclick='toggleFavorite(${JSON.stringify(
+                  : `<button class="favorite-btn" onclick='toggleFavorite(${JSON.stringify(
                       animeData
                     ).replace(/'/g, "&apos;")})'>
-                    
-                    
-                    
                       ${favoritos ? t("Favoritado", "Favorited") : t("Favoritar", "Favorite")}
                     </button>`
               }
@@ -814,7 +983,7 @@
         </div>
       `;
     }
-
+    
     function renderizarLista(elementId, lista, isError = false) {
       const el = document.getElementById(elementId);
 
@@ -857,6 +1026,7 @@
               episodes
               averageScore
               genres
+              description(asHtml: false)
               siteUrl
               coverImage {
                 large
@@ -875,9 +1045,7 @@
 
       return lista;
     }
-    
-    
-    
+
     async function carregarPopulares(quantidade = 8) {
       const cache = lerCache(CACHE_POPULAR);
       if (cache) return cache;
@@ -898,6 +1066,7 @@
               episodes
               averageScore
               genres
+              description(asHtml: false)
               siteUrl
               coverImage {
                 large
@@ -961,6 +1130,7 @@
               episodes
               averageScore
               genres
+              description(asHtml: false)
               siteUrl
               coverImage {
                 large
@@ -1007,6 +1177,7 @@
               episodes
               averageScore
               genres
+              description(asHtml: false)
               siteUrl
               coverImage {
                 large
@@ -1028,6 +1199,31 @@
       }
 
       return lista;
+    }
+
+    function gerarLinksInternos(listaCompleta) {
+      const box = document.getElementById("internalLinksBox");
+
+      if (!listaCompleta.length) {
+        box.innerHTML = `<span>${t("Nenhum link interno disponível nesta página.", "No internal links available on this page.")}</span>`;
+        return;
+      }
+
+      const usados = new Set();
+      const unicos = [];
+
+      for (const anime of listaCompleta) {
+        const animeData = createAnimeData(anime);
+        if (usados.has(animeData.id)) continue;
+        usados.add(animeData.id);
+        unicos.push(animeData);
+      }
+
+      box.innerHTML = unicos.slice(0, 30).map(animeData => {
+        const slug = criarSlug(animeData.title);
+        const detalhesUrl = `detalhes.html?slug=${slug}&id=${animeData.id}`;
+        return `<a href="${detalhesUrl}">${animeData.title}</a>`;
+      }).join("");
     }
 
     async function filtrarGenero(genero, botao) {
@@ -1060,6 +1256,7 @@
       try {
         const lista = await carregarPorGenero(genero, 12);
         renderizarLista("genreResults", lista);
+        gerarLinksInternos(lista);
         status.textContent =
           idioma === "pt"
             ? `Mostrando animes de ${traduzirGenero(genero)}.`
@@ -1067,6 +1264,7 @@
       } catch (error) {
         console.error(error);
         renderizarLista("genreResults", [], true);
+        gerarLinksInternos([]);
         status.textContent = t(
           "Não foi possível carregar esse gênero agora.",
           "Could not load this genre right now."
@@ -1133,6 +1331,7 @@
               episodes
               averageScore
               genres
+              description(asHtml: false)
               siteUrl
               coverImage {
                 large
@@ -1153,10 +1352,13 @@
               : `No anime found for "${termo}".`
           }</div>`;
           status.textContent = t("Busca concluída.", "Search completed.");
+          gerarLinksInternos([]);
           return;
         }
 
         searchResults.innerHTML = lista.map(anime => criarCard(anime)).join("");
+        gerarLinksInternos(lista);
+
         status.textContent =
           idioma === "pt"
             ? `Mostrando resultados para "${termo}".`
@@ -1177,11 +1379,10 @@
 
         searchResults.innerHTML = `<div class="empty">${msg}</div>`;
         status.textContent = msg;
+        gerarLinksInternos([]);
       }
     }
-    
-    
-    
+
     function limparBusca() {
       document.getElementById("searchInput").value = "";
       document.getElementById("searchSection").style.display = "none";
@@ -1230,6 +1431,8 @@
       renderizarLista("topAnime", top, !topOk);
       renderizarLista("popular", populares, !popularesOk);
       renderizarLista("seasonAnime", temporada, !temporadaOk);
+
+      gerarLinksInternos([...top, ...populares, ...temporada]);
 
       if (updateStatus) {
         if (topOk || popularesOk || temporadaOk) {
@@ -1294,5 +1497,3 @@
   </script>
 </body>
 </html>
-    
-   
