@@ -223,6 +223,35 @@
     .action-page-btn {
       background: #dc2626;
     }
+    
+    .romance-page-btn {
+     background: #ec4899;
+    }
+
+    .comedy-page-btn {
+      background: #f59e0b;
+    }
+
+    .fantasy-page-btn {
+      background: #8b5cf6;
+    }
+
+    .horror-page-btn {
+      background: #6b21a8;
+    }
+
+    .adventure-page-btn {
+      background: #0ea5e9;
+    }
+
+    .sports-page-btn {
+      background: #10b981;
+    }
+
+    .drama-page-btn {
+      background: #64748b;
+    }
+    
 
     .back-to-top {
       position: fixed;
@@ -518,6 +547,63 @@
         >
           🔥 Animes de Ação
         </a>
+        
+        <a
+  href="animes-romance.html"
+  class="nav-btn romance-page-btn"
+  id="romancePageBtn"
+>
+  ❤️ Animes de Romance
+</a>
+
+<a
+  href="animes-comedia.html"
+  class="nav-btn comedy-page-btn"
+  id="comedyPageBtn"
+>
+  😂 Animes de Comédia
+</a>
+
+<a
+  href="animes-fantasia.html"
+  class="nav-btn fantasy-page-btn"
+  id="fantasyPageBtn"
+>
+  🐉 Animes de Fantasia
+</a>
+
+<a
+  href="animes-terror.html"
+  class="nav-btn horror-page-btn"
+  id="horrorPageBtn"
+>
+  👻 Animes de Terror
+</a>
+
+<a
+  href="animes-aventura.html"
+  class="nav-btn adventure-page-btn"
+  id="adventurePageBtn"
+>
+  🗺️ Animes de Aventura
+</a>
+
+<a
+  href="animes-esporte.html"
+  class="nav-btn sports-page-btn"
+  id="sportsPageBtn"
+>
+  🏅 Animes de Esporte
+</a>
+
+<a
+  href="animes-drama.html"
+  class="nav-btn drama-page-btn"
+  id="dramaPageBtn"
+>
+  🎭 Animes de Drama
+</a>
+        
       </div>
 
       <div class="search-box">
@@ -577,8 +663,15 @@
     <section class="section-box">
       <h2 id="genreExploreTitle">🎬 Explorar por páginas de gênero</h2>
       <div class="internal-links" id="genreExploreLinks">
-        <a href="animes-acao.html">🔥 Animes de Ação</a>
-      </div>
+  <a href="animes-acao.html">🔥 Animes de Ação</a>
+  <a href="animes-romance.html">❤️ Animes de Romance</a>
+  <a href="animes-comedia.html">😂 Animes de Comédia</a>
+  <a href="animes-fantasia.html">🐉 Animes de Fantasia</a>
+  <a href="animes-terror.html">👻 Animes de Terror</a>
+  <a href="animes-aventura.html">🗺️ Animes de Aventura</a>
+  <a href="animes-esporte.html">🏅 Animes de Esporte</a>
+  <a href="animes-drama.html">🎭 Animes de Drama</a>
+</div>
     </section>
 
     <section id="genreSection" class="section" style="display:none;">
@@ -789,6 +882,36 @@
         "🌸 Animes da temporada",
         "🌸 Seasonal Anime"
       );
+      
+      document.getElementById("romancePageBtn").textContent = t(
+  "❤️ Animes de Romance",
+  "❤️ Romance Anime"
+);
+document.getElementById("comedyPageBtn").textContent = t(
+  "😂 Animes de Comédia",
+  "😂 Comedy Anime"
+);
+document.getElementById("fantasyPageBtn").textContent = t(
+  "🐉 Animes de Fantasia",
+  "🐉 Fantasy Anime"
+);
+document.getElementById("horrorPageBtn").textContent = t(
+  "👻 Animes de Terror",
+  "👻 Horror Anime"
+);
+document.getElementById("adventurePageBtn").textContent = t(
+  "🗺️ Animes de Aventura",
+  "🗺️ Adventure Anime"
+);
+document.getElementById("sportsPageBtn").textContent = t(
+  "🏅 Animes de Esporte",
+  "🏅 Sports Anime"
+);
+document.getElementById("dramaPageBtn").textContent = t(
+  "🎭 Animes de Drama",
+  "🎭 Drama Anime"
+);
+      
       document.getElementById("footerText").textContent = t(
         "Feito com dados públicos do AniList. Descubra animes e veja onde assistir legalmente no AniAtlas.",
         "Built with public AniList data. Discover anime and see where to watch legally on AniAtlas."
@@ -818,8 +941,15 @@
         "🎬 Explore by genre pages"
       );
       document.getElementById("genreExploreLinks").innerHTML = `
-        <a href="animes-acao.html">${t("🔥 Animes de Ação", "🔥 Action Anime")}</a>
-      `;
+  <a href="animes-acao.html">${t("🔥 Animes de Ação", "🔥 Action Anime")}</a>
+  <a href="animes-romance.html">${t("❤️ Animes de Romance", "❤️ Romance Anime")}</a>
+  <a href="animes-comedia.html">${t("😂 Animes de Comédia", "😂 Comedy Anime")}</a>
+  <a href="animes-fantasia.html">${t("🐉 Animes de Fantasia", "🐉 Fantasy Anime")}</a>
+  <a href="animes-terror.html">${t("👻 Animes de Terror", "👻 Horror Anime")}</a>
+  <a href="animes-aventura.html">${t("🗺️ Animes de Aventura", "🗺️ Adventure Anime")}</a>
+  <a href="animes-esporte.html">${t("🏅 Animes de Esporte", "🏅 Sports Anime")}</a>
+  <a href="animes-drama.html">${t("🎭 Animes de Drama", "🎭 Drama Anime")}</a>
+`;
 
       atualizarMetaDescricao(t(
         "Descubra onde assistir animes legalmente, veja animes populares, animes da temporada e pesquise títulos no AniAtlas.",
