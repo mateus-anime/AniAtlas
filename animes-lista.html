@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Lista de Animes | AniAtlas</title>
+
+<meta name="description" content="Explore uma grande lista de animes populares e descubra onde assistir cada anime legalmente.">
+
+<link rel="canonical" href="https://ani-atlas-hbvj.vercel.app/animes-lista.html">
+
+<style>
+body{
+font-family:Arial;
+background:#0b1020;
+color:white;
+margin:0;
+padding:20px;
+}
+
+.topo-acoes{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin-bottom:18px;
+}
+
+.topo-acoes a{
+display:inline-block;
+background:#2563eb;
+color:white;
+padding:10px 14px;
+border-radius:10px;
+text-decoration:none;
+font-weight:bold;
+}
+
+.topo-acoes a.secundario{
+background:#334155;
+}
+
+h1{
+margin-bottom:12px;
+}
+
+#status{
+margin-bottom:18px;
+color:#93c5fd;
+font-size:14px;
+}
+
+.filtro-tipo{
+display:flex;
+gap:10px;
+margin-bottom:20px;
+flex-wrap:wrap;
+}
+
+.filtro-tipo button{
+background:#2563eb;
+border:none;
+color:white;
+padding:10px 14px;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.filtro-tipo button.ativo{
+background:#1d4ed8;
+outline:2px solid #93c5fd;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+gap:16px;
+}
+
+.card{
+background:#111827;
+border-radius:10px;
+overflow:hidden;
+border:1px solid #1f2937;
+}
+
+.card img{
+width:100%;
+height:230px;
+object-fit:cover;
+display:block;
+background:#0f172a;
+}
+
+.card a{
+color:white;
+text-decoration:none;
+display:block;
+padding:10px;
+font-size:14px;
+line-height:1.5;
+}
+
+.vazio{
+background:#111827;
+border:1px solid #1f2937;
+border-radius:10px;
+padding:16px;
+color:#cbd5e1;
+}
+
+.paginacao{
+margin-top:32px;
+display:flex;
+gap:12px;
+align-items:center;
+justify-content:center;
+flex-wrap:wrap;
+}
+
+.paginacao button{
+background:#2563eb;
+color:white;
+border:none;
+padding:10px 14px;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.paginacao button.secundario{
+background:#334155;
+}
+
+.paginacao button:disabled{
+opacity:0.5;
+cursor:not-allowed;
+}
+
+#numeroPagina{
+color:#cbd5e1;
+font-size:14px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="topo-acoes">
+<a href="index.html" class="secundario">⬅ Voltar para Home</a>
+<a href="animes.html">📚 Catálogo de Animes</a>
+</div>
+
+<h1 id="tituloPagina">Lista de Animes</h1>
+
+<div id="status">Carregando lista...</div>
+
+<div class="filtro-tipo">
+<button id="btnPopular" class="ativo" onclick="mudarTipo('POPULARITY_DESC', this)">
+🔥 Populares
+</button>
+
+<button id="btnScore" onclick="mudarTipo('SCORE_DESC', this)">
+⭐ Melhor avaliados
+</button>
+
+<button id="btnTrending" onclick="mudarTipo('TRENDING_DESC', this)">
+🆕 Em alta
+</button>
+
+<button id="btnAZ" onclick="mudarTipo('TITLE_ROMAJI', this)">
+🔤 A-Z
+</button>
+</div>
+
+<div id="lista" class="grid"></div>
+
+<div class="paginacao">
+<button id="btnAnterior" class="secundario" onclick="paginaAnterior()">← Anterior</button>
+<span id="numeroPagina">Página 1</span>
+<button id="btnProxima" onclick="proximaPagina()">Próxima →</button>
+</div>
+
+<script>
+const API_URL = "https://graphql.anilist.co";
+let tipoLista = "POPULARITY_DESC";
+let paginaAtual = 1;
+
+function obterNomeTipo(tipo){
+if(tipo === "POPULARITY_DESC") return "Populares";
+if(tipo === "SCORE_DESC") return "Melhor avaliados";
+if(tipo === "TRENDING_DESC") return "Em alta";
+if(tipo === "TITLE_ROMAJI") return "A-Z";
+return "Lista";
+}
+
+function atualizarBotaoAtivo(botaoAtual){
+document.querySelectorAll(".filtro-tipo button").forEach(btn=>{
+btn.classList.remove("ativo");
+});
+
+if(botaoAtual){
+botaoAtual.classList.add("ativo");
+}
+}
+
+function atualizarNumeroPagina(){
+document.getElementById("numeroPagina").textContent = `Página ${paginaAtual}`;
+document.getElementById("btnAnterior").disabled = paginaAtual <= 1;
+}
+
+function mudarTipo(tipo, botao){
+tipoLista = tipo;
+paginaAtual = 1;
+atualizarBotaoAtivo(botao);
+atualizarNumeroPagina();
+carregarLista();
+window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function proximaPagina(){
+paginaAtual++;
+atualizarNumeroPagina();
+carregarLista();
+window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function paginaAnterior(){
+if(paginaAtual > 1){
+paginaAtual--;
+atualizarNumeroPagina();
+carregarLista();
+window.scrollTo({top:0,behavior:"smooth"});
+}
+}
+
+async function carregarLista(){
+const status = document.getElementById("status");
+const container = document.getElementById("lista");
+const tituloPagina = document.getElementById("tituloPagina");
+
+tituloPagina.textContent = `Lista de Animes - ${obterNomeTipo(tipoLista)}`;
+status.textContent = `Carregando animes: ${obterNomeTipo(tipoLista)} - página ${paginaAtual}...`;
+container.innerHTML = `<div class="vazio">Carregando resultados...</div>`;
+
+const query = `
+query {
+  Page(page:${paginaAtual},perPage:50){
+    pageInfo{
+      currentPage
+      hasNextPage
+      lastPage
+      perPage
+      total
+    }
+    media(type:ANIME,sort:${tipoLista}){
+
+      id
+
+      title{
+        romaji
+        english
+      }
+
+      coverImage{
+        large
+      }
+
+    }
+  }
+}
+`;
+
+try{
+const response = await fetch(API_URL,{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({query})
+});
+
+const data = await response.json();
+const pageInfo = data?.data?.Page?.pageInfo;
+const animes = data?.data?.Page?.media || [];
+
+if(!animes.length){
+container.innerHTML = `<div class="vazio">Nenhum anime encontrado.</div>`;
+status.textContent = "Nenhum anime encontrado.";
+document.getElementById("btnProxima").disabled = true;
+return;
+}
+
+container.innerHTML = animes.map(anime=>{
+
+const titulo = anime.title.english || anime.title.romaji || "Sem título";
+
+const slug = titulo
+.toLowerCase()
+.normalize("NFD")
+.replace(/[\u0300-\u036f]/g,"")
+.replace(/[^a-z0-9]+/g,"-")
+.replace(/^-+|-+$/g,"");
+
+const url = `detalhes.html?slug=${slug}&id=${anime.id}`;
+const imagem = anime.coverImage?.large || "logo.png";
+
+return `
+<div class="card">
+  <a href="${url}">
+    <img src="${imagem}" alt="${titulo}" loading="lazy">
+    ${titulo}
+  </a>
+</div>
+`;
+}).join("");
+
+status.textContent = `Mostrando 50 animes: ${obterNomeTipo(tipoLista)} - página ${paginaAtual}.`;
+
+document.getElementById("btnProxima").disabled = !pageInfo?.hasNextPage;
+atualizarNumeroPagina();
+
+}catch(error){
+console.error(error);
+container.innerHTML = `<div class="vazio">Não foi possível carregar a lista agora.</div>`;
+status.textContent = "Erro ao carregar a lista.";
+}
+}
+
+atualizarNumeroPagina();
+carregarLista();
+</script>
+
+</body>
+</html>
