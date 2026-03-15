@@ -223,9 +223,9 @@
     .action-page-btn {
       background: #dc2626;
     }
-    
+
     .romance-page-btn {
-     background: #ec4899;
+      background: #ec4899;
     }
 
     .comedy-page-btn {
@@ -251,7 +251,6 @@
     .drama-page-btn {
       background: #64748b;
     }
-    
 
     .back-to-top {
       position: fixed;
@@ -460,6 +459,28 @@
       font-size: 13px;
     }
 
+    .footer-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+
+    .footer-links a {
+      color: #93c5fd;
+      text-decoration: none;
+    }
+
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+
+    .footer-copy {
+      text-align: center;
+      line-height: 1.8;
+    }
+
     @media (max-width: 600px) {
       .card img {
         height: 220px;
@@ -485,8 +506,8 @@
     }
   </style>
 </head>
-
-<body>
+   
+   <body>
   <header>
     <div class="header-wrap">
       <h1>
@@ -547,67 +568,58 @@
         >
           🔥 Animes de Ação
         </a>
-        
         <a
-  href="animes-romance.html"
-  class="nav-btn romance-page-btn"
-  id="romancePageBtn"
->
-  ❤️ Animes de Romance
-</a>
-
-<a
-  href="animes-comedia.html"
-  class="nav-btn comedy-page-btn"
-  id="comedyPageBtn"
->
-  😂 Animes de Comédia
-</a>
-
-<a
-  href="animes-fantasia.html"
-  class="nav-btn fantasy-page-btn"
-  id="fantasyPageBtn"
->
-  🐉 Animes de Fantasia
-</a>
-
-<a
-  href="animes-terror.html"
-  class="nav-btn horror-page-btn"
-  id="horrorPageBtn"
->
-  👻 Animes de Terror
-</a>
-
-<a
-  href="animes-aventura.html"
-  class="nav-btn adventure-page-btn"
-  id="adventurePageBtn"
->
-  🗺️ Animes de Aventura
-</a>
-
-<a
-  href="animes-esporte.html"
-  class="nav-btn sports-page-btn"
-  id="sportsPageBtn"
->
-  🏅 Animes de Esporte
-</a>
-
-<a
-  href="animes-drama.html"
-  class="nav-btn drama-page-btn"
-  id="dramaPageBtn"
->
-  🎭 Animes de Drama
-</a>
-
-<a href="animes-lista.html" class="nav-btn">
-📚 Lista de Animes
-</a>
-        
+          href="animes-romance.html"
+          class="nav-btn romance-page-btn"
+          id="romancePageBtn"
+        >
+          ❤️ Animes de Romance
+        </a>
+        <a
+          href="animes-comedia.html"
+          class="nav-btn comedy-page-btn"
+          id="comedyPageBtn"
+        >
+          😂 Animes de Comédia
+        </a>
+        <a
+          href="animes-fantasia.html"
+          class="nav-btn fantasy-page-btn"
+          id="fantasyPageBtn"
+        >
+          🐉 Animes de Fantasia
+        </a>
+        <a
+          href="animes-terror.html"
+          class="nav-btn horror-page-btn"
+          id="horrorPageBtn"
+        >
+          👻 Animes de Terror
+        </a>
+        <a
+          href="animes-aventura.html"
+          class="nav-btn adventure-page-btn"
+          id="adventurePageBtn"
+        >
+          🗺️ Animes de Aventura
+        </a>
+        <a
+          href="animes-esporte.html"
+          class="nav-btn sports-page-btn"
+          id="sportsPageBtn"
+        >
+          🏅 Animes de Esporte
+        </a>
+        <a
+          href="animes-drama.html"
+          class="nav-btn drama-page-btn"
+          id="dramaPageBtn"
+        >
+          🎭 Animes de Drama
+        </a>
+        <a href="animes-lista.html" class="nav-btn" id="animeListPageBtn">
+          📚 Lista de Animes
+        </a>
       </div>
 
       <div class="search-box">
@@ -667,15 +679,15 @@
     <section class="section-box">
       <h2 id="genreExploreTitle">🎬 Explorar por páginas de gênero</h2>
       <div class="internal-links" id="genreExploreLinks">
-  <a href="animes-acao.html">🔥 Animes de Ação</a>
-  <a href="animes-romance.html">❤️ Animes de Romance</a>
-  <a href="animes-comedia.html">😂 Animes de Comédia</a>
-  <a href="animes-fantasia.html">🐉 Animes de Fantasia</a>
-  <a href="animes-terror.html">👻 Animes de Terror</a>
-  <a href="animes-aventura.html">🗺️ Animes de Aventura</a>
-  <a href="animes-esporte.html">🏅 Animes de Esporte</a>
-  <a href="animes-drama.html">🎭 Animes de Drama</a>
-</div>
+        <a href="animes-acao.html">🔥 Animes de Ação</a>
+        <a href="animes-romance.html">❤️ Animes de Romance</a>
+        <a href="animes-comedia.html">😂 Animes de Comédia</a>
+        <a href="animes-fantasia.html">🐉 Animes de Fantasia</a>
+        <a href="animes-terror.html">👻 Animes de Terror</a>
+        <a href="animes-aventura.html">🗺️ Animes de Aventura</a>
+        <a href="animes-esporte.html">🏅 Animes de Esporte</a>
+        <a href="animes-drama.html">🎭 Animes de Drama</a>
+      </div>
     </section>
 
     <section id="genreSection" class="section" style="display:none;">
@@ -716,8 +728,22 @@
     </section>
   </main>
 
-  <footer id="footerText">
-    Feito com dados públicos do AniList. Descubra animes e veja onde assistir legalmente no AniAtlas.
+  <footer>
+    <div class="footer-links" id="footerLinks">
+      <a href="sobre.html">Sobre</a>
+      <a href="politica-privacidade.html">Privacidade</a>
+      <a href="termos.html">Termos</a>
+      <a href="contato.html">Contato</a>
+    </div>
+
+    <div class="footer-copy">
+      <div id="footerText">
+        Feito com dados públicos do AniList. Descubra animes e veja onde assistir legalmente no AniAtlas.
+      </div>
+      <div id="footerCredit">
+        Criado por Mateus Henrique em parceria com ChatGPT
+      </div>
+    </div>
   </footer>
 
   <button id="backToTopBtn" class="back-to-top" onclick="voltarAoTopo()">
@@ -870,7 +896,41 @@
         "🔥 Animes de Ação",
         "🔥 Action Anime"
       );
-      document.getElementById("searchResultsTitle").textContent = t(
+      document.getElementById("romancePageBtn").textContent = t(
+        "❤️ Animes de Romance",
+        "❤️ Romance Anime"
+      );
+      document.getElementById("comedyPageBtn").textContent = t(
+        "😂 Animes de Comédia",
+        "😂 Comedy Anime"
+      );
+      document.getElementById("fantasyPageBtn").textContent = t(
+        "🐉 Animes de Fantasia",
+        "🐉 Fantasy Anime"
+      );
+      document.getElementById("horrorPageBtn").textContent = t(
+        "👻 Animes de Terror",
+        "👻 Horror Anime"
+      );
+      document.getElementById("adventurePageBtn").textContent = t(
+        "🗺️ Animes de Aventura",
+        "🗺️ Adventure Anime"
+      );
+      document.getElementById("sportsPageBtn").textContent = t(
+        "🏅 Animes de Esporte",
+        "🏅 Sports Anime"
+      );
+      document.getElementById("dramaPageBtn").textContent = t(
+        "🎭 Animes de Drama",
+        "🎭 Drama Anime"
+      );
+      document.getElementById("animeListPageBtn").textContent = t(
+        "📚 Lista de Animes",
+        "📚 Anime List"
+      );
+   
+   
+   document.getElementById("searchResultsTitle").textContent = t(
         "🔎 Resultado da busca",
         "🔎 Search Results"
       );
@@ -886,39 +946,13 @@
         "🌸 Animes da temporada",
         "🌸 Seasonal Anime"
       );
-      
-      document.getElementById("romancePageBtn").textContent = t(
-  "❤️ Animes de Romance",
-  "❤️ Romance Anime"
-);
-document.getElementById("comedyPageBtn").textContent = t(
-  "😂 Animes de Comédia",
-  "😂 Comedy Anime"
-);
-document.getElementById("fantasyPageBtn").textContent = t(
-  "🐉 Animes de Fantasia",
-  "🐉 Fantasy Anime"
-);
-document.getElementById("horrorPageBtn").textContent = t(
-  "👻 Animes de Terror",
-  "👻 Horror Anime"
-);
-document.getElementById("adventurePageBtn").textContent = t(
-  "🗺️ Animes de Aventura",
-  "🗺️ Adventure Anime"
-);
-document.getElementById("sportsPageBtn").textContent = t(
-  "🏅 Animes de Esporte",
-  "🏅 Sports Anime"
-);
-document.getElementById("dramaPageBtn").textContent = t(
-  "🎭 Animes de Drama",
-  "🎭 Drama Anime"
-);
-      
       document.getElementById("footerText").textContent = t(
         "Feito com dados públicos do AniList. Descubra animes e veja onde assistir legalmente no AniAtlas.",
         "Built with public AniList data. Discover anime and see where to watch legally on AniAtlas."
+      );
+      document.getElementById("footerCredit").textContent = t(
+        "Criado por Mateus Henrique em parceria com ChatGPT",
+        "Created by Mateus Henrique in partnership with ChatGPT"
       );
       document.getElementById("backToTopBtn").textContent = t(
         "⬆ Topo",
@@ -945,15 +979,22 @@ document.getElementById("dramaPageBtn").textContent = t(
         "🎬 Explore by genre pages"
       );
       document.getElementById("genreExploreLinks").innerHTML = `
-  <a href="animes-acao.html">${t("🔥 Animes de Ação", "🔥 Action Anime")}</a>
-  <a href="animes-romance.html">${t("❤️ Animes de Romance", "❤️ Romance Anime")}</a>
-  <a href="animes-comedia.html">${t("😂 Animes de Comédia", "😂 Comedy Anime")}</a>
-  <a href="animes-fantasia.html">${t("🐉 Animes de Fantasia", "🐉 Fantasy Anime")}</a>
-  <a href="animes-terror.html">${t("👻 Animes de Terror", "👻 Horror Anime")}</a>
-  <a href="animes-aventura.html">${t("🗺️ Animes de Aventura", "🗺️ Adventure Anime")}</a>
-  <a href="animes-esporte.html">${t("🏅 Animes de Esporte", "🏅 Sports Anime")}</a>
-  <a href="animes-drama.html">${t("🎭 Animes de Drama", "🎭 Drama Anime")}</a>
-`;
+        <a href="animes-acao.html">${t("🔥 Animes de Ação", "🔥 Action Anime")}</a>
+        <a href="animes-romance.html">${t("❤️ Animes de Romance", "❤️ Romance Anime")}</a>
+        <a href="animes-comedia.html">${t("😂 Animes de Comédia", "😂 Comedy Anime")}</a>
+        <a href="animes-fantasia.html">${t("🐉 Animes de Fantasia", "🐉 Fantasy Anime")}</a>
+        <a href="animes-terror.html">${t("👻 Animes de Terror", "👻 Horror Anime")}</a>
+        <a href="animes-aventura.html">${t("🗺️ Animes de Aventura", "🗺️ Adventure Anime")}</a>
+        <a href="animes-esporte.html">${t("🏅 Animes de Esporte", "🏅 Sports Anime")}</a>
+        <a href="animes-drama.html">${t("🎭 Animes de Drama", "🎭 Drama Anime")}</a>
+      `;
+
+      document.getElementById("footerLinks").innerHTML = `
+        <a href="sobre.html">${t("Sobre", "About")}</a>
+        <a href="politica-privacidade.html">${t("Privacidade", "Privacy")}</a>
+        <a href="termos.html">${t("Termos", "Terms")}</a>
+        <a href="contato.html">${t("Contato", "Contact")}</a>
+      `;
 
       atualizarMetaDescricao(t(
         "Descubra onde assistir animes legalmente, veja animes populares, animes da temporada e pesquise títulos no AniAtlas.",
@@ -1027,7 +1068,7 @@ document.getElementById("dramaPageBtn").textContent = t(
         return [];
       }
     }
-    
+
     function saveFavorites(favorites) {
       localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
     }
@@ -1113,8 +1154,8 @@ document.getElementById("dramaPageBtn").textContent = t(
         description: anime.description || ""
       };
     }
-
-    function criarCard(anime, isFromFavorites = false) {
+   
+   function criarCard(anime, isFromFavorites = false) {
       const animeData = createAnimeData(anime);
       const favoritos = isFavorite(animeData.id);
       const buscaLegal = encodeURIComponent(
@@ -1419,8 +1460,7 @@ document.getElementById("dramaPageBtn").textContent = t(
         return `<a href="${detalhesUrl}">${animeData.title}</a>`;
       }).join("");
     }
-    
-    
+
     async function filtrarGenero(genero, botao) {
       generoAtual = genero;
 
@@ -1692,3 +1732,5 @@ document.getElementById("dramaPageBtn").textContent = t(
   </script>
 </body>
 </html>
+   
+   
