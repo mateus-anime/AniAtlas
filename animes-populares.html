@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>AniAtlas - 100 animes populares para descobrir</title>
+
+  <meta
+    name="description"
+    content="Veja 100 animes populares para descobrir no AniAtlas. Explore títulos conhecidos, abra páginas de detalhes e encontre onde assistir legalmente."
+  />
+  <meta
+    name="keywords"
+    content="animes populares, melhores animes, catálogo de animes, onde assistir anime, AniAtlas"
+  />
+  <meta name="author" content="AniAtlas" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+
+  <meta property="og:title" content="AniAtlas - 100 animes populares para descobrir" />
+  <meta
+    property="og:description"
+    content="Explore 100 animes populares, abra páginas de detalhes e descubra novos títulos no AniAtlas."
+  />
+  <meta property="og:image" content="/logo.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="/animes-populares.html" />
+  <meta property="og:site_name" content="AniAtlas" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AniAtlas - 100 animes populares para descobrir" />
+  <meta
+    name="twitter:description"
+    content="Explore 100 animes populares, abra páginas de detalhes e descubra novos títulos no AniAtlas."
+  />
+  <meta name="twitter:image" content="/logo.png" />
+
+  <link rel="canonical" href="/animes-populares.html" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b1020;
+      color: #f1f5f9;
+    }
+
+    header {
+      background: linear-gradient(180deg, #111827, #0b1020);
+      padding: 20px 16px 18px;
+      border-bottom: 1px solid #1f2937;
+    }
+
+    .header-wrap,
+    main,
+    footer {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header-wrap h1 {
+      margin: 0 0 10px;
+      font-size: 30px;
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: #94a3b8;
+      font-size: 15px;
+      line-height: 1.7;
+      max-width: 900px;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .nav-btn,
+    button {
+      padding: 12px 16px;
+      border: none;
+      border-radius: 12px;
+      background: #2563eb;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .secondary-btn {
+      background: #334155;
+    }
+
+    .lang-btn {
+      background: #0f172a;
+      border: 1px solid #334155;
+    }
+
+    .catalog-btn {
+      background: #2563eb;
+    }
+
+    .search-box {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    input {
+      flex: 1;
+      min-width: 220px;
+      padding: 16px 14px;
+      border-radius: 12px;
+      border: 1px solid #334155;
+      background: #0f172a;
+      color: #f8fafc;
+      outline: none;
+    }
+
+    main {
+      padding: 22px 16px 40px;
+    }
+
+    .breadcrumb {
+      margin-bottom: 16px;
+      color: #94a3b8;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .breadcrumb a {
+      color: #93c5fd;
+      text-decoration: none;
+    }
+
+    .breadcrumb a:hover {
+      text-decoration: underline;
+    }
+
+    .status {
+      margin-bottom: 18px;
+      color: #93c5fd;
+      font-size: 14px;
+    }
+
+    .section-box,
+    .loading,
+    .error,
+    .empty {
+      margin-bottom: 24px;
+      padding: 16px;
+      border-radius: 16px;
+      border: 1px solid #334155;
+      background: #111827;
+      color: #cbd5e1;
+      line-height: 1.8;
+    }
+
+    .section-box h2 {
+      margin-top: 0;
+      margin-bottom: 12px;
+      color: #f1f5f9;
+      font-size: 22px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+      transition: transform 0.15s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+    }
+
+    .card-cover-link {
+      display: block;
+      text-decoration: none;
+    }
+
+    .card img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      display: block;
+      background: #0f172a;
+    }
+
+    .card-content {
+      padding: 12px;
+    }
+
+    .rank {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: bold;
+      color: #93c5fd;
+      margin-bottom: 8px;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: bold;
+      margin-bottom: 8px;
+      min-height: 38px;
+      line-height: 1.25;
+    }
+
+    .card-title a {
+      color: #f1f5f9;
+      text-decoration: none;
+    }
+
+    .card-title a:hover {
+      text-decoration: underline;
+    }
+
+    .card-meta {
+      font-size: 13px;
+      color: #cbd5e1;
+      margin-bottom: 10px;
+      line-height: 1.45;
+    }
+
+    .card-desc {
+      font-size: 12px;
+      color: #a8b6c7;
+      line-height: 1.6;
+      margin-bottom: 10px;
+      min-height: 58px;
+    }
+
+    .genres {
+      font-size: 12px;
+      color: #93c5fd;
+      min-height: 32px;
+      margin-bottom: 10px;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .card-actions a {
+      text-decoration: none;
+    }
+
+    .card-actions button {
+      padding: 9px 12px;
+      font-size: 12px;
+      border-radius: 10px;
+    }
+
+    .list-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 8px 14px;
+    }
+
+    .list-links a {
+      color: #93c5fd;
+      text-decoration: none;
+      line-height: 1.6;
+    }
+
+    .list-links a:hover {
+      text-decoration: underline;
+    }
+
+    .back-to-top {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 999;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 999px;
+      padding: 12px 14px;
+      font-weight: bold;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+      display: none;
+    }
+
+    .back-to-top.show {
+      display: inline-block;
+    }
+
+    footer {
+      padding: 10px 16px 30px;
+      color: #64748b;
+      font-size: 13px;
+    }
+
+    @media (max-width: 600px) {
+      .header-wrap h1 {
+        font-size: 25px;
+      }
+
+      .card img {
+        height: 220px;
+      }
+
+      .card-desc {
+        min-height: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-wrap">
+      <div class="top-actions">
+        <a href="index.html" class="nav-btn secondary-btn" id="backBtn">← Voltar</a>
+        <button class="lang-btn" onclick="trocarIdioma()" id="langBtn">🌎 PT/EN</button>
+        <a href="animes.html" class="nav-btn catalog-btn" id="catalogBtn">📚 Catálogo de Animes</a>
+      </div>
+
+      <h1 id="pageTitle">🔥 100 Animes Populares</h1>
+      <p class="subtitle" id="subtitleText">
+        Explore uma lista com 100 animes populares para descobrir, comparar e abrir páginas de detalhes no AniAtlas.
+      </p>
+
+      <div class="search-box">
+        <input
+          id="searchInput"
+          type="text"
+          placeholder="Pesquise um anime, ex: Naruto"
+          onkeydown="if(event.key === 'Enter') pesquisarNoCatalogo()"
+        />
+        <button onclick="pesquisarNoCatalogo()" id="searchBtn">Buscar</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <nav class="breadcrumb">
+      <a href="index.html" id="crumbHome">Início</a> ›
+      <a href="animes.html" id="crumbCatalog">Animes</a> ›
+      <span id="crumbCurrent">Populares</span>
+    </nav>
+
+    <div id="status" class="status">Carregando lista de animes populares...</div>
+
+    <section class="section-box" id="introBox">
+      <h2 id="introTitle">📌 Sobre esta lista</h2>
+      <p id="introText">
+        Esta página reúne 100 animes populares com links internos para páginas de detalhes. Ela ajuda você a descobrir títulos conhecidos e navegar rapidamente pelo catálogo.
+      </p>
+    </section>
+
+    <section class="section-box">
+      <h2 id="linksTitle">🔗 Links rápidos desta página</h2>
+      <div id="internalLinks" class="list-links"></div>
+    </section>
+
+    <section>
+      <div id="animeList" class="cards"></div>
+    </section>
+  </main>
+
+  <footer id="footerText">
+    Feito com dados públicos do AniList. Descubra animes e veja onde assistir legalmente no AniAtlas.
+  </footer>
+
+  <button id="backToTopBtn" class="back-to-top" onclick="voltarAoTopo()">
+    ⬆ Topo
+  </button>
+
+  <script>
+    const API_URL = "https://graphql.anilist.co";
+    const LANG_KEY = "aniatlas_lang";
+    const SITE_URL = window.location.origin;
+    const CACHE_KEY = "aniatlas_cache_popular_100";
+    const CACHE_TIME = 1000 * 60 * 15;
+
+    let idioma = localStorage.getItem(LANG_KEY) || "pt";
+
+    function t(pt, en) {
+      return idioma === "pt" ? pt : en;
+    }
+
+    function atualizarMetaDescricao(texto) {
+      const meta = document.querySelector('meta[name="description"]');
+      if (meta) meta.setAttribute("content", texto);
+    }
+
+    function atualizarOgTitulo(texto) {
+      const meta = document.querySelector('meta[property="og:title"]');
+      if (meta) meta.setAttribute("content", texto);
+      const twitter = document.querySelector('meta[name="twitter:title"]');
+      if (twitter) twitter.setAttribute("content", texto);
+    }
+
+    function atualizarOgDescricao(texto) {
+      const meta = document.querySelector('meta[property="og:description"]');
+      if (meta) meta.setAttribute("content", texto);
+      const twitter = document.querySelector('meta[name="twitter:description"]');
+      if (twitter) twitter.setAttribute("content", texto);
+    }
+
+    function atualizarOgUrl(url) {
+      const meta = document.querySelector('meta[property="og:url"]');
+      if (meta) meta.setAttribute("content", url);
+    }
+
+    function atualizarCanonical(url) {
+      const link = document.querySelector('link[rel="canonical"]');
+      if (link) link.setAttribute("href", url);
+    }
+
+    function criarSlug(texto) {
+      return (texto || "")
+        .toString()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, "")
+        .trim()
+        .replace(/\s+/g, "-")
+        .replace(/-+/g, "-");
+    }
+
+    function limparTexto(texto) {
+      if (!texto) {
+        return t("Descrição não disponível.", "Description not available.");
+      }
+
+      let limpo = texto;
+      limpo = limpo.replace(/<[^>]*>/g, "");
+      limpo = limpo.replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1");
+      limpo = limpo.replace(/https?:\/\/\S+/g, "");
+      limpo = limpo.replace(/\s+/g, " ").trim();
+
+      return limpo;
+    }
+
+    function resumirTexto(texto, limite = 110) {
+      const limpo = limparTexto(texto);
+      if (limpo.length <= limite) return limpo;
+      return `${limpo.slice(0, limite).trim()}...`;
+    }
+
+    function traduzirGenero(genero) {
+      const mapa = {
+        "Action": "Ação",
+        "Adventure": "Aventura",
+        "Comedy": "Comédia",
+        "Drama": "Drama",
+        "Fantasy": "Fantasia",
+        "Horror": "Terror",
+        "Romance": "Romance",
+        "Sci-Fi": "Ficção científica",
+        "Sports": "Esporte",
+        "Mystery": "Mistério",
+        "Slice of Life": "Slice of Life"
+      };
+
+      if (idioma === "en") return genero;
+      return mapa[genero] || genero;
+    }
+
+    function salvarCache(data) {
+      localStorage.setItem(CACHE_KEY, JSON.stringify({
+        time: Date.now(),
+        data
+      }));
+    }
+
+    function lerCache() {
+      try {
+        const payload = JSON.parse(localStorage.getItem(CACHE_KEY));
+        if (!payload) return null;
+
+        const expirado = Date.now() - payload.time > CACHE_TIME;
+        if (expirado) {
+          localStorage.removeItem(CACHE_KEY);
+          return null;
+        }
+
+        return payload.data;
+      } catch {
+        return null;
+      }
+    }
+    
+    async function fetchAniList(query, variables = {}) {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 15000);
+
+      try {
+        const response = await fetch(API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: JSON.stringify({ query, variables }),
+          signal: controller.signal
+        });
+
+        return await response.json();
+      } finally {
+        clearTimeout(timeout);
+      }
+    }
+
+    async function carregarAnimesPopulares() {
+      const cache = lerCache();
+      if (cache) return cache;
+
+      const query = `
+        query ($page: Int, $perPage: Int) {
+          Page(page: $page, perPage: $perPage) {
+            media(
+              type: ANIME,
+              sort: POPULARITY_DESC
+            ) {
+              id
+              title {
+                romaji
+                english
+                native
+              }
+              episodes
+              averageScore
+              genres
+              description(asHtml: false)
+              coverImage {
+                large
+              }
+            }
+          }
+        }
+      `;
+
+      const [res1, res2] = await Promise.all([
+        fetchAniList(query, { page: 1, perPage: 50 }),
+        fetchAniList(query, { page: 2, perPage: 50 })
+      ]);
+
+      const lista1 = res1?.data?.Page?.media || [];
+      const lista2 = res2?.data?.Page?.media || [];
+      const listaBruta = [...lista1, ...lista2];
+
+      const ids = new Set();
+      const lista = listaBruta.filter(item => {
+        if (!item?.id || ids.has(item.id)) return false;
+        ids.add(item.id);
+        return true;
+      });
+
+      if (lista.length) {
+        salvarCache(lista);
+      }
+
+      return lista;
+    }
+
+    function criarAnimeData(anime) {
+      return {
+        id: anime.id,
+        title:
+          anime.title?.english ||
+          anime.title?.romaji ||
+          anime.title?.native ||
+          t("Sem título", "Untitled"),
+        episodes: anime.episodes ?? "?",
+        averageScore: anime.averageScore ?? "?",
+        genres: anime.genres || [],
+        image: anime.coverImage?.large || "logo.png",
+        description: limparTexto(anime.description || "")
+      };
+    }
+
+    function criarCard(anime, index) {
+      const animeData = criarAnimeData(anime);
+      const slug = criarSlug(animeData.title);
+      const detalhesUrl = `detalhes.html?slug=${slug}&id=${animeData.id}`;
+      const buscaLegal = encodeURIComponent(
+        `${animeData.title} ${t("onde assistir legalmente", "where to watch legally")}`
+      );
+
+      return `
+        <div class="card">
+          <a href="${detalhesUrl}" class="card-cover-link" aria-label="${t("Abrir detalhes de", "Open details for")} ${animeData.title}">
+            <img src="${animeData.image}" alt="${animeData.title}" loading="lazy">
+          </a>
+
+          <div class="card-content">
+            <div class="rank">#${index + 1}</div>
+
+            <div class="card-title">
+              <a href="${detalhesUrl}">${animeData.title}</a>
+            </div>
+
+            <div class="card-meta">
+              ${t("Episódios", "Episodes")}: ${animeData.episodes}<br>
+              ${t("Nota", "Score")}: ${animeData.averageScore}
+            </div>
+
+            <div class="card-desc">
+              ${resumirTexto(animeData.description, 110)}
+            </div>
+
+            <div class="genres">
+              ${animeData.genres.slice(0, 3).map(traduzirGenero).join(" • ")}
+            </div>
+
+            <div class="card-actions">
+              <a href="${detalhesUrl}">
+                <button class="secondary-btn">${t("Ver detalhes", "See details")}</button>
+              </a>
+
+              <a href="https://www.google.com/search?q=${buscaLegal}" target="_blank" rel="noopener">
+                <button>${t("Onde assistir", "Where to watch")}</button>
+              </a>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderizarLinksInternos(lista) {
+      const el = document.getElementById("internalLinks");
+
+      if (!lista.length) {
+        el.innerHTML = `<span>${t("Nenhum link encontrado.", "No links found.")}</span>`;
+        return;
+      }
+
+      el.innerHTML = lista.map(anime => {
+        const animeData = criarAnimeData(anime);
+        const slug = criarSlug(animeData.title);
+        const detalhesUrl = `detalhes.html?slug=${slug}&id=${animeData.id}`;
+        return `<a href="${detalhesUrl}">${animeData.title}</a>`;
+      }).join("");
+    }
+
+    function pesquisarNoCatalogo() {
+      const termo = document.getElementById("searchInput").value.trim();
+      if (!termo) return;
+      window.location.href = `animes.html?busca=${encodeURIComponent(termo)}`;
+    }
+
+    function trocarIdioma() {
+      idioma = idioma === "pt" ? "en" : "pt";
+      localStorage.setItem(LANG_KEY, idioma);
+      aplicarIdioma();
+      carregarPagina();
+    }
+
+    function aplicarIdioma() {
+      document.documentElement.lang = idioma === "pt" ? "pt-BR" : "en";
+
+      const titulo = t(
+        "AniAtlas - 100 animes populares para descobrir",
+        "AniAtlas - 100 popular anime to discover"
+      );
+
+      const descricao = t(
+        "Veja 100 animes populares para descobrir no AniAtlas. Explore títulos conhecidos, abra páginas de detalhes e encontre onde assistir legalmente.",
+        "See 100 popular anime to discover on AniAtlas. Explore known titles, open detail pages and find where to watch legally."
+      );
+
+      document.title = titulo;
+      atualizarMetaDescricao(descricao);
+      atualizarOgTitulo(titulo);
+      atualizarOgDescricao(descricao);
+      atualizarOgUrl(`${SITE_URL}/animes-populares.html`);
+      atualizarCanonical(`${SITE_URL}/animes-populares.html`);
+
+      document.getElementById("backBtn").textContent = t("← Voltar", "← Back");
+      document.getElementById("catalogBtn").textContent = t("📚 Catálogo de Animes", "📚 Anime Catalog");
+      document.getElementById("pageTitle").textContent = t("🔥 100 Animes Populares", "🔥 100 Popular Anime");
+      document.getElementById("subtitleText").textContent = t(
+        "Explore uma lista com 100 animes populares para descobrir, comparar e abrir páginas de detalhes no AniAtlas.",
+        "Explore a list of 100 popular anime to discover, compare and open detail pages on AniAtlas."
+      );
+      document.getElementById("searchInput").placeholder = t(
+        "Pesquise um anime, ex: Naruto",
+        "Search an anime, e.g. Naruto"
+      );
+      document.getElementById("searchBtn").textContent = t("Buscar", "Search");
+      document.getElementById("crumbHome").textContent = t("Início", "Home");
+      document.getElementById("crumbCatalog").textContent = t("Animes", "Anime");
+      document.getElementById("crumbCurrent").textContent = t("Populares", "Popular");
+      document.getElementById("introTitle").textContent = t("📌 Sobre esta lista", "📌 About this list");
+      document.getElementById("introText").textContent = t(
+        "Esta página reúne 100 animes populares com links internos para páginas de detalhes. Ela ajuda você a descobrir títulos conhecidos e navegar rapidamente pelo catálogo.",
+        "This page gathers 100 popular anime with internal links to detail pages. It helps you discover known titles and quickly browse the catalog."
+      );
+      document.getElementById("linksTitle").textContent = t(
+        "🔗 Links rápidos desta página",
+        "🔗 Quick links from this page"
+      );
+      document.getElementById("footerText").textContent = t(
+        "Feito com dados públicos do AniList. Descubra animes e veja onde assistir legalmente no AniAtlas.",
+        "Built with public AniList data. Discover anime and see where to watch legally on AniAtlas."
+      );
+      document.getElementById("backToTopBtn").textContent = t("⬆ Topo", "⬆ Top");
+    }
+
+    function controlarBotaoTopo() {
+      const btn = document.getElementById("backToTopBtn");
+      if (window.scrollY > 300) {
+        btn.classList.add("show");
+      } else {
+        btn.classList.remove("show");
+      }
+    }
+
+    function voltarAoTopo() {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }
+
+    async function carregarPagina() {
+      const listaEl = document.getElementById("animeList");
+      const statusEl = document.getElementById("status");
+
+      statusEl.textContent = t(
+        "Carregando lista de animes populares...",
+        "Loading popular anime list..."
+      );
+
+      listaEl.innerHTML = `<div class="loading">${t("Carregando resultados...", "Loading results...")}</div>`;
+
+      try {
+        const lista = await carregarAnimesPopulares();
+
+        if (!lista.length) {
+          listaEl.innerHTML = `<div class="empty">${t(
+            "Nenhum anime encontrado.",
+            "No anime found."
+          )}</div>`;
+          renderizarLinksInternos([]);
+          statusEl.textContent = t(
+            "Nenhum anime encontrado.",
+            "No anime found."
+          );
+          return;
+        }
+
+        listaEl.innerHTML = lista.map((anime, index) => criarCard(anime, index)).join("");
+        renderizarLinksInternos(lista);
+
+        statusEl.textContent = t(
+          `Mostrando ${lista.length} animes populares.`,
+          `Showing ${lista.length} popular anime.`
+        );
+      } catch (error) {
+        console.error(error);
+
+        const msg = error.name === "AbortError"
+          ? t(
+              "A página demorou demais para carregar. Tente novamente.",
+              "The page took too long to load. Please try again."
+            )
+          : t(
+              "Não foi possível carregar esta lista agora.",
+              "Could not load this list right now."
+            );
+
+        listaEl.innerHTML = `<div class="error">${msg}</div>`;
+        renderizarLinksInternos([]);
+        statusEl.textContent = msg;
+      }
+    }
+
+    window.addEventListener("scroll", controlarBotaoTopo);
+
+    async function iniciar() {
+      aplicarIdioma();
+      await carregarPagina();
+      controlarBotaoTopo();
+    }
+
+    iniciar();
+  </script>
+</body>
+</html>
