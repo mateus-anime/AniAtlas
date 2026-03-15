@@ -726,6 +726,24 @@
         Use a página inicial do AniAtlas para descobrir animes populares, ver tendências, explorar a temporada atual e abrir páginas individuais de detalhes.
       </p>
     </section>
+    <section class="section-box" id="seoExtraBox">
+  <h2 id="seoExtraTitle">Catálogo de Animes – AniAtlas</h2>
+
+  <p id="seoExtraText1">
+    O AniAtlas é um catálogo online de animes que ajuda fãs a descobrir novos títulos
+    e encontrar onde assistir anime legalmente.
+  </p>
+
+  <p id="seoExtraText2">
+    Explore animes populares, veja recomendações, descubra animes da temporada e
+    acesse páginas com informações de cada anime.
+  </p>
+
+  <p id="seoExtraText3">
+    Nosso objetivo é facilitar a descoberta de animes e ajudar fãs a encontrar
+    plataformas oficiais onde assistir anime online.
+  </p>
+</section>
   </main>
 
   <footer>
@@ -995,6 +1013,26 @@
         <a href="termos.html">${t("Termos", "Terms")}</a>
         <a href="contato.html">${t("Contato", "Contact")}</a>
       `;
+      
+      document.getElementById("seoExtraTitle").textContent = t(
+  "Catálogo de Animes – AniAtlas",
+  "Anime Catalog – AniAtlas"
+);
+
+document.getElementById("seoExtraText1").textContent = t(
+  "O AniAtlas é um catálogo online de animes que ajuda fãs a descobrir novos títulos e encontrar onde assistir anime legalmente.",
+  "AniAtlas is an online anime catalog that helps fans discover new titles and find where to watch anime legally."
+);
+
+document.getElementById("seoExtraText2").textContent = t(
+  "Explore animes populares, veja recomendações, descubra animes da temporada e acesse páginas com informações de cada anime.",
+  "Explore popular anime, see recommendations, discover seasonal anime and access pages with information about each anime."
+);
+
+document.getElementById("seoExtraText3").textContent = t(
+  "Nosso objetivo é facilitar a descoberta de animes e ajudar fãs a encontrar plataformas oficiais onde assistir anime online.",
+  "Our goal is to make anime discovery easier and help fans find official platforms where to watch anime online."
+);
 
       atualizarMetaDescricao(t(
         "Descubra onde assistir animes legalmente, veja animes populares, animes da temporada e pesquise títulos no AniAtlas.",
