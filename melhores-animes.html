@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AniAtlas - 100 melhores animes por nota</title>
+
+<meta name="description"
+content="Veja os 100 melhores animes por nota segundo o AniList. Descubra novos animes e veja onde assistir legalmente no AniAtlas.">
+
+<meta name="robots" content="index, follow">
+
+<meta property="og:title" content="100 melhores animes por nota">
+<meta property="og:description" content="Lista dos melhores animes segundo avaliações do AniList.">
+<meta property="og:image" content="/logo.png">
+
+<link rel="canonical" href="/melhores-animes.html">
+
+<link rel="icon" href="favicon.png">
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:#0b1020;
+color:white;
+}
+
+header{
+padding:20px;
+border-bottom:1px solid #1f2937;
+}
+
+main{
+max-width:1200px;
+margin:auto;
+padding:20px;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:14px;
+}
+
+.card{
+background:#111827;
+border-radius:12px;
+overflow:hidden;
+border:1px solid #1f2937;
+}
+
+.card img{
+width:100%;
+height:240px;
+object-fit:cover;
+}
+
+.card-content{
+padding:10px;
+}
+
+.rank{
+font-size:12px;
+color:#93c5fd;
+margin-bottom:6px;
+}
+
+.card-title{
+font-weight:bold;
+margin-bottom:6px;
+}
+
+.card-meta{
+font-size:13px;
+color:#cbd5e1;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>🏆 100 Melhores Animes</h1>
+
+<p>
+Lista com os animes mais bem avaliados segundo o AniList.
+</p>
+
+</header>
+
+<main>
+
+<div id="status">
+Carregando lista...
+</div>
+
+<div id="animeList" class="cards"></div>
+
+</main>
+
+<script>
+
+const API_URL = "https://graphql.anilist.co";
+
+function criarSlug(texto){
+
+return texto
+.toLowerCase()
+.normalize("NFD")
+.replace(/[\u0300-\u036f]/g,"")
+.replace(/[^a-z0-9 ]/g,"")
+.trim()
+.replace(/\s+/g,"-")
+
+}
+
+async function fetchAniList(query,variables={}){
+
+const res = await fetch(API_URL,{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({query,variables})
+})
+
+return res.json()
+
+}
+
+async function carregarMelhores(){
+
+const query = `
+query ($page:Int,$perPage:Int){
+
+Page(page:$page,perPage:$perPage){
+
+media(
+type:ANIME
+sort:SCORE_DESC
+){
+
+id
+
+title{
+romaji
+english
+}
+
+episodes
+averageScore
+
+coverImage{
+large
+}
+
+}
+
+}
+
+}
+`
+
+const [p1,p2] = await Promise.all([
+
+fetchAniList(query,{page:1,perPage:50}),
+fetchAniList(query,{page:2,perPage:50})
+
+])
+
+const lista1 = p1.data.Page.media
+const lista2 = p2.data.Page.media
+
+return [...lista1,...lista2]
+
+}
+
+function criarCard(anime,index){
+
+const title =
+anime.title.english ||
+anime.title.romaji
+
+const slug = criarSlug(title)
+
+const url = `detalhes.html?slug=${slug}&id=${anime.id}`
+
+return `
+<div class="card">
+
+<a href="${url}">
+<img src="${anime.coverImage.large}">
+</a>
+
+<div class="card-content">
+
+<div class="rank">
+#${index+1}
+</div>
+
+<div class="card-title">
+<a href="${url}">${title}</a>
+</div>
+
+<div class="card-meta">
+Score: ${anime.averageScore}
+<br>
+Episódios: ${anime.episodes ?? "?"}
+</div>
+
+</div>
+
+</div>
+`
+
+}
+
+async function iniciar(){
+
+const status = document.getElementById("status")
+const listaEl = document.getElementById("animeList")
+
+status.innerText = "Carregando melhores animes..."
+
+const lista = await carregarMelhores()
+
+listaEl.innerHTML = lista
+.map((anime,i)=>criarCard(anime,i))
+.join("")
+
+status.innerText =
+`Mostrando ${lista.length} animes`
+
+}
+
+iniciar()
+
+</script>
+
+</body>
+</html>
