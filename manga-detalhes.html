@@ -371,7 +371,7 @@
       const twitter = document.querySelector('meta[name="twitter:title"]');
       if (twitter) twitter.setAttribute("content", texto);
     }
-    
+
     function atualizarOgDescricao(texto) {
       const meta = document.querySelector('meta[property="og:description"]');
       if (meta) meta.setAttribute("content", texto);
@@ -558,7 +558,42 @@
         return "logo.png";
       }
 
+      const nome = fileName.toLowerCase();
+
+      if (
+        nome.includes("placeholder") ||
+        nome.includes("default") ||
+        nome.includes("cover_not_found") ||
+        nome.includes("notfound")
+      ) {
+        return "logo.png";
+      }
+
       return `https://uploads.mangadex.org/covers/${manga.id}/${fileName}.512.jpg`;
+    }
+
+    function verificarCapaDetalhes(img) {
+      if (!img || !img.naturalWidth || !img.naturalHeight) return;
+
+      const largura = img.naturalWidth;
+      const altura = img.naturalHeight;
+      const proporcao = largura / altura;
+      const src = (img.currentSrc || img.src || "").toLowerCase();
+
+      const suspeitaPorNome =
+        src.includes("placeholder") ||
+        src.includes("cover_not_found") ||
+        src.includes("notfound");
+
+      const suspeitaPorFormato =
+        largura >= 200 &&
+        altura >= 200 &&
+        proporcao > 0.7;
+
+      if (suspeitaPorNome || suspeitaPorFormato) {
+        img.onerror = null;
+        img.src = "logo.png";
+      }
     }
 
     async function fetchMangaById(id) {
@@ -602,7 +637,7 @@
         })
         .join(" • ");
     }
-
+    
     function pesquisarOutroManga() {
       const termo = document.getElementById("searchInput").value.trim();
       if (!termo) return;
@@ -719,7 +754,15 @@
         content.className = "";
         content.innerHTML = `
           <div class="hero">
-            <img class="cover" src="${imagem}" alt="${titulo}" loading="lazy" onerror="this.onerror=null;this.src='logo.png';">
+            <img
+              class="cover"
+              src="${imagem}"
+              alt="${titulo}"
+              loading="lazy"
+              referrerpolicy="no-referrer"
+              onerror="this.onerror=null;this.src='logo.png';"
+              onload="verificarCapaDetalhes(this)"
+            >
 
             <div class="info-box">
               <h1>${titulo}</h1>
