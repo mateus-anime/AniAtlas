@@ -15,7 +15,7 @@
     content="mangá, detalhes do mangá, AniAtlas, MangaDex"
   />
   <meta name="author" content="AniAtlas" />
-  <meta name="robots" content="index, follow" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
 
   <meta property="og:title" content="AniAtlas - Detalhes do mangá" />
   <meta
@@ -25,6 +25,15 @@
   <meta property="og:image" content="/logo.png" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="/manga-detalhes.html" />
+  <meta property="og:site_name" content="AniAtlas" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AniAtlas - Detalhes do mangá" />
+  <meta
+    name="twitter:description"
+    content="Veja informações do mangá e abra a página oficial externa no AniAtlas."
+  />
+  <meta name="twitter:image" content="/logo.png" />
 
   <link rel="canonical" href="/manga-detalhes.html" />
   <link rel="icon" type="image/png" href="favicon.png" />
@@ -109,6 +118,22 @@
       padding: 22px 16px 40px;
     }
 
+    .breadcrumb {
+      margin-bottom: 16px;
+      color: #94a3b8;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .breadcrumb a {
+      color: #93c5fd;
+      text-decoration: none;
+    }
+
+    .breadcrumb a:hover {
+      text-decoration: underline;
+    }
+
     .hero {
       display: grid;
       grid-template-columns: 260px 1fr;
@@ -156,6 +181,15 @@
       margin-bottom: 14px;
     }
 
+    .tags a {
+      color: #93c5fd;
+      text-decoration: none;
+    }
+
+    .tags a:hover {
+      text-decoration: underline;
+    }
+
     .desc {
       color: #e5e7eb;
       line-height: 1.8;
@@ -187,6 +221,32 @@
       border: 1px solid #334155;
       color: #cbd5e1;
       line-height: 1.8;
+    }
+
+    .section-box h2 {
+      margin-top: 0;
+      margin-bottom: 12px;
+      font-size: 22px;
+    }
+
+    .section-box p,
+    .section-box li {
+      color: #dbe4ee;
+      line-height: 1.8;
+    }
+
+    .section-box ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .section-box a {
+      color: #93c5fd;
+      text-decoration: none;
+    }
+
+    .section-box a:hover {
+      text-decoration: underline;
     }
 
     .actions {
@@ -268,9 +328,13 @@
     </div>
   </header>
 
-  <div class="page">
-    <div id="content" class="loading">Carregando detalhes do mangá...</div>
-  </div>
+  <main class="page">
+    <nav class="breadcrumb" id="breadcrumb">
+      <a href="index.html">Início</a> › <a href="mangas.html">Mangás</a> › <span id="breadcrumbCurrent">Detalhes</span>
+    </nav>
+
+    <article id="content" class="loading">Carregando detalhes do mangá...</article>
+  </main>
 
   <footer id="footerText">
     Dados de catálogo exibidos com base em fontes públicas. Use links externos para leitura quando disponíveis.
@@ -304,16 +368,22 @@
     function atualizarOgTitulo(texto) {
       const meta = document.querySelector('meta[property="og:title"]');
       if (meta) meta.setAttribute("content", texto);
+      const twitter = document.querySelector('meta[name="twitter:title"]');
+      if (twitter) twitter.setAttribute("content", texto);
     }
-
+    
     function atualizarOgDescricao(texto) {
       const meta = document.querySelector('meta[property="og:description"]');
       if (meta) meta.setAttribute("content", texto);
+      const twitter = document.querySelector('meta[name="twitter:description"]');
+      if (twitter) twitter.setAttribute("content", texto);
     }
 
     function atualizarOgImagem(url) {
       const meta = document.querySelector('meta[property="og:image"]');
       if (meta) meta.setAttribute("content", url);
+      const twitter = document.querySelector('meta[name="twitter:image"]');
+      if (twitter) twitter.setAttribute("content", url);
     }
 
     function atualizarOgUrl(url) {
@@ -331,7 +401,12 @@
       if (antigo) antigo.remove();
     }
 
-    function adicionarSchemaManga(titulo, descricao, url, imagem, tags) {
+    function removerSchemaBreadcrumb() {
+      const antigo = document.getElementById("breadcrumb-schema-jsonld");
+      if (antigo) antigo.remove();
+    }
+
+    function adicionarSchemaManga(titulo, descricao, url, imagem, tags, autores) {
       removerSchemaManga();
 
       const schema = {
@@ -342,6 +417,10 @@
         "url": url,
         "image": imagem,
         "genre": tags || [],
+        "author": (autores || []).map(nome => ({
+          "@type": "Person",
+          "name": nome
+        })),
         "inLanguage": idioma === "pt" ? "pt-BR" : "en"
       };
 
@@ -353,32 +432,63 @@
       document.head.appendChild(script);
     }
 
+    function adicionarSchemaBreadcrumb(titulo, urlAtual) {
+      removerSchemaBreadcrumb();
+
+      const schema = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": idioma === "pt" ? "Início" : "Home",
+            "item": `${SITE_URL}/index.html`
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": idioma === "pt" ? "Mangás" : "Manga",
+            "item": `${SITE_URL}/mangas.html`
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": titulo,
+            "item": urlAtual
+          }
+        ]
+      };
+
+      const script = document.createElement("script");
+      script.type = "application/ld+json";
+      script.id = "breadcrumb-schema-jsonld";
+      script.textContent = JSON.stringify(schema);
+
+      document.head.appendChild(script);
+    }
+
     function limparTexto(texto) {
       if (!texto) {
         return t("Descrição não disponível.", "Description not available.");
       }
 
       let limpo = texto;
-
-      // remove HTML
       limpo = limpo.replace(/<[^>]*>/g, "");
-
-      // remove links markdown [texto](link) -> texto
       limpo = limpo.replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1");
-
-      // remove URLs soltas
       limpo = limpo.replace(/https?:\/\/\S+/g, "");
-
-      // remove linhas compostas só por símbolos
       limpo = limpo.replace(/^[\s>*|()[\]_\-]+$/gm, "");
-
-      // remove caracteres soltos comuns que sobram do markdown
       limpo = limpo.replace(/^[>\-]\s*/gm, "");
-
-      // remove várias linhas em branco
       limpo = limpo.replace(/\n{3,}/g, "\n\n");
 
       return limpo.trim();
+    }
+
+    function resumirDescricao(texto, limite = 160) {
+      if (!texto) return "";
+      const limpo = texto.replace(/\s+/g, " ").trim();
+      if (limpo.length <= limite) return limpo;
+      return `${limpo.slice(0, limite).trim()}...`;
     }
 
     function criarSlug(texto) {
@@ -410,7 +520,7 @@
         t("Sem título", "Untitled")
       );
     }
-    
+
     function obterDescricaoManga(manga) {
       const desc =
         manga.attributes?.description?.["pt-br"] ||
@@ -481,6 +591,18 @@
       return [...new Set(autores)];
     }
 
+    function gerarLinksTags(tags) {
+      if (!tags.length) return t("Sem tags", "No tags");
+
+      return tags
+        .slice(0, 8)
+        .map(tag => {
+          const termo = encodeURIComponent(tag);
+          return `<a href="mangas.html?busca=${termo}">${tag}</a>`;
+        })
+        .join(" • ");
+    }
+
     function pesquisarOutroManga() {
       const termo = document.getElementById("searchInput").value.trim();
       if (!termo) return;
@@ -537,6 +659,7 @@
         "Catalog data displayed based on public sources. Use external links for reading when available."
       );
       document.getElementById("backToTopBtn").textContent = t("⬆ Topo", "⬆ Top");
+      document.getElementById("breadcrumbCurrent").textContent = t("Detalhes", "Details");
 
       if (!id) {
         mostrarErro(t("ID do mangá não encontrado.", "Manga ID not found."));
@@ -557,32 +680,37 @@
 
         const titulo = obterTituloManga(manga);
         const descricao = obterDescricaoManga(manga);
+        const descricaoCurta = resumirDescricao(descricao, 155);
         const tags = obterTags(manga);
         const autores = obterAutores(manga);
         const slugCorreto = criarSlug(titulo);
         const imagem = obterCoverUrl(manga);
         const urlCanonica = `${SITE_URL}/manga-detalhes.html?slug=${slugCorreto}&id=${manga.id}`;
         const externalUrl = `https://mangadex.org/title/${manga.id}`;
+        const buscaPorTitulo = `mangas.html?busca=${encodeURIComponent(titulo)}`;
 
         const tituloSeo = t(
-          `AniAtlas - ${titulo} | Detalhes do mangá`,
-          `AniAtlas - ${titulo} | Manga details`
+          `${titulo} - sinopse, status e detalhes | AniAtlas`,
+          `${titulo} - synopsis, status and details | AniAtlas`
         );
 
         const descricaoSeo = t(
-          `Veja detalhes de ${titulo}, incluindo descrição, status, tags e link externo oficial no AniAtlas.`,
-          `See details for ${titulo}, including description, status, tags and official external link on AniAtlas.`
+          `Veja a sinopse, status, autores, tags e informações de ${titulo} no AniAtlas.`,
+          `See the synopsis, status, authors, tags and information for ${titulo} on AniAtlas.`
         );
 
         document.title = tituloSeo;
-        atualizarMetaDescricao(descricao || descricaoSeo);
-        atualizarMetaKeywords(`${titulo}, mangá, manga, AniAtlas, MangaDex`);
+        atualizarMetaDescricao(descricaoCurta || descricaoSeo);
+        atualizarMetaKeywords(`${titulo}, mangá, manga, AniAtlas, MangaDex, ${tags.join(", ")}`);
         atualizarOgTitulo(tituloSeo);
-        atualizarOgDescricao(descricao || descricaoSeo);
+        atualizarOgDescricao(descricaoCurta || descricaoSeo);
         atualizarOgImagem(imagem);
         atualizarOgUrl(urlCanonica);
         atualizarCanonical(urlCanonica);
-        adicionarSchemaManga(titulo, descricao || descricaoSeo, urlCanonica, imagem, tags);
+        adicionarSchemaManga(titulo, descricaoCurta || descricaoSeo, urlCanonica, imagem, tags, autores);
+        adicionarSchemaBreadcrumb(titulo, urlCanonica);
+
+        document.getElementById("breadcrumbCurrent").textContent = titulo;
 
         if (slugCorreto && slugAtual !== slugCorreto) {
           window.history.replaceState({}, "", `manga-detalhes.html?slug=${slugCorreto}&id=${manga.id}`);
@@ -601,6 +729,7 @@
                   "See manga information, status, tags and open the official external page."
                 )}
               </p>
+
               <div class="meta">
                 <strong>${t("Status", "Status")}:</strong> ${obterStatusManga(manga.attributes?.status)}<br>
                 <strong>${t("Ano", "Year")}:</strong> ${manga.attributes?.year || "?"}<br>
@@ -609,7 +738,7 @@
               </div>
 
               <div class="tags">
-                ${tags.length ? tags.join(" • ") : t("Sem tags", "No tags")}
+                ${gerarLinksTags(tags)}
               </div>
 
               <div class="desc">
@@ -621,6 +750,10 @@
                   <button class="open-btn">${t("Abrir no MangaDex", "Open on MangaDex")}</button>
                 </a>
 
+                <a href="${buscaPorTitulo}" class="nav-btn secondary-btn">
+                  ${t("Ver mais resultados", "See more results")}
+                </a>
+
                 <a href="mangas.html" class="nav-btn secondary-btn">
                   ${t("Voltar para mangás", "Back to manga")}
                 </a>
@@ -628,19 +761,38 @@
             </div>
           </div>
 
-          <div class="seo-box">
+          <section class="seo-box">
             ${t(
               `Nesta página você encontra informações sobre ${titulo}, incluindo descrição, autores, status e tags. Para leitura, use o botão de acesso externo oficial.`,
               `On this page you can find information about ${titulo}, including description, authors, status and tags. For reading, use the official external access button.`
             )}
-          </div>
+          </section>
 
-          <div class="notice-box">
+          <section class="section-box">
+            <h2>${t("Resumo do mangá", "Manga summary")}</h2>
+            <p>
+              ${t(
+                `${titulo} é um mangá listado no AniAtlas com informações de catálogo, sinopse, status de publicação e classificação de conteúdo. Esta página ajuda você a descobrir detalhes rápidos antes de abrir a fonte externa de leitura.`,
+                `${titulo} is a manga listed on AniAtlas with catalog information, synopsis, publication status and content rating. This page helps you discover quick details before opening the external reading source.`
+              )}
+            </p>
+          </section>
+
+          <section class="section-box">
+            <h2>${t("Explorar mais", "Explore more")}</h2>
+            <ul>
+              <li><a href="${buscaPorTitulo}">${t("Buscar este título no catálogo", "Search this title in the catalog")}</a></li>
+              <li><a href="mangas.html">${t("Ver mais mangás", "See more manga")}</a></li>
+              <li><a href="index.html">${t("Voltar para a página inicial", "Back to home page")}</a></li>
+            </ul>
+          </section>
+
+          <section class="notice-box">
             ${t(
               "O AniAtlas não hospeda capítulos protegidos nesta página. Use o botão externo para acessar a fonte disponível.",
               "AniAtlas does not host protected chapters on this page. Use the external button to access the available source."
             )}
-          </div>
+          </section>
         `;
       } catch (error) {
         console.error(error);
@@ -660,4 +812,3 @@
   </script>
 </body>
 </html>
-    
