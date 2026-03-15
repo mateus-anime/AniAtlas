@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Melhores Animes de Ação | AniAtlas</title>
+
+<meta name="description" content="Descubra os melhores animes de ação para assistir. Veja batalhas épicas, aventuras intensas e os animes mais populares do gênero ação.">
+
+<link rel="canonical" href="https://ani-atlas-hbvj.vercel.app/animes-acao.html">
+
+<style>
+
+body{
+background:#0b1020;
+color:#fff;
+font-family:Arial;
+margin:0;
+padding:20px;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:20px;
+}
+
+.card{
+background:#111827;
+border-radius:10px;
+padding:10px;
+}
+
+img{
+width:100%;
+border-radius:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>🔥 Animes de Ação</h1>
+
+<p>
+Veja uma lista de animes de ação populares com batalhas intensas, poderes incríveis e histórias épicas.
+</p>
+
+<div id="lista" class="cards"></div>
+
+<script>
+
+const API="https://graphql.anilist.co"
+
+async function carregar(){
+
+const query=`
+query{
+Page(page:1,perPage:50){
+media(
+genre:"Action"
+type:ANIME
+sort:POPULARITY_DESC
+){
+id
+title{
+romaji
+english
+}
+coverImage{
+large
+}
+}
+}
+}
+`
+
+const res=await fetch(API,{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({query})
+})
+
+const json=await res.json()
+
+const lista=document.getElementById("lista")
+
+json.data.Page.media.forEach(anime=>{
+
+const nome=anime.title.english||anime.title.romaji
+
+lista.innerHTML+=`
+
+<div class="card">
+
+<img src="${anime.coverImage.large}">
+
+<h3>${nome}</h3>
+
+<a href="detalhes.html?id=${anime.id}">
+Ver detalhes
+</a>
+
+</div>
+
+`
+
+})
+
+}
+
+carregar()
+
+</script>
+
+</body>
+</html>

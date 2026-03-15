@@ -211,14 +211,18 @@
     .manga-page-btn {
       background: #16a34a;
     }
-    
+
     .popular-page-btn {
-     background: #f97316;
-   }
-   
-   .best-page-btn {
-     background: #eab308;
-   }
+      background: #f97316;
+    }
+
+    .best-page-btn {
+      background: #eab308;
+    }
+
+    .action-page-btn {
+      background: #dc2626;
+    }
 
     .back-to-top {
       position: fixed;
@@ -452,6 +456,7 @@
     }
   </style>
 </head>
+
 <body>
   <header>
     <div class="header-wrap">
@@ -492,14 +497,27 @@
         >
           📖 Catálogo de Mangás
         </a>
-        <a href="animes-populares.html" class="nav-btn popular-page-btn">
-         🔥 100 Animes Populares
+        <a
+          href="animes-populares.html"
+          class="nav-btn popular-page-btn"
+          id="popularPageBtn"
+        >
+          🔥 100 Animes Populares
         </a>
-        
-        <a href="melhores-animes.html" class="nav-btn best-page-btn">
-         🏆 100 Melhores Animes
+        <a
+          href="melhores-animes.html"
+          class="nav-btn best-page-btn"
+          id="bestPageBtn"
+        >
+          🏆 100 Melhores Animes
         </a>
-        
+        <a
+          href="animes-acao.html"
+          class="nav-btn action-page-btn"
+          id="actionPageBtn"
+        >
+          🔥 Animes de Ação
+        </a>
       </div>
 
       <div class="search-box">
@@ -556,12 +574,18 @@
       </div>
     </div>
 
+    <section class="section-box">
+      <h2 id="genreExploreTitle">🎬 Explorar por páginas de gênero</h2>
+      <div class="internal-links" id="genreExploreLinks">
+        <a href="animes-acao.html">🔥 Animes de Ação</a>
+      </div>
+    </section>
+
     <section id="genreSection" class="section" style="display:none;">
       <h2 class="section-title" id="genreTitle">🎭 Gênero selecionado</h2>
       <div id="genreResults" class="cards"></div>
     </section>
-    
-    
+
     <section id="searchSection" class="search-results" style="display:none;">
       <h2 class="section-title" id="searchResultsTitle">🔎 Resultado da busca</h2>
       <div id="searchResults" class="cards"></div>
@@ -737,6 +761,18 @@
         "📖 Catálogo de Mangás",
         "📖 Manga Catalog"
       );
+      document.getElementById("popularPageBtn").textContent = t(
+        "🔥 100 Animes Populares",
+        "🔥 100 Popular Anime"
+      );
+      document.getElementById("bestPageBtn").textContent = t(
+        "🏆 100 Melhores Animes",
+        "🏆 100 Best Anime"
+      );
+      document.getElementById("actionPageBtn").textContent = t(
+        "🔥 Animes de Ação",
+        "🔥 Action Anime"
+      );
       document.getElementById("searchResultsTitle").textContent = t(
         "🔎 Resultado da busca",
         "🔎 Search Results"
@@ -777,6 +813,13 @@
         "Use a página inicial do AniAtlas para descobrir animes populares, ver tendências, explorar a temporada atual e abrir páginas individuais de detalhes.",
         "Use the AniAtlas homepage to discover popular anime, see trends, explore the current season and open individual detail pages."
       );
+      document.getElementById("genreExploreTitle").textContent = t(
+        "🎬 Explorar por páginas de gênero",
+        "🎬 Explore by genre pages"
+      );
+      document.getElementById("genreExploreLinks").innerHTML = `
+        <a href="animes-acao.html">${t("🔥 Animes de Ação", "🔥 Action Anime")}</a>
+      `;
 
       atualizarMetaDescricao(t(
         "Descubra onde assistir animes legalmente, veja animes populares, animes da temporada e pesquise títulos no AniAtlas.",
@@ -850,7 +893,7 @@
         return [];
       }
     }
-
+    
     function saveFavorites(favorites) {
       localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
     }
@@ -946,7 +989,8 @@
       const slug = criarSlug(animeData.title);
       const detalhesUrl = `detalhes.html?slug=${slug}&id=${animeData.id}`;
       const descricaoCurta = resumirTexto(animeData.description, 110);
-return `
+
+      return `
         <div class="card">
           <a href="${detalhesUrl}" class="card-cover-link"
              onmouseenter="prefetchDetalhes('${slug}', ${animeData.id})"
@@ -999,7 +1043,7 @@ return `
         </div>
       `;
     }
-    
+
     function renderizarLista(elementId, lista, isError = false) {
       const el = document.getElementById(elementId);
 
@@ -1241,7 +1285,8 @@ return `
         return `<a href="${detalhesUrl}">${animeData.title}</a>`;
       }).join("");
     }
-
+    
+    
     async function filtrarGenero(genero, botao) {
       generoAtual = genero;
 
