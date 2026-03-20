@@ -22,9 +22,9 @@
     property="og:description"
     content="Descubra onde assistir animes legalmente, veja recomendações e explore animes populares no AniAtlas."
   />
-  <meta property="og:image" content="/logo.png" />
+  <meta property="og:image" content="https://ani-atlas-hbvj.vercel.app/logo.png" />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="/" />
+  <meta property="og:url" content="https://ani-atlas-hbvj.vercel.app/" />
   <meta property="og:site_name" content="AniAtlas" />
 
   <meta name="twitter:card" content="summary_large_image" />
@@ -33,9 +33,9 @@
     name="twitter:description"
     content="Descubra onde assistir animes legalmente, veja recomendações e explore animes populares no AniAtlas."
   />
-  <meta name="twitter:image" content="/logo.png" />
+  <meta name="twitter:image" content="https://ani-atlas-hbvj.vercel.app/logo.png" />
 
-  <link rel="canonical" href="/" />
+  <link rel="canonical" href="https://ani-atlas-hbvj.vercel.app/" />
   <link rel="icon" type="image/png" href="favicon.png" />
 
   <script type="application/ld+json" id="website-schema-jsonld">
@@ -43,7 +43,7 @@
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "AniAtlas",
-    "url": "/",
+    "url": "https://ani-atlas-hbvj.vercel.app/",
     "description": "Descubra onde assistir animes legalmente, veja animes populares, animes da temporada, pesquise títulos e encontre recomendações no AniAtlas.",
     "inLanguage": "pt-BR"
   }
@@ -587,7 +587,7 @@
 
   <main>
     <nav class="breadcrumb">
-      <a href="index.html">Início</a> › <span id="breadcrumbCurrent">Anime</span>
+      <a href="/">Início</a> › <span id="breadcrumbCurrent">Anime</span>
     </nav>
 
     <div id="status" class="status">Carregando animes do site...</div>
@@ -718,7 +718,7 @@
     const API_URL = "https://graphql.anilist.co";
     const FAVORITES_KEY = "animehub_favorites";
     const LANG_KEY = "aniatlas_lang";
-    const SITE_URL = window.location.origin;
+    const SITE_URL = "https://ani-atlas-hbvj.vercel.app";
 
     const CACHE_TOP = "aniatlas_cache_top";
     const CACHE_POPULAR = "aniatlas_cache_popular";
@@ -730,6 +730,14 @@
 
     function t(pt, en) {
       return idioma === "pt" ? pt : en;
+    }
+
+    function normalizarHomeCanonical() {
+      if (window.location.pathname.endsWith("/index.html")) {
+        window.location.replace(`${SITE_URL}/`);
+        return true;
+      }
+      return false;
     }
 
     function atualizarTitulo() {
@@ -892,7 +900,6 @@
         "📚 Lista de Animes",
         "📚 Anime List"
       );
-      
       document.getElementById("searchResultsTitle").textContent = t(
         "🔎 Resultado da busca",
         "🔎 Search Results"
@@ -929,6 +936,7 @@
         "🔗 Explorar animes desta página",
         "🔗 Explore anime from this page"
       );
+      
       document.getElementById("homeInfoTitle").textContent = t(
         "🏠 Sobre o AniAtlas",
         "🏠 About AniAtlas"
@@ -1144,7 +1152,7 @@
         description: anime.description || ""
       };
     }
-    
+
     function criarCard(anime, isFromFavorites = false) {
       const animeData = createAnimeData(anime);
       const favoritos = isFavorite(animeData.id);
@@ -1312,8 +1320,8 @@
 
       return lista;
     }
-
-    function obterTemporadaAtual() {
+   
+   function obterTemporadaAtual() {
       const agora = new Date();
       const mes = agora.getMonth() + 1;
       const ano = agora.getFullYear();
@@ -1704,6 +1712,7 @@
     }
 
     async function iniciarSite() {
+      if (normalizarHomeCanonical()) return;
       aplicarIdioma();
       await iniciarCatalogos(true);
       controlarBotaoTopo();
