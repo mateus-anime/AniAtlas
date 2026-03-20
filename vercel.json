@@ -4,5 +4,12 @@
       "source": "/api/mangadex",
       "destination": "https://api.mangadex.org/manga"
     }
+  ],
+  "redirects": [
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    }
   ]
 }
